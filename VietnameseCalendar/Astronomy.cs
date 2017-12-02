@@ -447,8 +447,8 @@ namespace Augustine.VietnameseCalendar
 			return L;
 		}
 
-		/* Original Algorithm of Ho Ngoc Duc
-		 * ---------------------------------
+		/* Analisation of algorithm of Hồ Ngọc Đức
+		 * ---------------------------------------
 		 * double off = LocalToJD(31, 12, Y) - 2415021.076998695;
 		 *              ^ returns Julian Date of 31st December #Year, 00:00:00 UTC+7
 		 *                    i.e. 30th December #Year, 17:00:00 UTC
@@ -484,6 +484,7 @@ namespace Augustine.VietnameseCalendar
 		 * +---[ Julius Date of D/M/Y 00:00:00 UTC (midnight), 8/12/1999 00:00:00]   |
 		 *                   [ This value is used to determine the sun longitude ]---+
 		 */
+
 		/// <summary>
 		/// Returns the local date time of the new moon just before 
 		/// the winter solstice in the given lunar year.
@@ -537,65 +538,6 @@ namespace Augustine.VietnameseCalendar
             //Console.WriteLine("===============================================");
             
             return newMoonLocalDateTime;
-		}
-
-        #region Lunar Year
-
-        public static readonly double[] SUNLONG_MAJOR = new double[] {
-			0, Math.PI / 6, 2 * Math.PI / 6, 3 * Math.PI / 6,
-			4 * Math.PI / 6, 5 * Math.PI / 6, Math.PI, 7 * Math.PI / 6,
-			8 * Math.PI / 6, 9 * Math.PI / 6, 10 * Math.PI / 6, 11 * Math.PI / 6 };
-
-		#endregion
-
-		#region Lunar - Solar converters
-		/* Original Algorithm of Ho Ngoc Duc
-		 * ---------------------------------
-		 * public static int[] Solar2Lunar(int D, int M, int Y) {
-		 *     int yy = Y;
-		 *     int[][] ly = LunarYear(Y); // Please cache the result of this computation for later use!!!
-		 *     int[] month11 = ly[ly.length - 1];
-		 *     double jdToday = LocalToJD(D, M, Y);
-		 *     double jdMonth11 = LocalToJD(month11[0], month11[1], month11[2]);
-		 *     if (jdToday >= jdMonth11) {
-		 *         ly = LunarYear(Y+1);
-		 *         yy = Y + 1;
-		 *     }
-		 *     int i = ly.length - 1;
-		 *     while (jdToday < LocalToJD(ly[i][0], ly[i][1], ly[i][2])) {
-		 *         i--;
-		 *     }
-		 *     int dd = (int)(jdToday - LocalToJD(ly[i][0], ly[i][1], ly[i][2])) + 1;
-		 *     int mm = ly[i][3];
-		 *     if (mm >= 11) {
-		 *         yy--;
-		 *     }
-		 *     return new int[] {dd, mm, yy, ly[i][4]};
-		 * }
-		 * 
-		 */
-
-		#endregion
-
-		public static LunarDate SolarToLunar(int year, int month, int day, double timeZone, bool debug = false)
-		{
-			return null;
-		}
-
-		public static double LunarToSolar(LunarDate lunarDate, double timeZone)
-		{
-			return -1;
-		}
-
-
-		/// <summary>
-		/// Get the index of the leap month. 
-		/// </summary>
-		/// <param name="prevMonth11Start">jdn of the first day of 11th month Lunar Calendar.</param>
-		/// <returns></returns>
-		public static int GetLeapMonthDiff(double prevMonth11Start, double timeZone)
-		{
-			return -1;
 		}
 
 		#endregion
