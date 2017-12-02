@@ -106,7 +106,7 @@ namespace Augustine.VietnameseCalendar
 
             return new LunarDate(lunarYear, lunarMonth, isLeapMonth, lunarDay, timeZone);
         }
-        
+
         // overload method
         public static LunarDate FromSolar(DateTime solarDate, double timeZone)
         {
@@ -115,10 +115,55 @@ namespace Augustine.VietnameseCalendar
 
         public static DateTime ToSolar(int lunarYear, int lunarMonth, bool isLeapMonth, int lunarDay, double timeZone)
         {
-            //int solarDay;
-            //int solarMonth;
-            //int solarYear;
-            throw new NotImplementedException();
+            LunarYear thisLunarYear;
+            if (lunarMonth >= 11) {
+                thisLunarYear = new LunarYear(lunarYear + 1, 7);
+            } else
+            {
+                thisLunarYear = new LunarYear(lunarYear, 7);
+            }
+
+            var monthIndex = lunarMonth - 11;
+            if (monthIndex < 0)
+            {
+                monthIndex += 12;
+            }
+
+            //              year | 2000    2001
+            //             month | 11  12  1   2   3   4   4*  5   6   7   8   9   10  11
+            //               idx | 0   1   2   3   4   5  [6]  7   8   9   10  11  12  13
+            //                   |                         ^
+            //                   |       LeapMonthIndex ---+
+            // month - 11 (+ 12) | 0   1   2   3   4   5  [5] [6   7   8   9   10  11  12]
+            //                   |                         A  \----------- B-------------/
+            // ------------------+--------------------------------------------------------
+            //              year | 2223    2224
+            //             month | 11  11* 12  1   2   3   4   5   6   7   8   9   10  11
+            //               idx | 0  [1  ]2   3   4   5   6   7   8   9   10  11  12  13
+            //                   |     ^
+            //                   |     +--- LeapMonthIndex
+            // month - 11 (+ 12) |[0] [0   1   2   3   4   5   5   6   7   8   9   10  11]
+            //                   | A  \----------------------- B ------------------------/
+
+            if (thisLunarYear.IsLeapYear)
+            {
+                if (((monthIndex == thisLunarYear.LeapMonthIndex - 1) && (isLeapMonth)) // case A
+                    || (monthIndex > thisLunarYear.LeapMonthIndex - 1)) // case B
+                {
+                    monthIndex++;
+                }
+            }
+
+            DateTime monthBeginningDate = thisLunarYear.Months[monthIndex].Item1;
+            return monthBeginningDate.AddDays(lunarDay - 1);
+            
+            // TODO: validate input/output
+        }
+
+
+        public static DateTime ToSolar(LunarDate lunarDate)
+        {
+            return ToSolar(lunarDate.Year, lunarDate.Month, lunarDate.IsLeapMonth, lunarDate.Day, lunarDate.TimeZone);
         }
 
         #region Year
