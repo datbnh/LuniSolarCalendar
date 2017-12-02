@@ -64,7 +64,7 @@ namespace Augustine.VietnameseCalendar.Tests
 		[TestMethod()]
 		public void GetNewMoonInJulianDateTest()
 		{
-			int k = 1236;
+			//int k = 1236;
 			double jd = Astronomy.GetNewMoon(1236);
 			TimeSpan diff = (new DateTime(1999, 12, 7, 22, 32, 42)) - Astronomy.JulianDateToUniversalDateTime(jd);
 			Assert.AreEqual(2451520.4393767994, jd, 1E-10);
