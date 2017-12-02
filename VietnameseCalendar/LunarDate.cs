@@ -34,12 +34,21 @@ namespace Augustine.VietnameseCalendar
         
         public static LunarDate FromSolar(int year, int month, int day, double timeZone)
         {
-            // Sample case: Solar date 24/05/2000 --- Lunar date 21/04/2000
-            // previousNewMoon = 04/05/2000
+            // Sample case 1: Solar date 24/05/2000 --- Lunar date 21/04/2000
+            //                  previousNewMoon = 04/05/2000
             // lunarYear = previousNewMoon.Year = 2000
-            // newMoon11Before = 08/12/1999
-            // newMoon11After = 26/11/2000
-            // (04/05/2000 - 08/12/1999) / 29 = 148 days / 29 = 5.10x
+            //                  newMoon11Before = 08/12/1999
+            //                   newMoon11After = 26/11/2000
+            //   (04/05/2000 - 08/12/1999) / 29 = 148 days / 29 
+            //                                  = 5.10x
+            // --------------------------------------------------------------
+            // Sample case 2: Solar date 01/01/2014 --- Lunar date 01/12/2013
+            //                  previousNewMoon = 01/01/2014
+            // lunarYear = previousNewMoon.Year = 2014
+            //                  newMoon11Before = 03/12/2013
+            //                   newMoon11After = 26/11/2000
+            //   (01/01/2014 - 03/12/2013) / 29 = 29 days / 29 
+            //                                  = 1
 
             int lunarYear;
             int lunarMonth;
@@ -59,11 +68,9 @@ namespace Augustine.VietnameseCalendar
                 //Console.WriteLine("."); // debug
             } 
 
-            lunarYear = previousNewMoon.Year;
-
             // "previous, this/current" and "next" are not used to avoid ambiguity.
-            var newMoon11Before = Astronomy.NewMoon11(lunarYear - 1, timeZone).Date;
-            var newMoon11After = Astronomy.NewMoon11(lunarYear, timeZone).Date;
+            var newMoon11Before = Astronomy.NewMoon11(previousNewMoon.Year - 1, timeZone).Date;
+            var newMoon11After = Astronomy.NewMoon11(previousNewMoon.Year, timeZone).Date;
 
             var isLeapYear = (newMoon11After - newMoon11Before).TotalDays > 365.0;
             
@@ -80,18 +87,19 @@ namespace Augustine.VietnameseCalendar
             //
             if (monthsFromNewMoon11Before < 2)
             {
-                lunarYear = lunarYear - 1;
+                lunarYear = previousNewMoon.Year - 1;
                 lunarMonth = 11 + monthsFromNewMoon11Before;
             }
             else
             {
+                lunarYear = previousNewMoon.Year;
                 lunarMonth = monthsFromNewMoon11Before - 1;
             }
 
             // correcting month number if this lunar year is leap year
             if (isLeapYear)
             {
-                var leapMonthIndex = (new LunarYear(lunarYear, 7)).LeapMonthIndex;
+                var leapMonthIndex = (new LunarYear(previousNewMoon.Year, 7)).LeapMonthIndex;
                 if (monthsFromNewMoon11Before >= leapMonthIndex)
                 {
                     lunarMonth--;
