@@ -492,7 +492,7 @@ namespace Augustine.VietnameseCalendar
 		/// <param name="lunarYear"></param>
 		/// <param name="timeZone"></param>
 		/// <returns></returns>
-		public static DateTime NewMoonBeforeWinterSolstice(int lunarYear, double timeZone)
+		public static DateTime NewMoon11(int lunarYear, double timeZone)
 		{
             // number of days from J1900 to local midnight of 31st December #Year
             // (lunarYear, 12, 31): local
