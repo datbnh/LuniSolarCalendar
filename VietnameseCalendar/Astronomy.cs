@@ -372,7 +372,7 @@ namespace Augustine.VietnameseCalendar
 
 		#endregion
 
-		#region === Solar Lunar Calendar ===
+		#region === Moon and Sun ===
 
 		/* Base on algorithm of Ho Ngoc Duc, at
 		 * http://www.informatik.uni-leipzig.de/~duc/amlich/
