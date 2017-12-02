@@ -251,39 +251,17 @@ namespace Augustine.VietnameseCalendar
 
 		public static double UniversalDateTimeToJulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond)
 		{
-			//double fraction = (double)(hour - 12) / 24 + (double)minute / 1440 +
-			//	(second + (double)millisecond / 1000) / 86400;
-			//return UniversalDateToJulianDayNumber(year, month, day) + fraction;
-			return UniversalDateTimeToJulianDate(year, month, day,
-				TimeSpan.FromHours(hour-12)
-				.Add(TimeSpan.FromMinutes(minute))
-				.Add(TimeSpan.FromSeconds(second))
-				.Add(TimeSpan.FromMilliseconds(millisecond))
-				.TotalHours);
+            double fraction = (double)(hour - 12) / 24 + (double)minute / 1440 +
+                (second + (double)millisecond / 1000) / 86400;
+            return UniversalDateToJulianDayNumber(year, month, day) + fraction;
+        }
+
+		public static double UniversalDateTimeToJulianDate(int year, int month, int day, double hours)
+		{
+            return UniversalDateTimeToJulianDate(year, month, day, 0, 0, 0, 0) + hours / 24;
 		}
 
-		// overload method
-		public static double UniversalDateTimeToJulianDate(int year, int month, int day, int hour, int minute, int second)
-		{
-			return UniversalDateTimeToJulianDate(year, month, day, hour, minute, second, 0);
-		}
-		// overload method
-		public static double UniversalDateTimeToJulianDate(int year, int month, int day, int hour, int minute)
-		{
-			return UniversalDateTimeToJulianDate(year, month, day, hour, minute, 0, 0);
-		}
-		// overload method
-		public static double UniversalDateTimeToJulianDate(int year, int month, int day, int hour)
-		{
-			return UniversalDateTimeToJulianDate(year, month, day, hour, 0, 0, 0);
-		}
-
-		internal static double UniversalDateTimeToJulianDate(int year, int month, int day, double hours)
-		{
-			return UniversalDateToJulianDayNumber(year, month, day) + hours / 24;
-		}
-
-		public static double UniversalDateTimeToJulianDate(this DateTime universalDateTime)
+        public static double UniversalDateTimeToJulianDate(this DateTime universalDateTime)
 		{
 			return UniversalDateTimeToJulianDate(universalDateTime.Year,
 				universalDateTime.Month,
@@ -392,45 +370,6 @@ namespace Augustine.VietnameseCalendar
 		
 		#endregion
 
-		#region Handling local time
-
-		public static double LocalDateTimeToJulianDate(int year, int month, int day, 
-			int hour, int minute, int second, int millisecond, double timeZone)
-		{
-			TimeSpan localTime = TimeSpan.FromHours(hour)
-				.Add(TimeSpan.FromMinutes(minute))
-				.Add(TimeSpan.FromSeconds(second))
-				.Add(TimeSpan.FromMilliseconds(millisecond));
-
-			return UniversalDateTimeToJulianDate(year, month, day, 
-				localTime.Add(TimeSpan.FromHours(-timeZone)).TotalHours);
-		}
-
-		public static double LocalDateTimeToJulianDate(int year, int month, int day,
-			int hour, int minute, int second, double timeZone)
-		{
-			return LocalDateTimeToJulianDate(year, month, day, hour, minute, second, 0, timeZone);
-		}
-
-		public static double LocalDateTimeToJulianDate(int year, int month, int day,
-			int hour, int minute, double timeZone)
-		{
-			return LocalDateTimeToJulianDate(year, month, day, hour, minute, 0, 0, timeZone);
-		}
-
-		public static double LocalDateTimeToJulianDate(int year, int month, int day,
-			int hour, double timeZone)
-		{
-			return LocalDateTimeToJulianDate(year, month, day, hour, 0, 0, 0, timeZone);
-		}
-
-		public static double LocalDateTimeToJulianDate(int year, int month, int day, double timeZone)
-		{
-			return LocalDateTimeToJulianDate(year, month, day, 0, 0, 0, 0, timeZone);
-		}
-
-		#endregion
-
 		#endregion
 
 		#region === Solar Lunar Calendar ===
@@ -439,7 +378,7 @@ namespace Augustine.VietnameseCalendar
 		 * http://www.informatik.uni-leipzig.de/~duc/amlich/
 		 * 
 		 */
-
+        
 		public static double GetNewMoon(int k)
 		{
 			var T = k / 1236.85; // Time in Julian centuries from 1900 January 0.5
@@ -555,31 +494,49 @@ namespace Augustine.VietnameseCalendar
 		public static DateTime NewMoonBeforeWinterSolstice(int lunarYear, double timeZone)
 		{
             // number of days from J1900 to local midnight of 31st December #Year
-            var offset = LocalDateTimeToJulianDate(lunarYear, 12, 31, timeZone) - J1900;
+            // (lunarYear, 12, 31): local
+            // (lunarYear, 12, 31, timeZone): universal
+            var offset = UniversalDateTimeToJulianDate(lunarYear, 12, 31, timeZone) - J1900;
 
 			var k = (int)(offset / SynodicMonth);
 
-			// local date time of new moon
+			// local date & *time* of new moon
 			var newMoonLocalDateTime = JulianDateToUniversalDateTime(GetNewMoon(k)).AddHours(timeZone);
-			// local midnight of that day (strip off the time) given in UTC (*that moment*)
-			var newMoonLocalMidnightDateTimeInUtc = newMoonLocalDateTime.Date.AddHours(timeZone);
-			// Julian Date of that moment
-			var julianDateOfNewMoonLocalMidnight = newMoonLocalMidnightDateTimeInUtc.UniversalDateTimeToJulianDate();
+			// beginning of that day (i.e. midnight, i.e. strip off the time)
+			var newMoonMidnightLocal = newMoonLocalDateTime.Date;
+			// Julian Date at the beginning of that day
+			var julianDate = 
+                newMoonMidnightLocal.AddHours(-timeZone).UniversalDateTimeToJulianDate();
 
-			// check the winter soltice is after that moment:
-			// 360 degrees = 12 major and minor terms
-			// Terms   : 0*PI/6, 1*PI/6, 2*PI/6, 3*PI/6, 4*PI/6, 5*PI/6, 6*PI/6, 7*PI/6, 8*PI/6, 9*PI/6, 10*PI/6, 11*PI/6
-			// Solstice: *                       *                       *                       ^
-			//           Spring Equinox          Summer Solstice         Autumn Equinox          Winter Solstice
-			// 
-			var sunLongitude = GetSunLongitudeAtJulianDate(julianDateOfNewMoonLocalMidnight);
-			// if the winter soltice is *before* that moment, 
-			//     the previous new moon is the new moon just before winter soltice.
-			if (sunLongitude > 3 * Math.PI / 2)
+			var sunLongitude = GetSunLongitudeAtJulianDate(julianDate);
+            
+            // Check the winter solstice is after the beginning of that day:
+			// If the winter soltice is *before* the beginning of that day, 
+			//     the previous new moon is the new moon just before winter solstice,
+            // else the current new moon is the new moon just before winter solstice.
+			if (sunLongitude > (3 * Math.PI / 2))
 			{
 				newMoonLocalDateTime = JulianDateToUniversalDateTime(GetNewMoon(k - 1)).AddHours(timeZone);
 			}
-			return newMoonLocalDateTime;
+            ////debug info
+            //Console.WriteLine("===============================================");
+            //Console.WriteLine("      Lunar Year: {0} - Moon phase #{1}", lunarYear, k);
+            //Console.WriteLine("-----------------------------------------------");
+            //Console.WriteLine("     New moon at: {0:dd/MM/yyyy hh:mm:ss} UTC+0", JulianDateToUniversalDateTime(GetNewMoon(k)));
+            //Console.WriteLine("              or: {0:dd/MM/yyyy hh:mm:ss} UTC+7", newMoonLocalDateTime);
+            //Console.WriteLine("              or: Julian Date {0}", GetNewMoon(k));
+            //Console.WriteLine("-----------------------------------------------");
+            //Console.WriteLine("Sun longitude at: {0:dd/MM/yyyy hh:mm:ss} UTC+0", JulianDateToUniversalDateTime(julianDate));
+            //Console.WriteLine("              or: Julian Date {0}", julianDate);
+            //Console.WriteLine("              is: {0} degrees\n" +
+            //                  "                  {1} 270 degrees", sunLongitude.ToDegrees(),
+            //    (sunLongitude > 3 * Math.PI / 2) ? ">" : "<");
+            //Console.WriteLine("-----------------------------------------------");
+            //Console.WriteLine("New moon before Winter Solstice of this year \n" +
+            //                  "              is: {0:dd/MM/yyyy hh:mm:ss} UTC+7", newMoonLocalDateTime);
+            //Console.WriteLine("===============================================");
+            
+            return newMoonLocalDateTime;
 		}
 
         #region Lunar Year

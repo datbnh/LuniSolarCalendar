@@ -11,7 +11,7 @@ namespace Augustine.VietnameseCalendar
         /// <summary>
         /// Lunar year
         /// </summary>
-        public int Year;
+        public int Year { get; private set; }
 
         /// <summary>
         /// Information (month starting day, month index, is leap month) of months 
@@ -19,25 +19,27 @@ namespace Augustine.VietnameseCalendar
         /// </summary>
         public Tuple<DateTime, int, bool>[] Months;
 
-        public bool IsLeapYear;
+        public bool IsLeapYear { get; private set; }
 
-        public double TimeZone;
+        public double TimeZone { get; private set; }
 
         private DateTime month11LastYear;
         private DateTime month11ThisYear;
+        private int[] majorTermAtMonthBeginnings; // debug
+        private double[] sunLongitudeAtMonthBeginnings; // debug
 
         public LunarYear(int year, double timeZone)
         {
             Year = year;
             TimeZone = timeZone;
 
-            month11LastYear = Astronomy.NewMoonBeforeWinterSolstice(Year - 1, timeZone).Date;
-            month11ThisYear = Astronomy.NewMoonBeforeWinterSolstice(Year, timeZone).Date;
+            // at 00:00:00 local
+            month11LastYear = Astronomy.NewMoonBeforeWinterSolstice(Year - 1, TimeZone).Date;
+            month11ThisYear = Astronomy.NewMoonBeforeWinterSolstice(Year, TimeZone).Date;
 
-            double jdMonth11LastYear =
-                Astronomy.LocalDateTimeToJulianDate(month11LastYear.Year, month11LastYear.Month, month11LastYear.Day, timeZone);
-            double jdMonth11ThisYear =
-                Astronomy.LocalDateTimeToJulianDate(month11ThisYear.Year, month11ThisYear.Month, month11ThisYear.Day, timeZone);
+            // Convert the local date to UTC date time by adding AddHours(-TimeZone).
+            double jdMonth11LastYear = month11LastYear.AddHours(-TimeZone).UniversalDateTimeToJulianDate();
+            double jdMonth11ThisYear = month11ThisYear.AddHours(-TimeZone).UniversalDateTimeToJulianDate();
 
             int k = (int)(0.5 + (jdMonth11LastYear - 2415021.076998695) / 29.530588853);
 
@@ -56,14 +58,18 @@ namespace Augustine.VietnameseCalendar
         private void InitNonLeapYear(int k)
         {
             int numberOfMonths = 13;
+
+            majorTermAtMonthBeginnings = new int[numberOfMonths]; // debug
+            sunLongitudeAtMonthBeginnings = new double[numberOfMonths]; // debug
+
             Months = new Tuple<DateTime, int, bool>[numberOfMonths];
             Months[0] = new Tuple<DateTime, int, bool>(month11LastYear, 11, false);
             Months[numberOfMonths - 1] = new Tuple<DateTime, int, bool>(month11ThisYear, 11, false);
             for (int i = 1; i < numberOfMonths - 1; i++)
             {
                 var newMoon =
-                    Astronomy.JulianDateToUniversalDateTime(Astronomy.GetNewMoon(k + i)).AddHours(TimeZone);
-                Months[i] = new Tuple<DateTime, int, bool>(newMoon, (i + 11) % 11 + 1, false);
+                    Astronomy.JulianDateToUniversalDateTime(Astronomy.GetNewMoon(k + i)).AddHours(TimeZone).Date;
+                Months[i] = new Tuple<DateTime, int, bool>(newMoon, (i + 11) % 12, false);
             }
         }
 
@@ -72,44 +78,54 @@ namespace Augustine.VietnameseCalendar
             int numberOfMonths = 14;
             Months = new Tuple<DateTime, int, bool>[numberOfMonths];
             DateTime[] newMoons = new DateTime[numberOfMonths];
-            //double[] sunLongitudeAtMonthBeginnings = new double[numberOfMonths];
-            int[] majorTermAtMonthBeginnings = new int[numberOfMonths];
+            //int[] majorTermAtMonthBeginnings = new int[numberOfMonths];
 
-            // get all the new moons
+            majorTermAtMonthBeginnings = new int[numberOfMonths]; // debug
+            sunLongitudeAtMonthBeginnings = new double[numberOfMonths]; // debug
+
+            // get all the new moons, local date
             newMoons[0] = month11LastYear;
             newMoons[numberOfMonths - 1] = month11ThisYear;
             for (int i = 1; i < numberOfMonths - 1; i++)
             {
                 newMoons[i] =
-                    Astronomy.JulianDateToUniversalDateTime(Astronomy.GetNewMoon(k + i)).AddHours(TimeZone);
-            }
-
-            // TODO: code optimization:
-            // Uneccessary to get ALL the sun longitude. 
-            // The process can stop when first found the leap month.
-
-            // get all sunLongitudeAtMonthBeginnings
-            for (int i = 0; i < numberOfMonths; i++)
-            {
-                double julianDateAtThisMonthBeginning = newMoons[i].UniversalDateTimeToJulianDate() - TimeZone / 24;
-                //sunLongitudeAtMonthBeginnings[i] = Astronomy.GetSunLongitudeAtJulianDate(julianDateAtThisMonthBeginning);
-                majorTermAtMonthBeginnings[i] =
-                    (int)(Astronomy.GetSunLongitudeAtJulianDate(julianDateAtThisMonthBeginning) * 6 / Math.PI);
+                    Astronomy.JulianDateToUniversalDateTime(Astronomy.GetNewMoon(k + i)).AddHours(TimeZone).Date;
             }
 
             // determine leap month
             bool found = false;
+
+            sunLongitudeAtMonthBeginnings[0] = Astronomy.GetSunLongitudeAtJulianDate(
+                newMoons[0].AddHours(-TimeZone).UniversalDateTimeToJulianDate()); // debug
+
+            majorTermAtMonthBeginnings[0] = (int)(Astronomy.GetSunLongitudeAtJulianDate(
+                newMoons[0].AddHours(-TimeZone).UniversalDateTimeToJulianDate()) * 6 / Math.PI);
             for (int i = 0; i < numberOfMonths - 1; i++)
             {
-                // if major term at the beginning of this month is same as
+                // If major term at the beginning of this month is same as
                 // major term at the beginning of next month, i.e. this month 
                 // does not have major term, this month is leap month.
-                // Only one leap month in a year.
+                // 
+                // Note that only the first month which does not have major term
+                // is leap month (as a Lunar year has maximum one leap month).
                 if (found)
                 {
                     Months[i] = new Tuple<DateTime, int, bool>(newMoons[i], (i - 1 + 11) % 12, false);
                     continue;
                 }
+
+                double julianDateAtNextMonthBeginning = 
+                    newMoons[i + 1].AddHours(-TimeZone).UniversalDateTimeToJulianDate();
+
+                sunLongitudeAtMonthBeginnings[i + 1] = Astronomy.
+                    GetSunLongitudeAtJulianDate(julianDateAtNextMonthBeginning); // debug
+
+                majorTermAtMonthBeginnings[i + 1] = (int)(Astronomy.
+                    GetSunLongitudeAtJulianDate(julianDateAtNextMonthBeginning) * 6 / Math.PI);
+
+                // In this algorithm, comparisons will happen with updated element only.
+                // Yet be careful: initial value of elements of an int array are zeros.
+                // This may confuse the debugging process!
                 found = majorTermAtMonthBeginnings[i] == majorTermAtMonthBeginnings[i + 1];
                 Months[i] = new Tuple<DateTime, int, bool>(newMoons[i],
                     found ? (i - 1 + 11) % 12 : (i + 11) % 12, found);
@@ -122,10 +138,20 @@ namespace Augustine.VietnameseCalendar
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(String.Format("Lunar year: {0} {1}", Year, IsLeapYear ? "(Leap year)" : ""));
-            foreach (var month in Months)
+            for (int i = 0; i < Months.Length; i++)
             {
-                sb.AppendLine(String.Format("Month {0,2}{1}: {2:MM/dd/yy}", month.Item2 == 0 ? 12 : month.Item2, month.Item3 ? "*" : " ", month.Item1.ToShortDateString()));
+                sb.AppendLine(String.Format("Month {0,2}{1}: {2} | {4} - {3} ({5})",
+                    Months[i].Item2 == 0 ? 12 : Months[i].Item2,
+                    Months[i].Item3 ? "*" : " ",
+                    Months[i].Item1,
+                    majorTermAtMonthBeginnings[i],
+                    sunLongitudeAtMonthBeginnings[i].ToDegrees(),
+                    majorTermAtMonthBeginnings[i] * 30));
+
             }
+            //foreach (var month in Months)
+            //{
+            //}
             return sb.ToString();
         }
 
