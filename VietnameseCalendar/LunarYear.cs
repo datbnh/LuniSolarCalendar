@@ -17,7 +17,7 @@ namespace Augustine.VietnameseCalendar
         /// Information (month starting day, month index, is leap month) of months 
         /// from "tháng Một (11)" last lunar year to this lunar year.
         /// </summary>
-        public Tuple<DateTime, int, bool>[] Months;
+        public Tuple<DateTime, int, bool>[] Months { get; private set; }
 
         public bool IsLeapYear { get; private set; }
 
@@ -149,11 +149,7 @@ namespace Augustine.VietnameseCalendar
                     majorTermAtMonthBeginnings[i] * 30));
 
             }
-            //foreach (var month in Months)
-            //{
-            //}
             return sb.ToString();
         }
-
     }
 }
