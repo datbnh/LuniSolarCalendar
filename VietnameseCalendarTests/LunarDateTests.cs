@@ -14,7 +14,7 @@ namespace Augustine.VietnameseCalendar.Tests
     public class LunarDateTests
     {
         [TestMethod()]
-        public void ConvertersTest()
+        public void LunarSolarConvertersTest()
         {
             Console.OutputEncoding = Encoding.Unicode;
             string path = Path.Combine(Path.GetTempPath(), String.Format("VietnameseCalendar_ConvertersTest_{0}.TestLog.txt", DateTime.Now.ToString("yyyyMMddTHHmmss")));
@@ -32,8 +32,9 @@ namespace Augustine.VietnameseCalendar.Tests
                 String.Format("Begin testing Lunar/Solar date converters..." + 
                               "\r\n    Start date = {0:dd/MM/yyyy}" +
                               "\r\n    End date   = {1:dd/MM/yyyy}" +
-                              "\r\n        Step   = {2} day(s)" +
-                              "\r\n----------------------------------------", startDate, endDate, daySteps));
+                              "\r\n    Step       = {2} day(s)" +
+                              "\r\n    Test log   : \"{3}\"" +
+                              "\r\n----------------------------------------", startDate, endDate, daySteps, path.ToString()));
             DateTime testBegin = DateTime.Now;
             while (date <= endDate)
             {
