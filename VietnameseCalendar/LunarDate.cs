@@ -113,7 +113,7 @@ namespace Augustine.VietnameseCalendar
             // correcting month number if this lunar year is leap year
             if (isLeapYear)
             {
-                var leapMonthIndex = (new LunarYear(newMoon11After.Year, 7)).LeapMonthIndex;
+                var leapMonthIndex = LunarYear.GetLunarYear(newMoon11After.Year, 7).LeapMonthIndex;
                 if (monthsFromNewMoon11Before >= leapMonthIndex)
                 {
                     lunarMonth--;
@@ -139,10 +139,10 @@ namespace Augustine.VietnameseCalendar
         {
             LunarYear thisLunarYear;
             if (lunarMonth >= 11) {
-                thisLunarYear = new LunarYear(lunarYear + 1, 7);
+                thisLunarYear = LunarYear.GetLunarYear(lunarYear + 1, 7);
             } else
             {
-                thisLunarYear = new LunarYear(lunarYear, 7);
+                thisLunarYear = LunarYear.GetLunarYear(lunarYear, 7);
             }
 
             var monthIndex = lunarMonth - 11;

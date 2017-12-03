@@ -29,8 +29,51 @@ namespace Augustine.VietnameseCalendar
         private DateTime month11ThisYear;
         //private int[] majorTermAtMonthBeginnings; // debug
         //private double[] sunLongitudeAtMonthBeginnings; // debug
+        private static int cacheSize = 5;
+        private static Dictionary<int, LunarYear> yearCache;
+        private static int oldestKey = 0;
 
-        public LunarYear(int year, double timeZone)
+        public static LunarYear GetLunarYear(int year, double timeZone)
+        {
+            if (cacheSize > 0)
+            {
+                // init dictionary for the first time
+                if (yearCache == null)
+                {
+                    yearCache = new Dictionary<int, LunarYear>();
+                }
+
+                // hash the year and time zone
+                int key = GetYearAndTimeZoneHash(year, timeZone);
+
+                // if year is already cached, just take it out
+                if (yearCache.ContainsKey(key))
+                {
+                    return yearCache[key];
+                }
+                // else, calculate the year and add cache to dictionay
+                else
+                {
+                    // if dictionary is already full, remove the oldest pair.
+                    if (yearCache.Count == cacheSize)
+                    {
+                        yearCache.Remove(yearCache.Keys.First());
+                    }
+                    // calculate the year
+                    var lunarYear = new LunarYear(year, timeZone);
+                    // do not forget to add new year to dictionay :))
+                    yearCache.Add(key, lunarYear);
+                    return lunarYear;
+                }
+            }
+            // no caching, just calculate the year directly
+            else
+            {
+                return new LunarYear(year, timeZone);
+            }
+        }
+
+        private LunarYear(int year, double timeZone)
         {
             Year = year;
             TimeZone = timeZone;
@@ -55,6 +98,15 @@ namespace Augustine.VietnameseCalendar
             {
                 InitLeapYear(k);
             }
+        }
+
+        private static int GetYearAndTimeZoneHash(int year, double timeZone)
+        {
+            // 2015 UTC-12:45
+            int year0000 = year * 10000;              //  20150000
+            int uintTimeZone = (int)(timeZone * 100); //      1275
+            int sign = Math.Sign(timeZone);           // -1
+            return sign*(year0000 + uintTimeZone);    // -20151275
         }
 
         private void InitNonLeapYear(int k)
