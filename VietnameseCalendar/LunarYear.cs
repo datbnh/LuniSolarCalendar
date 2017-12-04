@@ -31,7 +31,6 @@ namespace Augustine.VietnameseCalendar
         //private double[] sunLongitudeAtMonthBeginnings; // debug
         private static int cacheSize = 5;
         private static Dictionary<int, LunarYear> yearCache;
-        private static int oldestKey = 0;
 
         public static LunarYear GetLunarYear(int year, double timeZone)
         {
