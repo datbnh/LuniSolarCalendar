@@ -10,7 +10,7 @@ namespace Augustine.VietnameseCalendar
 	{
         public static readonly string[] MonthNames = 
             { "Giêng", "Hai", "Ba", "Tư", "Năm", "Sáu",
-              "Bảy", "Tám", "Chín", "Mười", "Một (11)", "Chạp"};
+              "Bảy", "Tám", "Chín", "Mười", "Mười Một", "Chạp"};
 		public static readonly string[] Stems = 
             {"Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"};
 		public static readonly string[] Branches = 
@@ -257,6 +257,10 @@ namespace Augustine.VietnameseCalendar
             return Branches[GetMonthBranchNumber()];
 		}
 
+        /// <summary>
+        /// Stem Name + Branch Name
+        /// </summary>
+        /// <returns></returns>
 		public string GetMonthFullName()
 		{
             if (Month < 0 || Month > MonthNames.Length)
@@ -264,6 +268,10 @@ namespace Augustine.VietnameseCalendar
             return GetMonthStemName() + " " + GetMonthBranchName();
 		}
 
+        /// <summary>
+        /// Giêng, Hai, Ba...
+        /// </summary>
+        /// <returns></returns>
 		public string GetMonthName()
 		{
             if (Month < 1 || Month > MonthNames.Length)
@@ -274,7 +282,7 @@ namespace Augustine.VietnameseCalendar
 
         public override string ToString()
 		{
-            return String.Format("({0:00}/{1:00}/{2:0000}) Ngày {3} tháng {4} ({5}){6} năm {7}",
+            return String.Format("Ngày {3} tháng {4} ({5}){6} năm {7}",
                  Day, Month, Year,
                  Day, GetMonthName(), GetMonthFullName(),
                  IsLeapMonth ? " (Nhuận)" : "", GetYearName());
