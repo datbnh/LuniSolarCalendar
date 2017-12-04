@@ -1,4 +1,4 @@
-﻿using Augustine.VietnameseCalendar;
+﻿using Augustine.VietnameseCalendar.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VietnameseCalendarUI
+namespace Augustine.VietnameseCalendar.UI
 {
     /// <summary>
     /// Interaction logic for AugustineCalendarMonth.xaml
@@ -40,7 +40,6 @@ namespace VietnameseCalendarUI
         private const int COL_IDX_DAYS = 1;
         private const int COL_IDX_TODAY_LABEL = 0;
         private const int COL_IDX_SELECTED_DATE_LABEL = 0;
-
 
         private DayOfWeek firstDayOfWeek = DayOfWeek.Sunday;
 

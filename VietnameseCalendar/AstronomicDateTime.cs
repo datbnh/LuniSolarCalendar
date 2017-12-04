@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Augustine.VietnameseCalendar
+namespace Augustine.VietnameseCalendar.Core
 {
 	/// <summary>
 	/// Base on http://referencesource.microsoft.com/#mscorlib/system/datetime.cs.

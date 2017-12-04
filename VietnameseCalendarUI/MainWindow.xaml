@@ -1,9 +1,9 @@
-﻿<Window x:Class="VietnameseCalendarUI.MainWindow"
+﻿<Window x:Class="Augustine.VietnameseCalendar.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VietnameseCalendarUI"
+        xmlns:local="clr-namespace:Augustine.VietnameseCalendar.UI"
         mc:Ignorable="d"
         Title="Lịch Việt Nam" Height="425" Width="550">
     <Grid>

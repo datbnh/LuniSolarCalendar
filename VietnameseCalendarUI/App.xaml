@@ -1,7 +1,6 @@
-﻿<Application x:Class="VietnameseCalendarUI.App"
+﻿<Application x:Class="Augustine.VietnameseCalendar.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:VietnameseCalendarUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{49AC5E69-058D-43AE-B9F6-649D18AFBE81}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Augustine.VietnameseCalendar</RootNamespace>
-    <AssemblyName>Augustine.VietnameseCalendar</AssemblyName>
+    <RootNamespace>Augustine.VietnameseCalendar.Core</RootNamespace>
+    <AssemblyName>Augustine.VietnameseCalendar.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

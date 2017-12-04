@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace Augustine.VietnameseCalendar.Tests
+namespace Augustine.VietnameseCalendar.Core.Tests
 {
 	[TestClass()]
 	public class AstronomyTests

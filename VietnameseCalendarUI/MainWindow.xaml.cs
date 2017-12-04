@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VietnameseCalendarUI
+namespace Augustine.VietnameseCalendar.UI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

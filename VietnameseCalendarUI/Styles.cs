@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-namespace VietnameseCalendarUI
+namespace Augustine.VietnameseCalendar.UI
 {
     public static class BorderStyles
     {
