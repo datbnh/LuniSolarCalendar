@@ -1,4 +1,13 @@
-﻿using Augustine.VietnameseCalendar.Core;
+﻿/*************************************************************
+ * ===// The Vietnamese Calendar Project | 2014 - 2017 //=== *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *  // Copyright (C) Augustine Bùi Nhã Đạt 2017      //      *
+ * // Melbourne, December 2017                      //       *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *              https://github.com/datbnh/SolarLunarCalendar *
+ *************************************************************/
+
+using Augustine.VietnameseCalendar.Core;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,9 +44,15 @@ namespace Augustine.VietnameseCalendar.UI
             set
             {
                 solarDate = value;
-                try { lunarDate = LunarDate.FromSolar(solarDate, 7); } catch { }
+                try { lunarDate = LunarDate.FromSolar(solarDate, 7); }
+                catch { lunarDate = null; }
                 isSolarMonthVisible = solarDate.Day == 1;
-                isLunarMonthVisible = (lunarDate.Day == 1) || (solarDate.Day == 1);
+                // in case of invalid date
+                if (lunarDate != null)
+                {
+                    isLunarMonthVisible = (lunarDate.Day == 1) || (solarDate.Day == 1);
+                }
+                ToolTip = lunarDate;
                 UpdateSolarDateLabel();
                 UpdateLunarDateLabel();
             }
@@ -51,37 +66,6 @@ namespace Augustine.VietnameseCalendar.UI
 
         private string label;
         public string Label { get => label; set { label = value; UpdateDayLabel(); } }
-
-        private void UpdateSolarDateLabel()
-        {
-            textSolar.Text = String.Format("{0}{1}",
-                solarDate.Day, isSolarMonthVisible ? "/" + solarDate.Month : "");
-        }
-
-        private void UpdateLunarDateLabel()
-        {
-            if (lunarDate == null)
-            {
-                textLunar.Text = "!invalid!";
-                return;
-            }
-            textLunar.Text = String.Format("{0}{1}",
-                lunarDate.Day, isLunarMonthVisible ? ("/" + lunarDate.Month + (lunarDate.IsLeapMonth ? "n" : "")) : "");
-        }
-
-        private void UpdateDayLabel()
-        {
-            if (label == null || label.Length == 0)
-            {
-                textLabel.Visibility = Visibility.Collapsed;
-                textLabel.Text = "";
-            }
-            else
-            {
-                textLabel.Visibility = Visibility.Visible;
-                textLabel.Text = label;
-            }
-        }
 
         private FaceStyle faceStyle;
         public FaceStyle FaceStyle
@@ -113,6 +97,35 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        
+        private void UpdateSolarDateLabel()
+        {
+            textSolar.Text = String.Format("{0}{1}",
+                solarDate.Day, isSolarMonthVisible ? "/" + solarDate.Month : "");
+        }
+
+        private void UpdateLunarDateLabel()
+        {
+            if (lunarDate == null)
+            {
+                textLunar.Text = "!invalid!";
+                return;
+            }
+            textLunar.Text = String.Format("{0}{1}",
+                lunarDate.Day, isLunarMonthVisible ? ("/" + lunarDate.Month + (lunarDate.IsLeapMonth ? "n" : "")) : "");
+        }
+
+        private void UpdateDayLabel()
+        {
+            if (label == null || label.Length == 0)
+            {
+                textLabel.Visibility = Visibility.Collapsed;
+                textLabel.Text = "";
+            }
+            else
+            {
+                textLabel.Visibility = Visibility.Visible;
+                textLabel.Text = label;
+            }
+        }
     }
 }
