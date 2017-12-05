@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VietnameseCalendarUI")]
+[assembly: AssemblyTitle("Vietnamese Calendar UI")]
 [assembly: AssemblyDescription("Luni Solar Calendar")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Augustine's Software")]
-[assembly: AssemblyProduct("VietnameseCalendar")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("Vietnamese Calendar")]
+[assembly: AssemblyCopyright("Copyright © 2017 Augustine Bùi Nhã Đạt.")]
 [assembly: AssemblyTrademark("Augustine's Software")]
 [assembly: AssemblyCulture("")]
 
