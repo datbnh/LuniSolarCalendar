@@ -1,0 +1,83 @@
+﻿<Window x:Class="Augustine.VietnameseCalendar.UI.Converter"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Augustine.VietnameseCalendar.UI"
+        mc:Ignorable="d"
+        Title="Chuyển Đổi Âm/Dương Lịch" Height="300" Width="300" SizeToContent="WidthAndHeight" WindowStyle="ToolWindow">
+    <Grid Margin="5,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Âm Lịch:"/>
+        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Content="Ngày"/>
+        <ComboBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" 
+                  x:Name="comboBoxLunarDay"
+                  SelectionChanged="ComboBoxLunarDay_SelectionChanged"/>
+        <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Content="Tháng"/>
+        <ComboBox Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" 
+                  x:Name="comboBoxLunarMonth" 
+                  SelectionChanged="ComboBoxLunarMonth_SelectionChanged"/>
+        <Label Grid.Row="0" Grid.Column="5" VerticalAlignment="Center" Content="Năm"/>
+        <ComboBox Grid.Row="0" Grid.Column="6" VerticalAlignment="Center" 
+                  x:Name="comboBoxLunarYear" IsEditable="True" 
+                  SelectionChanged="ComboBoxLunarYear_SelectionChanged" 
+                  LostFocus="ComboBoxLunarYear_LostFocus" 
+                  DropDownClosed="ComboBoxLunarYear_DropDownClosed"/>
+
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Dương Lịch:"/>
+        <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Content="Ngày"/>
+        <ComboBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" 
+                  x:Name="comboBoxSolarDay" 
+                  SelectionChanged="ComboBoxSolarDay_SelectionChanged"/>
+        <Label Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Content="Tháng"/>
+        <ComboBox Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" 
+                  x:Name="comboBoxSolarMonth" 
+                  SelectionChanged="ComboBoxSolarMonth_SelectionChanged"/>
+        <Label Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Content="Năm"/>
+        <ComboBox Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" 
+                  x:Name="comboBoxSolarYear" IsEditable="True" 
+                  SelectionChanged="ComboBoxSolarYear_SelectionChanged" 
+                  LostFocus="ComboBoxLunarYear_LostFocus" 
+                  DropDownClosed="ComboBoxLunarYear_DropDownClosed"/>
+
+        <RichTextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7" Margin="0,5,0,0" x:Name="richTextBox">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0,3,0,0"/>
+                </Style>
+            </RichTextBox.Resources>
+            <FlowDocument Name="richTextBoxFlowDoc" PageWidth="{Binding ElementName=richTextBox, Path=ActualWidth}"
+                PagePadding="3">
+                <Paragraph>
+                    <Run Name="solarPlaceHolder" FontWeight="SemiBold" Text=""/>
+                </Paragraph>
+                <Paragraph>
+                    <Run Name="lunarPlaceHolder" FontWeight="SemiBold" Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="7" Orientation="Horizontal" 
+                    HorizontalAlignment="Right" Margin="0,5,0,0">
+            <Button Content="✘ Trở Lại Lịch" Padding="5,2,5,2" Margin="3,0,0,0" IsCancel="True"
+                    Click="Button_Click" />
+            <Button Content="✔ Đi Đến Ngày Này" Padding="5,2,5,2" Margin="3,0,0,0" IsDefault="True" 
+                    Click="Button_Click_1" />
+        </StackPanel>
+    </Grid>
+</Window>

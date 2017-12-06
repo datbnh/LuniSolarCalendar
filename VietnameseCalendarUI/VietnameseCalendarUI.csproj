@@ -66,6 +66,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Converter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -82,6 +86,9 @@
     </Compile>
     <Compile Include="AugustineCalendarMonth.xaml.cs">
       <DependentUpon>AugustineCalendarMonth.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converter.xaml.cs">
+      <DependentUpon>Converter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Styles.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -119,6 +126,7 @@
     <ProjectReference Include="..\VietnameseCalendar\VietnameseCalendar.csproj">
       <Project>{49ac5e69-058d-43ae-b9f6-649d18afbe81}</Project>
       <Name>VietnameseCalendar</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
