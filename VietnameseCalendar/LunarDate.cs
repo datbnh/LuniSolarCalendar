@@ -38,9 +38,33 @@ namespace Augustine.VietnameseCalendar.Core
         public int MonthTerrestrialBranchIndex { get => GetMonthTerrestrialIndex(Month); }
         public string MonthCelestialStemName { get => GetMonthCelestialStemName(Year, Month); }
         public string MonthTerrestrialBranchName { get => GetMonthTerrestrialBranchName(Month); }
+        
+        /// <summary>
+        /// Returns "Giêng, Hai, Ba..."
+        /// </summary>
+        /// <returns></returns>
         public string MonthName { get => GetMonthName(Month); }
+        
+        /// <summary>
+        /// Returns "Giêng, Hai, Ba..." or "Giêng nhuận, Hai nhuận, Ba nhuận..." (if applicable)
+        /// </summary>
+        /// <returns></returns>
         public string MonthShortName { get => GetMonthShortName(Month, IsLeapMonth); }
+        
+        /// <summary>
+        /// Returns "Can Chi" or "Can Chi nhuận"
+        /// </summary>
+        /// <param name="month"></param>
+        /// <param name="isLeapMonth"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public string MonthLongName { get => GetMonthLongName(Year, Month, IsLeapMonth); }
+        
+        /// <summary>
+        /// Returns "Name (Can Chi)" or "Name (Can Chi) nhuận".
+        /// E.g. "Bảy (Bính Ngọ)", "Năm (Nhâm Ngọ) nhuận".
+        /// </summary>
+        /// <returns></returns>
         public string MonthFullName { get => GetMonthFullName(Year, Month, IsLeapMonth); }
 
         public LunarDate(int year, int month, bool isLeapMonth, int day, double timeZone)
@@ -256,7 +280,8 @@ namespace Augustine.VietnameseCalendar.Core
 		}
 
         /// <summary>
-        /// Celestial Stem Name + Terrestrial Branch Name
+        /// Returns "Name (Can Chi)" or "Name (Can Chi) nhuận".
+        /// E.g. "Bảy (Bính Ngọ)", "Năm (Nhâm Ngọ) nhuận".
         /// </summary>
         /// <returns></returns>
 		public static string GetMonthFullName(int year, int month, bool isLeapMonth = false)
