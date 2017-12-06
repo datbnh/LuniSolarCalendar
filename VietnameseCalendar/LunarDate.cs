@@ -40,6 +40,7 @@ namespace Augustine.VietnameseCalendar.Core
         public string MonthTerrestrialBranchName { get => GetMonthTerrestrialBranchName(Month); }
         public string MonthName { get => GetMonthName(Month); }
         public string MonthShortName { get => GetMonthShortName(Month, IsLeapMonth); }
+        public string MonthLongName { get => GetMonthLongName(Year, Month, IsLeapMonth); }
         public string MonthFullName { get => GetMonthFullName(Year, Month, IsLeapMonth); }
 
         public LunarDate(int year, int month, bool isLeapMonth, int day, double timeZone)
@@ -56,7 +57,8 @@ namespace Augustine.VietnameseCalendar.Core
             return String.Format("Ngày {0} tháng {1} năm {2}", Day, MonthFullName, YearName);
 		}
 
-        #region Static methods
+        #region === Static methods ===
+        
         public static LunarDate FromSolar(int year, int month, int day, double timeZone)
         {
             // Sample case 1: Solar date 24/05/2000 --- Lunar date 21/04/2000
@@ -212,46 +214,60 @@ namespace Augustine.VietnameseCalendar.Core
             return ToSolar(lunarDate.Year, lunarDate.Month, lunarDate.IsLeapMonth, lunarDate.Day, lunarDate.TimeZone);
         }
 
+        #region Year
+
         /// <summary>
         /// Get zero-based stem index (0: Giáp, 1: Ất...) of the current year.
         /// </summary>
         /// <returns></returns>
         public static int GetYearCelestialStemIndex(int year) { return (year + 6) % 10; }
+        
         /// <summary>
 		/// Get zero-based branch index (0: Tý, 1: Sửu...) of the current year.
 		/// </summary>
 		/// <returns></returns>
 		public static int GetYearTerrestrialBranchIndex(int year) { return (year + 8) % 12; }
-		public static string GetYearCelestialStemName(int year) { return Stems[GetYearCelestialStemIndex(year)]; }
-		public static string GetYearTerrestrialBranchName(int year) { return Branches[GetYearTerrestrialBranchIndex(year)]; }
-		public static string GetYearName(int year) { return GetYearCelestialStemName(year) + " " + GetYearTerrestrialBranchName(year); }
 
+        public static string GetYearCelestialStemName(int year) { return Stems[GetYearCelestialStemIndex(year)]; }
+
+        public static string GetYearTerrestrialBranchName(int year) { return Branches[GetYearTerrestrialBranchIndex(year)]; }
+
+        public static string GetYearName(int year) { return GetYearCelestialStemName(year) + " " + GetYearTerrestrialBranchName(year); }
+        
+        #endregion
+        
+        #region Month
         public static int GetMonthCelestialStemIndex(int year, int month) { return (year * 12 + month + 3) % 10; }
-		public static int GetMonthTerrestrialIndex(int month) { return month > 10 ? month - 11 : month + 1; }
-		public static string GetMonthCelestialStemName(int year, int month)
+
+        public static int GetMonthTerrestrialIndex(int month) { return month > 10 ? month - 11 : month + 1; }
+
+        public static string GetMonthCelestialStemName(int year, int month)
 		{
-            if (month < 0 || month >= MonthNames.Length)
+            if (month < 1 || month > MonthNames.Length)
                 return "undefined";
             return Stems[GetMonthCelestialStemIndex(year, month)];
 		}
-		public static string GetMonthTerrestrialBranchName(int month)
+
+        public static string GetMonthTerrestrialBranchName(int month)
 		{
-            if (month < 0 || month >= MonthNames.Length)
+            if (month < 1 || month > MonthNames.Length)
                 return "undefined";
             return Branches[GetMonthTerrestrialIndex(month)];
 		}
+
         /// <summary>
         /// Celestial Stem Name + Terrestrial Branch Name
         /// </summary>
         /// <returns></returns>
 		public static string GetMonthFullName(int year, int month, bool isLeapMonth = false)
 		{
-            if (month < 0 || month >= MonthNames.Length)
+            if (month < 1 || month > MonthNames.Length)
                 return "undefined";
             return String.Format("{0} ({1} {2}){3}", GetMonthName(month), GetMonthCelestialStemName(year, month), GetMonthTerrestrialBranchName(month), (isLeapMonth ? " nhuận" : "").ToString());
 		}
+
         /// <summary>
-        /// Giêng, Hai, Ba...
+        /// Returns "Giêng, Hai, Ba..."
         /// </summary>
         /// <returns></returns>
 		public static string GetMonthName(int month)
@@ -260,8 +276,9 @@ namespace Augustine.VietnameseCalendar.Core
                 return "undefined";
 			return MonthNames[month - 1];
 		}
+
         /// <summary>
-        /// Giêng, Hai, Ba... or Giêng nhuận, Hai nhuận, Ba nhuận... (if applicable)
+        /// Returns "Giêng, Hai, Ba..." or "Giêng nhuận, Hai nhuận, Ba nhuận..." (if applicable)
         /// </summary>
         /// <returns></returns>
 		public static string GetMonthShortName(int month, bool isLeapMonth)
@@ -270,12 +287,37 @@ namespace Augustine.VietnameseCalendar.Core
                 return "undefined";
             return MonthNames[month - 1] + (isLeapMonth ? " nhuận" : "");
         }
+
         /// <summary>
-        /// 0: 12, 1: 1, 2: 2, 3: 3... 11: 11
+        /// Returns "Can Chi" or "Can Chi nhuận"
+        /// </summary>
+        /// <param name="month"></param>
+        /// <param name="isLeapMonth"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public static string GetMonthLongName(int year, int month, bool isLeapMonth)
+        {
+            if (month < 1 || month > MonthNames.Length)
+                return "undefined";
+            return String.Format("{0} {1}{2}", 
+                GetMonthCelestialStemName(year, month), 
+                GetMonthTerrestrialBranchName(month), 
+                (isLeapMonth ? " nhuận" : "").ToString());
+        }
+        
+        /// <summary>
+        /// 0 -> 12, 1 -> 1, 2 -> 2, 3 -> 3... 11 -> 11
         /// </summary>
         /// <param name="monthIndex"></param>
         /// <returns></returns>
         public static int GetMonth(int monthIndex) { return monthIndex == 0 ? 12 : monthIndex; }
+
         #endregion
-	}
+
+        #region Day
+
+        #endregion
+
+        #endregion
+    }
 }
