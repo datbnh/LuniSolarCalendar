@@ -21,11 +21,13 @@ namespace Augustine.VietnameseCalendar.UI
     /// </summary>
     public partial class AugustineCalendarMonth : UserControl
     {
-        public readonly string[] dayOfWeekLabels =
+        public static readonly string[] DayOfWeekLabels =
             {"Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"};
-        public const int DAYS_PER_WEEK = 7;
-        public const int WEEKS = 6;
-        public readonly DateTime MINIMUM_SUPPORTED_DATE = new DateTime(1900, 1, 1);
+        public static readonly int DAYS_PER_WEEK = 7;
+        public static readonly int WEEKS = 6;
+        public static readonly DateTime MINIMUM_SUPPORTED_DATE = new DateTime(1900, 1, 1);
+
+        public DateTime SelectedDate { get; private set; }
 
         #region === Private Fields and Constants
 
@@ -59,7 +61,6 @@ namespace Augustine.VietnameseCalendar.UI
         private DateTime pageBegin;
         private DateTime monthBegin;
         private DateTime monthEnd;
-        private DateTime selectedDate;
         private LunarDate monthBeginLunarDate;
         private LunarDate monthEndLunarDate;
 
@@ -70,7 +71,7 @@ namespace Augustine.VietnameseCalendar.UI
             InitializeComponent();
 
             today = DateTime.Today;
-            selectedDate = today;
+            SelectedDate = today;
 
             InitializeDays();
             InitializeMonthLabel();
@@ -148,17 +149,19 @@ namespace Augustine.VietnameseCalendar.UI
                 Margin = new Thickness(0),
                 Padding = new Thickness(0, 0, 0, 0),
                 Background = Brushes.White,
-                SelectedDate = selectedDate,
+                SelectedDate = SelectedDate,
                 FirstDayOfWeek = firstDayOfWeek,
             };
             datePicker.SelectedDateChanged += DatePicker_SelectedDateChanged;
 
             Button datePickerButton = new Button
             {
-                Content = "\uE001",
+                Content = "✔",
                 HorizontalAlignment = HorizontalAlignment.Right,
                 FontFamily = new FontFamily("Segoe UI Symbol"),
                 Background = Brushes.White,
+                Foreground = Brushes.DarkGreen,
+                Padding = new Thickness(3, 0, 3, 0),
             };
             datePickerButton.Click += DatePickerButton_Click;
 
@@ -189,7 +192,7 @@ namespace Augustine.VietnameseCalendar.UI
                     currentDayOfWeek -= 7;
                 Label label = new Label
                 {
-                    Content = dayOfWeekLabels[currentDayOfWeek],
+                    Content = DayOfWeekLabels[currentDayOfWeek],
                     BorderBrush = Brushes.Black,
                     BorderThickness = new Thickness(0, 0, 0, 1),
                     FontSize = 14f,
@@ -264,16 +267,16 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void MonthLabel_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (e.Delta < 0) { selectedDate = selectedDate.AddYears(1); }
-            else { selectedDate = selectedDate.AddYears(-1); }
+            if (e.Delta < 0) { SelectedDate = SelectedDate.AddYears(1); }
+            else { SelectedDate = SelectedDate.AddYears(-1); }
             UpdateEverything();
         }
 
 
         private void Day_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (e.Delta < 0) { selectedDate = selectedDate.AddMonths(1); }
-            else { selectedDate = selectedDate.AddMonths(-1); }
+            if (e.Delta < 0) { SelectedDate = SelectedDate.AddMonths(1); }
+            else { SelectedDate = SelectedDate.AddMonths(-1); }
             UpdateEverything();
         }
 
@@ -285,7 +288,7 @@ namespace Augustine.VietnameseCalendar.UI
         private void Day_MouseLeave(object sender, MouseEventArgs e)
         {
             var day = ((AugustineCalendarDay)sender);
-            if (day.SolarDate == selectedDate)
+            if (day.SolarDate == SelectedDate)
             {
                 day.BorderStyle = BorderStyles.Selected;
             }
@@ -299,7 +302,7 @@ namespace Augustine.VietnameseCalendar.UI
         private void Day_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var day = ((AugustineCalendarDay)sender);
-            selectedDate = day.SolarDate;
+            SelectedDate = day.SolarDate;
 
             // TODO: only update the border of selected day when page is not changed
             //if (selectedDate < monthBegin || selectedDate > monthEnd)
@@ -310,26 +313,24 @@ namespace Augustine.VietnameseCalendar.UI
             UpdateEverything();
         }
 
-
         private void TodayInfoLabel_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            selectedDate = today;
+            SelectedDate = today;
             thisMonth = today.Month;
             thisYear = today.Year;
             UpdateEverything();
         }
 
-
         private void SelectedDateInfoLabel_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            datePicker.SelectedDate = selectedDate;
+            datePicker.SelectedDate = SelectedDate;
             datePickerStackPanel.Visibility = Visibility.Visible;
             //selectedDateInfoLabel.Visibility = Visibility.Collapsed;
         }
 
         private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedDate = ((DatePicker)sender).SelectedDate.Value;
+            SelectedDate = ((DatePicker)sender).SelectedDate.Value;
             UpdateEverything();
         }
 
@@ -344,13 +345,13 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void UpdateReferenceDates()
         {
-            if (selectedDate < MINIMUM_SUPPORTED_DATE)
+            if (SelectedDate < MINIMUM_SUPPORTED_DATE)
             {
-                selectedDate = MINIMUM_SUPPORTED_DATE;
+                SelectedDate = MINIMUM_SUPPORTED_DATE;
             }
 
-            thisMonth = selectedDate.Month;
-            thisYear = selectedDate.Year;
+            thisMonth = SelectedDate.Month;
+            thisYear = SelectedDate.Year;
             monthBegin = new DateTime(thisYear, thisMonth, 1);
             monthEnd = new DateTime(thisYear, thisMonth, DateTime.DaysInMonth(thisYear, thisMonth));
 
@@ -375,29 +376,29 @@ namespace Augustine.VietnameseCalendar.UI
             if (monthBeginLunarDate.Year != monthEndLunarDate.Year)
             {
                 lunarInfo = String.Format("Th. {0}{1} năm {2}/Th. {3}{4} năm {5}",
-                    monthBeginLunarDate.GetMonthName(),
+                    monthBeginLunarDate.MonthName,
                     monthBeginLunarDate.IsLeapMonth ? " nhuận" : "",
-                    monthBeginLunarDate.GetYearName(),
-                    monthEndLunarDate.GetMonthName(),
+                    monthBeginLunarDate.YearName,
+                    monthEndLunarDate.MonthName,
                     monthEndLunarDate.IsLeapMonth ? " nhuận" : "",
-                    monthEndLunarDate.GetYearName());
+                    monthEndLunarDate.YearName);
             }
             else if (monthBeginLunarDate.Month == monthEndLunarDate.Month &&
                     monthBeginLunarDate.IsLeapMonth == monthEndLunarDate.IsLeapMonth)
             {
                 lunarInfo = String.Format("Th. {0}{1} năm {2}",
-                    monthEndLunarDate.GetMonthName(),
+                    monthEndLunarDate.MonthName,
                     monthEndLunarDate.IsLeapMonth ? " nhuận" : "",
-                    monthEndLunarDate.GetYearName());
+                    monthEndLunarDate.YearName);
             }
             else
             {
                 lunarInfo = String.Format("Th. {0}{1}/{2}{3} năm {4}",
-                    monthBeginLunarDate.GetMonthName(),
+                    monthBeginLunarDate.MonthName,
                     monthBeginLunarDate.IsLeapMonth ? " nhuận" : "",
-                    monthEndLunarDate.GetMonthName(),
+                    monthEndLunarDate.MonthName,
                     monthEndLunarDate.IsLeapMonth ? " nhuận" : "",
-                    monthEndLunarDate.GetYearName());
+                    monthEndLunarDate.YearName);
             }
 
             String solarInfo = String.Format("Th. {0}/{1}", thisMonth, thisYear);
@@ -433,11 +434,11 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void UpdateSelectedDateInfoLabel()
         {
-            if (selectedDate != null && selectedDate != today)
+            if (SelectedDate != null && SelectedDate != today)
             {
                 selectedDateInfoLabel.Visibility = Visibility.Visible;
                 selectedDateInfoLabel.Content =
-                        "Đang chọn: " + GetFullDayInfo(selectedDate);
+                        "Đang chọn: " + GetFullDayInfo(SelectedDate);
             }
             else
             {
@@ -488,17 +489,23 @@ namespace Augustine.VietnameseCalendar.UI
             }
 
             // border style
-            if (day.SolarDate == selectedDate)
+            if (day.SolarDate == SelectedDate)
             {
                 day.BorderStyle = BorderStyles.Selected;
             }
         }
 
-        private String GetFullDayInfo(DateTime date)
+        internal static String GetFullDayInfo(DateTime date)
         { 
             return String.Format("{0} {1:dd/MM/yyyy} - {2} âm lịch",
-                dayOfWeekLabels[(int)date.DayOfWeek], date,
+                DayOfWeekLabels[(int)date.DayOfWeek], date,
                 LunarDate.FromSolar(date.Year, date.Month, date.Day, 7));
+        }
+
+        public void SelectDate(DateTime date)
+        {
+            SelectedDate = date;
+            UpdateEverything();
         }
 
         #endregion
