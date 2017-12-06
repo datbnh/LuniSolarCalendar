@@ -19,7 +19,7 @@ namespace Augustine.VietnameseCalendar.Core.Tests
     public class LunarDateTests
     {
         [TestMethod()]
-        public void LunarSolarConvertersTest()
+        public void LunarSolarConvertersTest_1956_2000()
         {
             Console.OutputEncoding = Encoding.Unicode;
             string path = Path.Combine(Path.GetTempPath(), String.Format("VietnameseCalendar_ConvertersTest_{0}.TestLog.txt", DateTime.Now.ToString("yyyyMMddTHHmmss")));
@@ -27,19 +27,39 @@ namespace Augustine.VietnameseCalendar.Core.Tests
 
             DateTime startDate = new DateTime(1946, 1, 1);
             DateTime endDate = new DateTime(2999, 12, 31);
-            int totalDays = (int)(endDate - startDate).TotalDays;
             int daySteps = 1;
+            int errors = Test(startDate, endDate, daySteps, path);
+            Assert.AreEqual(0, errors, "There were {0} errors while executing the test. See {1} for more details.", errors, path);
+        }
+
+        [TestMethod()]
+        public void LunarSolarConvertersTest_1900_1945()
+        {
+            Console.OutputEncoding = Encoding.Unicode;
+            string path = Path.Combine(Path.GetTempPath(), String.Format("VietnameseCalendar_ConvertersTest_{0}.TestLog.txt", DateTime.Now.ToString("yyyyMMddTHHmmss")));
+            InitTracer(path);
+
+            DateTime startDate = new DateTime(1900, 1, 1);
+            DateTime endDate = new DateTime(1945, 12, 31);
+            int daySteps = 1;
+            int errors = Test(startDate, endDate, daySteps, path);
+            Assert.AreEqual(0, errors, "There were {0} errors while executing the test. See {1} for more details.", errors, path);
+        }
+
+        private static int Test(DateTime startDate, DateTime endDate, int daySteps, string logFilepath)
+        {
+            int totalDays = (int)(endDate - startDate).TotalDays;
 
             DateTime date = startDate;
             int errors = 0;
 
             Trace.WriteLine(
-                String.Format("Begin testing Lunar/Solar date converters..." + 
+                String.Format("Begin testing Lunar/Solar date converters..." +
                               "\r\n    Start date = {0:dd/MM/yyyy}" +
                               "\r\n    End date   = {1:dd/MM/yyyy}" +
                               "\r\n    Step       = {2} day(s)" +
                               "\r\n    Test log   : \"{3}\"" +
-                              "\r\n----------------------------------------", startDate, endDate, daySteps, path.ToString()));
+                              "\r\n----------------------------------------", startDate, endDate, daySteps, logFilepath.ToString()));
             DateTime testBegin = DateTime.Now;
             while (date <= endDate)
             {
@@ -47,9 +67,9 @@ namespace Augustine.VietnameseCalendar.Core.Tests
                 {
                     LunarDate lunarDate = LunarDate.FromSolar(date, 7);
                     DateTime solarDate = LunarDate.ToSolar(lunarDate);
+                    Trace.WriteLine(String.Format("{0:dd/MM/yyyy} = {1}", date, lunarDate));
                     if ((date != solarDate))
                     {
-                        Trace.WriteLine(String.Format("{0:dd/MM/yyyy} = {1}", date, lunarDate));
                         Trace.WriteLine(String.Format("        ---> incorrectly converted back to {0:dd/MM/yyyy}", solarDate));
                         errors++;
                     }
@@ -66,7 +86,7 @@ namespace Augustine.VietnameseCalendar.Core.Tests
             Trace.WriteLine(String.Format("Completed testing {0} days in {1}. {2} error(s) found ({3} %).",
                 totalDays, testDuration.ToString(), errors, (int)(errors * 10000f / totalDays) / 100f));
             Trace.WriteLine("");
-            Assert.AreEqual(0, errors, "There were {0} errors while executing the test. See {1} for more details.", errors, path);
+            return errors;
         }
 
         private static void InitTracer(string logFilePath)
