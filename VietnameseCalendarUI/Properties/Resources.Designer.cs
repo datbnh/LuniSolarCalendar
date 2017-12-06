@@ -59,5 +59,15 @@ namespace Augustine.VietnameseCalendar.UI.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Augustine_VietnameseCalendar_Core {
+            get {
+                object obj = ResourceManager.GetObject("Augustine_VietnameseCalendar_Core", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
