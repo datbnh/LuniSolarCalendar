@@ -497,7 +497,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         internal static String GetFullDayInfo(DateTime date)
         { 
-            return String.Format("{0} {1:dd/MM/yyyy} - {2} âm lịch",
+            return String.Format("{0} {1:dd/MM/yyyy} - {2}",
                 DayOfWeekLabels[(int)date.DayOfWeek], date,
                 LunarDate.FromSolar(date.Year, date.Month, date.Day, 7));
         }
