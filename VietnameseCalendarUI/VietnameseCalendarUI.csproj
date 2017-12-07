@@ -132,7 +132,7 @@
       <Project>{49ac5e69-058d-43ae-b9f6-649d18afbe81}</Project>
       <Name>VietnameseCalendar</Name>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
