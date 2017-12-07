@@ -188,9 +188,9 @@ namespace Augustine.VietnameseCalendar.UI
         
         private void PopulateDetails()
         {
-            solarPlaceHolder.Text = String.Format("{0} {1:dd/MM/yyyy}",
+            solarPlaceHolder.Text = String.Format("Dương lịch: {0} {1:dd/MM/yyyy}",
                 AugustineCalendarMonth.DayOfWeekLabels[(int)selectedDate.DayOfWeek], selectedDate);
-            lunarPlaceHolder.Text = selectedLunarDate.ToString();
+            lunarPlaceHolder.Text = "Âm lịch: " + selectedLunarDate.FullDayInfo;
         }
 
         #region Solar Date Selectors

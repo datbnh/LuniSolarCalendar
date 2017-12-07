@@ -52,7 +52,14 @@ namespace Augustine.VietnameseCalendar.UI
                 {
                     isLunarMonthVisible = (lunarDate.Day == 1) || (solarDate.Day == 1);
                 }
-                ToolTip = lunarDate;
+                ToolTip = lunarDate.FullDayInfo;
+                if (lunarDate.IsTermBegin)
+                {
+                    Label = lunarDate.SolarTerm;
+                } else
+                {
+                    Label = "";
+                }
                 UpdateSolarDateLabel();
                 UpdateLunarDateLabel();
             }
