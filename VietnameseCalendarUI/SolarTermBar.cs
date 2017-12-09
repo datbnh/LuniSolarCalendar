@@ -19,7 +19,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 namespace Augustine.VietnameseCalendar.UI
 {
-    public static class SolarTermDecorator
+    public static class SolarTermBar
     {
         // Non-linear hue interpolation: the values in [brackets] are selected value for each season.
         // Other values are linearly interpolated by segment.
@@ -34,7 +34,10 @@ namespace Augustine.VietnameseCalendar.UI
         /// Hue pallet for solar terms.
         /// 0: Spring equinox,... 6: Summer solstice,... 12: Autumn equinox,... 18: Winter solstice...
         /// </summary>
-        public static readonly int[] Hues = { 359, 339, 319, 300, 280, 260, 240, 220, 200, 180, 160, 140, 120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 };
+        public static readonly int[] Hues = {120, 110, 100,  90,  80,  70,
+                                              60,  50,  40,  30,  20,  10,
+                                             359, 339, 319, 300, 280, 260,
+                                             240, 220, 200, 180, 160, 140 };
         public static readonly string[] SolarTermsVietnamese = {"Xuân Phân", "Thanh Minh",
                                                  "Cốc Vũ", "Lập Hạ",
                                                  "Tiểu Mãn", "Mang Chủng",
@@ -53,7 +56,7 @@ namespace Augustine.VietnameseCalendar.UI
         /// <summary>
         /// (solarTermIndex + HueOffset) % 24 = hueIndex
         /// </summary>
-        private static int HueOffset = 12;
+        private static int HueOffset = 0;
 
         /// <summary>
         /// Return hue value (0..359) from hue pallet according to the solar term index.
@@ -67,7 +70,7 @@ namespace Augustine.VietnameseCalendar.UI
         {
             UserControl uc = new UserControl();
             Grid grid = new Grid();
-
+            grid.SnapsToDevicePixels = true;
             DateTime dateTime = new DateTime(year, 1, 1);
             var todaySolarTermIdx = LunarDate.GetSolarTermIndex(DateTime.Today, 7);
 
@@ -75,20 +78,7 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 var idx = (24 + i - 5) % 24;
                 dateTime = Astronomy.FindSolarTermMoment(idx, year).AddHours(timeZone);
-                var nextDay = dateTime.Date.AddDays(1);
-                var thisDay = dateTime.Date;
-                var prevDay = dateTime.Date.AddDays(-1);
-                //var description = String.Format("{0:dd/MM/yyyy HH:mm UTC+07} = {3}\r\n" +
-                //                                "{1:dd/MM/yyyy HH:mm UTC+07} = {4}\r\n" +
-                //                                "{2:dd/MM/yyyy HH:mm UTC+07} = {5}\r\n",
-                //                                prevDay.AddHours(23).AddMinutes(59),
-                //                                thisDay.AddHours(23).AddMinutes(59),
-                //                                nextDay.AddHours(23).AddMinutes(59),
-                //                                LunarDate.GetSolarTermIndex(prevDay, 7),
-                //                                LunarDate.GetSolarTermIndex(thisDay, 7),
-                //                                LunarDate.GetSolarTermIndex(nextDay, 7));
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
-
                 var rec = CreateRectangle(idx, dateTime, "");
                 if (DateTime.Today.Year == year && todaySolarTermIdx == idx)
                     rec.Name = CURRENT_TERM_LABEL;
@@ -101,8 +91,7 @@ namespace Augustine.VietnameseCalendar.UI
             return uc;
         }
 
-
-        public static Rectangle CreateRectangle(int solarTermIndex, DateTime date, string description)
+        private static Rectangle CreateRectangle(int solarTermIndex, DateTime date, string description)
         {
             if (solarTermIndex >= 24)
                 solarTermIndex = solarTermIndex % 24;
@@ -112,29 +101,27 @@ namespace Augustine.VietnameseCalendar.UI
             Color zeroAlphaBackground = Color.FromArgb(0, normalBackground.R, normalBackground.G, normalBackground.B);
             Color mouseOverBakground = Helper.ColorFromHSV(H, 0.6, 0.8);
 
-            GradientStopCollection gradient = new GradientStopCollection
+            GradientStopCollection normalTermGradient = new GradientStopCollection
             {
                 new GradientStop(Colors.White, 0),
-                new GradientStop(Colors.White, 0.3),
-                new GradientStop(normalBackground, 0.3),
-                new GradientStop(normalBackground, 0.7),
-                new GradientStop(Colors.White, 0.7),
+                new GradientStop(Colors.White, 0.45),
+                new GradientStop(normalBackground, 0.45),
+                new GradientStop(normalBackground, 0.65),
+                new GradientStop(Colors.White, 0.65),
                 new GradientStop(Colors.White, 1)
             };
-            LinearGradientBrush gradientBrush = new LinearGradientBrush(gradient, 90);
+            LinearGradientBrush normalTermBrush = new LinearGradientBrush(normalTermGradient, 90);
 
-            //GradientStopCollection gradient1 = new GradientStopCollection
-            //{
-            //    new GradientStop(Colors.White, 0),
-            //    new GradientStop(Colors.White, 0.2),
-            //    new GradientStop(normalBackground, 0.2),
-            //    new GradientStop(normalBackground, 0.8),
-            //    new GradientStop(Colors.White, 0.8),
-            //    new GradientStop(Colors.White, 1)
-            //};
-            //LinearGradientBrush gradientBrush1 = new LinearGradientBrush(gradient1, 90);
-
-            SolidColorBrush currentBrush = new SolidColorBrush(normalBackground);
+            GradientStopCollection currentTermGradient = new GradientStopCollection
+            {
+                new GradientStop(Colors.White, 0),
+                new GradientStop(Colors.White, 0.35),
+                new GradientStop(normalBackground, 0.35),
+                new GradientStop(normalBackground, 0.75),
+                new GradientStop(Colors.White, 0.75),
+                new GradientStop(Colors.White, 1)
+            };
+            LinearGradientBrush currentTermBrush = new LinearGradientBrush(currentTermGradient, 90);
 
             SolidColorBrush hoverBrush = new SolidColorBrush(mouseOverBakground);
 
@@ -150,20 +137,20 @@ namespace Augustine.VietnameseCalendar.UI
                 Triggers = { new Trigger() {
                     Property = Rectangle.NameProperty, Value = CURRENT_TERM_LABEL,
                     Setters = { new Setter() {
-                        Property = Rectangle.FillProperty, Value = currentBrush, }, }, },
+                        Property = Rectangle.FillProperty, Value = currentTermBrush, }, }, },
                     new Trigger() {
                     Property = Rectangle.IsMouseOverProperty, Value = true,
                     Setters = { new Setter() {
                         Property = Rectangle.FillProperty, Value = hoverBrush, }, }, }, },
 
                 Setters = { new Setter() {
-                    Property = Rectangle.FillProperty, Value = gradientBrush, } },
+                    Property = Rectangle.FillProperty, Value = normalTermBrush, } },
             };
 
             return rectangle;
         }
 
-        public static ToolTip CreateToolTip(int solarTermIndex, DateTime date, string description)
+        private static ToolTip CreateToolTip(int solarTermIndex, DateTime date, string description)
         {
             if (solarTermIndex >= 24)
                 solarTermIndex = solarTermIndex % 24;
