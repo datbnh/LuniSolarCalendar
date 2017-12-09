@@ -444,18 +444,134 @@ namespace Augustine.VietnameseCalendar.Core
 
 			// convert to radians
 			L = L.ToRadians();
-            L = Math.Abs(L);
-            while (L > 2 * Math.PI)
-                L = L - 2 * Math.PI;
-			// normalize to (0, 2*PI)
-			//L = L - Math.PI * 2 * ((int)(L / (Math.PI * 2)));
-			//while (L < 0)
-			//	L = L + Math.PI;
 
-			return L;
+            // normalize to (0, 2*PI)
+            return L.ToNormalizedArc();
 		}
 
-		/* Analisation of algorithm of Hồ Ngọc Đức
+        public static DateTime FindSolarTermMoment(int termIndex, int year)
+        {
+            int[] trialMonths =
+                { 3,  4,  4,  5,  5,  6,
+                  6,  7,  7,  8,  8,  9,
+                  9,  10, 10, 11, 11, 12,
+                  12, 1,  1,  2,  2,  3 };
+            int[] trialDays =
+                { 21, 5, 20,  6, 21,  6,
+                  21, 7, 23,  7, 23,  8,
+                  23, 8, 23,  7, 22,  7,
+                  22, 6, 21,  4, 19,  5 };
+
+            double desiredSunLong = termIndex * (Math.PI / 12);
+
+            DateTime estimatedDateTime = new DateTime(year, trialMonths[termIndex], trialDays[termIndex]);
+            double currentSunLong = Astronomy.GetSunLongitudeAtJulianDate(
+                estimatedDateTime.UniversalDateTimeToJulianDate());
+
+            //Console.WriteLine("========================================");
+            //Console.WriteLine("Desired: {0} radians = {1} degrees", desiredSunLong, desiredSunLong.ToDegrees());
+
+            //double offset = (desireSunLongitude - currentSunLongitude).ToDegrees() / degreePerDay;
+            currentSunLong = Astronomy.GetSunLongitudeAtJulianDate(
+                estimatedDateTime.UniversalDateTimeToJulianDate());
+
+            var error = (currentSunLong - desiredSunLong).ToNormalizedArc();
+            var direction = 1;
+            if (error > Math.PI)
+                direction = -1;
+
+            //Console.WriteLine("Current: {0} radians = {1} degrees, direction = {2}",
+            //    currentSunLong, currentSunLong.ToDegrees(), direction);
+
+            // crossing-zero check: crossing zero if
+            // |   increasing: currentSunLong - previousSunLong < 0
+            // |   decreasing: currentSunLong - previousSunLong > 0
+            // +-< both cases: (currentSunLong - previousSunLong)*direction < 0
+            // if zero-crossing occurs: modify the longtitude to do the comparison in the next step
+            //     currentSunLong = currentSunLong + 360*direction;
+            //
+            // exit condition
+            // |   increasing:
+            // |       if currentSunLong < desiredSunLong
+            // |           continue increasing
+            // |       else
+            // |           change the direction
+            // |   decreasing:
+            // |       if currentSunLong > desiredSunLong
+            // |           continue decreasing
+            // |       else
+            // |           change the direction
+            // | / generalized (both increasing and decreasing cases):
+            // | |     if (currentSunLong - desiredSunLong)*direction < 0
+            // +-|         continue the current direction
+            //   |     else
+            //   \         change the direction
+
+            double resolution = 1; // days
+            double previousSunLong = currentSunLong;
+            var count = 0;
+            do
+            {
+                estimatedDateTime = estimatedDateTime.AddDays(resolution * direction);
+                currentSunLong = Astronomy.GetSunLongitudeAtJulianDate(estimatedDateTime.UniversalDateTimeToJulianDate());
+                // C < D
+                double error1 = (currentSunLong - desiredSunLong).ToNormalizedArc();
+                double error2 = (desiredSunLong + 2 * Math.PI - currentSunLong).ToNormalizedArc();
+
+                if (error1 > error && error2 > error)
+                {
+                    direction = direction * (-1);
+                    resolution = resolution / 2;
+                }
+
+                error = error1;
+                if (error2 > error1)
+                    error = error1;
+                else
+                    error = error2;
+
+                //Console.WriteLine("----C = {0:0.0000} deg = {1:0.0000} rad | direction = {8} | resolution = {9} \r\n" +
+                //                  "   E1 = {2:0.0000} deg = {3:0.0000} rad \r\n" +
+                //                  "   E2 = {4:0.0000} deg = {5:0.0000} rad \r\n" +
+                //                  "    E = {6:0.0000} deg = {7:0.0000} rad \r\n",
+                //        currentSunLong.ToDegrees(), currentSunLong,
+                //        error1.ToDegrees(), error1,
+                //        error2.ToDegrees(), error2,
+                //        error.ToDegrees(), error, direction, resolution);
+
+                //do
+                //{
+                //    estimatedDateTime = estimatedDateTime.AddDays(resolution * direction);
+                //    currentSunLong = Astronomy.GetSunLongitudeAtJulianDate(estimatedDateTime.UniversalDateTimeToJulianDate());
+
+                //    // crossing-zero (full circle) check
+                //    Console.WriteLine("    Current = {0:0.0000} deg | Previous = {1:0.0000} deg | direction = {2} | IsCrossingZero = {3}",
+                //            currentSunLong.ToDegrees(), previousSunLong.ToDegrees(), direction, (currentSunLong - previousSunLong) * direction < 0);
+                //    if ((currentSunLong - previousSunLong) * direction < 0)
+                //    {
+                //        previousSunLong = currentSunLong; // take snapshot before modifying
+                //        currentSunLong = currentSunLong + Math.PI * 2 * direction;
+                //    }
+                //    else
+                //    {
+                //        previousSunLong = currentSunLong;
+                //    }
+
+                //    Console.WriteLine("    Current = {0:0.0000} deg | Current - Desired = {1:0.0000} deg | direction = {2} | resolution = {3}",
+                //            currentSunLong.ToDegrees(), (currentSunLong - desiredSunLong).ToDegrees(), direction, resolution);
+                //}
+                //while ((currentSunLong - desiredSunLong) * direction < 0);
+                //direction = direction * (-1); // change direction
+                //resolution = resolution / 10;
+                count++;
+            } while (resolution > (1f / 86400) && Math.Abs(error) > 0.00001);
+            //Console.WriteLine(count);
+            //Console.WriteLine("    Current: {0} radians = {1} degrees, direction = {2}",
+            //    currentSunLong, currentSunLong.ToDegrees(), direction);
+            return estimatedDateTime;
+        }
+
+        /* Analisation of algorithm of Hồ Ngọc Đức
 		 * ---------------------------------------
 		 * double off = LocalToJD(31, 12, Y) - 2415021.076998695;
 		 *              ^ returns Julian Date of 31st December #Year, 00:00:00 UTC+7
@@ -493,14 +609,14 @@ namespace Augustine.VietnameseCalendar.Core
 		 *                   [ This value is used to determine the sun longitude ]---+
 		 */
 
-		/// <summary>
-		/// Returns the local date time of the new moon just before 
-		/// the winter solstice in the given lunar year.
-		/// </summary>
-		/// <param name="lunarYear"></param>
-		/// <param name="timeZone"></param>
-		/// <returns></returns>
-		public static DateTime NewMoon11(int lunarYear, double timeZone)
+        /// <summary>
+        /// Returns the local date time of the new moon just before 
+        /// the winter solstice in the given lunar year.
+        /// </summary>
+        /// <param name="lunarYear"></param>
+        /// <param name="timeZone"></param>
+        /// <returns></returns>
+        public static DateTime NewMoon11(int lunarYear, double timeZone)
 		{
             // number of days from J1900 to local midnight of 31st December #Year
             // (lunarYear, 12, 31): local
@@ -549,20 +665,5 @@ namespace Augustine.VietnameseCalendar.Core
 		}
 
 		#endregion
-
-		#region === Helpers ===
-
-		public static double ToRadians(this double degrees)
-		{
-			return degrees * Math.PI / 180;
-		}
-
-		public static double ToDegrees(this double radians)
-		{
-			return radians * 180 / Math.PI;
-		}
-
-		#endregion
-
 	}
 }
