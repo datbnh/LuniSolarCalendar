@@ -14,7 +14,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Augustine.VietnameseCalendar.UI"
         mc:Ignorable="d"
-        Title="Lịch Việt Nam" Height="425" Width="550">
+        Title="Lịch Việt Nam" Height="475" Width="550">
     <Grid>
         <local:AugustineCalendarMonth x:Name="augustineCalendarMonth"/>
         <StackPanel HorizontalAlignment="Right"  VerticalAlignment="Bottom" Orientation="Horizontal" >
