@@ -1,11 +1,12 @@
-﻿/*************************************************************
- * ===// The Vietnamese Calendar Project | 2014 - 2017 //=== *
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
- *  // Copyright (C) Augustine Bùi Nhã Đạt 2017      //      *
- * // Melbourne, December 2017                      //       *
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
- *              https://github.com/datbnh/SolarLunarCalendar *
- *************************************************************/
+﻿using Augustine.VietnameseCalendar.Core;
+/*************************************************************
+* ===// The Vietnamese Calendar Project | 2014 - 2017 //=== *
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+*  // Copyright (C) Augustine Bùi Nhã Đạt 2017      //      *
+* // Melbourne, December 2017                      //       *
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+*              https://github.com/datbnh/SolarLunarCalendar *
+*************************************************************/
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -19,7 +20,21 @@ namespace Augustine.VietnameseCalendar.Core.Tests
     public class LunarDateTests
     {
         [TestMethod()]
-        public void LunarSolarConvertersTest_1956_2000()
+        public void LunarSolarConvertersTest_1946_March()
+        {
+            Console.OutputEncoding = Encoding.Unicode;
+            string path = Path.Combine(Path.GetTempPath(), String.Format("VietnameseCalendar_ConvertersTest_{0}.TestLog.txt", DateTime.Now.ToString("yyyyMMddTHHmmss")));
+            InitTracer(path);
+
+            DateTime startDate = new DateTime(1946, 3, 23);
+            DateTime endDate = new DateTime(1946, 3, 31);
+            int daySteps = 1;
+            int errors = Test(startDate, endDate, daySteps, path);
+            Assert.AreEqual(0, errors, "There were {0} errors while executing the test. See {1} for more details.", errors, path);
+        }
+
+        [TestMethod()]
+        public void LunarSolarConvertersTest_1946_2000()
         {
             Console.OutputEncoding = Encoding.Unicode;
             string path = Path.Combine(Path.GetTempPath(), String.Format("VietnameseCalendar_ConvertersTest_{0}.TestLog.txt", DateTime.Now.ToString("yyyyMMddTHHmmss")));
@@ -67,7 +82,7 @@ namespace Augustine.VietnameseCalendar.Core.Tests
                 {
                     LunarDate lunarDate = LunarDate.FromSolar(date, 7);
                     DateTime solarDate = LunarDate.ToSolar(lunarDate);
-                    Trace.WriteLine(String.Format("{0:dd/MM/yyyy} = {1}", date, lunarDate));
+                    Trace.WriteLine(String.Format("{0:dd/MM/yyyy} = {1}", date, lunarDate.FullDayInfo));
                     if ((date != solarDate))
                     {
                         Trace.WriteLine(String.Format("        ---> incorrectly converted back to {0:dd/MM/yyyy}", solarDate));
@@ -78,6 +93,7 @@ namespace Augustine.VietnameseCalendar.Core.Tests
                 catch (Exception ex)
                 {
                     Trace.WriteLine(String.Format("{0:dd/MM/yyyy} ---> unhandled exception occured: {1}", date, ex.Message));
+                    errors++;
                 }
                 date = date.AddDays(1);
             }
@@ -105,6 +121,13 @@ namespace Augustine.VietnameseCalendar.Core.Tests
             Trace.AutoFlush = true;
 
             Trace.WriteLine(String.Format("========= {0} =========", DateTime.Now));
+        }
+
+        [TestMethod()]
+        public void GetDayNameTest()
+        {
+            DateTime today = DateTime.Today;
+            Console.WriteLine(LunarDate.GetDayName(today.Year, today.Month, today.Day));
         }
     }
 }
