@@ -19,9 +19,6 @@ namespace Augustine.VietnameseCalendar.UI
         public MainWindow()
         {
             InitializeComponent();
-            //day1.SolarDate = DateTime.Today;
-            //day1.IsLunarMonthVisible = true;
-            //day1.Label = "Hello";
         }
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
@@ -29,7 +26,7 @@ namespace Augustine.VietnameseCalendar.UI
             (new About()).Show();
         }
 
-        private void buttonConverterTool_Click(object sender, RoutedEventArgs e)
+        private void ConverterToolButton_Click(object sender, RoutedEventArgs e)
         {
             // I do not make this as a field of the program to reduce the allocated memory on RAM,
             // as user does not use the converter most of the time.

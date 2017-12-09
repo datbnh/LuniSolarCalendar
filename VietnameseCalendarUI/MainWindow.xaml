@@ -18,7 +18,7 @@
     <Grid>
         <local:AugustineCalendarMonth x:Name="augustineCalendarMonth"/>
         <StackPanel HorizontalAlignment="Right"  VerticalAlignment="Bottom" Orientation="Horizontal" >
-            <Button x:Name="buttonConverterTool" Content="&#xE1DB;" Padding="3,0,3,0" Margin="0" Background="#02FFFFFF" BorderBrush="{x:Null}" Foreground="Black" ToolTip="Công cụ chuyển đổi âm/dương lịch..." Click="buttonConverterTool_Click" FontFamily="Segoe UI Symbol"/>
+            <Button x:Name="buttonConverterTool" Content="&#xE1DB;" Padding="3,0,3,0" Margin="0" Background="#02FFFFFF" BorderBrush="{x:Null}" Foreground="Black" ToolTip="Công cụ chuyển đổi âm/dương lịch..." Click="ConverterToolButton_Click" FontFamily="Segoe UI Symbol"/>
             <Button x:Name="buttonAbout" Content="&#xE2C0;" Padding="3,0,3,0" Margin="0" Background="#02FFFFFF" BorderBrush="{x:Null}" Foreground="Black" ToolTip="Thông tin chương trình..." Click="AboutButton_Click" Cursor="Help" FontFamily="Segoe UI Symbol"/>
         </StackPanel>
     </Grid>

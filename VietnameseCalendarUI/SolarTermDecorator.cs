@@ -84,9 +84,9 @@ namespace Augustine.VietnameseCalendar.UI
                                                 prevDay.AddHours(23).AddMinutes(59),
                                                 thisDay.AddHours(23).AddMinutes(59),
                                                 nextDay.AddHours(23).AddMinutes(59),
-                     LunarDate.GetSolarTermIndex(prevDay, 7),
-                     LunarDate.GetSolarTermIndex(thisDay, 7),
-                     LunarDate.GetSolarTermIndex(nextDay, 7));
+                                                LunarDate.GetSolarTermIndex(prevDay, 7),
+                                                LunarDate.GetSolarTermIndex(thisDay, 7),
+                                                LunarDate.GetSolarTermIndex(nextDay, 7));
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
 
                 var rec = CreateRectangle(idx, dateTime, description);
