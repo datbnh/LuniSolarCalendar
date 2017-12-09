@@ -32,11 +32,13 @@ namespace Augustine.VietnameseCalendar.UI
         #region === Private Fields and Constants
 
         private const int ROW_IDX_MONTH_LABEL = 0;
-        private const int ROW_IDX_DOW_LABELS = 1;
-        private const int ROW_IDX_CW_LABELS = 2;
-        private const int ROW_IDX_DAYS = 2;
-        private const int ROW_IDX_TODAY_LABEL = 8;
-        private const int ROW_IDX_SELECTED_DATE_LABEL = 9;
+        private const int ROW_IDX_SOLAR_TERM_DECORATOR = 1;
+        private const int ROW_IDX_DOW_LABELS = 2;
+        private const int ROW_IDX_CW_LABELS = 3;
+        private const int ROW_IDX_DAYS = 3;
+        private const int ROW_IDX_TODAY_LABEL = 9;
+        private const int ROW_IDX_SELECTED_DATE_LABEL = 10;
+        private const int MAX_ROW_SPAN = 11;
 
         private const int COL_IDX_MONTH_LABEL = 0;
         private const int COL_IDX_CW_LABELS = 0;
@@ -44,6 +46,7 @@ namespace Augustine.VietnameseCalendar.UI
         private const int COL_IDX_DAYS = 1;
         private const int COL_IDX_TODAY_LABEL = 0;
         private const int COL_IDX_SELECTED_DATE_LABEL = 0;
+        private const int MAX_COL_SPAN = 8;
 
         private DayOfWeek firstDayOfWeek = DayOfWeek.Sunday;
 
@@ -75,6 +78,7 @@ namespace Augustine.VietnameseCalendar.UI
 
             InitializeDays();
             InitializeMonthLabel();
+            InitializeSolarTermBar();
             InitializeTodayLabel();
             InitializeSelectedDateLabel();
             InitializeDayOfWeekLabels();
@@ -100,6 +104,16 @@ namespace Augustine.VietnameseCalendar.UI
             Grid.SetRow(monthLabel, ROW_IDX_MONTH_LABEL);
             MainGrid.Children.Add(monthLabel);
             UpdateMonthLabels();
+        }
+
+        private void InitializeSolarTermBar()
+        {
+            var solarTermBar = SolarTermDecorator.CreateSolarTermBar(today.Year, 7);
+            Grid.SetRow(solarTermBar, ROW_IDX_SOLAR_TERM_DECORATOR);
+            Grid.SetColumn(solarTermBar, 0);
+            Grid.SetColumnSpan(solarTermBar, MAX_COL_SPAN);
+            MainGrid.Children.Add(solarTermBar);
+
         }
 
         private void InitializeTodayLabel()
