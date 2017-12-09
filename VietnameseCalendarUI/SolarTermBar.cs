@@ -49,8 +49,7 @@ namespace Augustine.VietnameseCalendar.UI
                                                  "Tiểu Tuyết", "Đại Tuyết",
                                                  "Đông Chí", "Tiểu Hàn",
                                                  "Đại Hàn", "Lập Xuân",
-                                                 "Vũ Thủy", "Kinh Trập",
-                                             };
+                                                 "Vũ Thủy", "Kinh Trập"};
         private static readonly string CURRENT_TERM_LABEL = "current";
 
         /// <summary>
