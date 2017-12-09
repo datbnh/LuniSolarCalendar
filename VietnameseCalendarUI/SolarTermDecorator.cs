@@ -108,9 +108,9 @@ namespace Augustine.VietnameseCalendar.UI
                 solarTermIndex = solarTermIndex % 24;
 
             int H = GetHueValue(solarTermIndex);
-            Color normalBackground = ColorFromHSV(H, 0.6, 1);
+            Color normalBackground = Helper.ColorFromHSV(H, 0.6, 1);
             Color zeroAlphaBackground = Color.FromArgb(0, normalBackground.R, normalBackground.G, normalBackground.B);
-            Color mouseOverBakground = ColorFromHSV(H, 0.6, 0.8);
+            Color mouseOverBakground = Helper.ColorFromHSV(H, 0.6, 0.8);
 
             GradientStopCollection gradient = new GradientStopCollection
             {
@@ -169,8 +169,8 @@ namespace Augustine.VietnameseCalendar.UI
                 solarTermIndex = solarTermIndex % 24;
 
             int H = GetHueValue(solarTermIndex);
-            Color background = ColorFromHSV(H, 0.1, 1); // very light color
-            Color foreground = ColorFromHSV(H, 0.5, 0.3); // dark color
+            Color background = Helper.ColorFromHSV(H, 0.1, 1); // very light color
+            Color foreground = Helper.ColorFromHSV(H, 0.5, 0.3); // dark color
             ToolTip toolTip = new ToolTip
             {
                 MaxWidth = 200,
@@ -201,31 +201,6 @@ namespace Augustine.VietnameseCalendar.UI
             stackPanel.Children.Add(contentTextBlock);
             toolTip.Content = stackPanel;
             return toolTip;
-        }
-
-        public static Color ColorFromHSV(double hue, double saturation, double value)
-        {
-            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
-            double f = hue / 60 - Math.Floor(hue / 60);
-
-            value = value * 255;
-            byte v = (byte)Convert.ToInt32(value);
-            byte p = (byte)Convert.ToInt32(value * (1 - saturation));
-            byte q = (byte)Convert.ToInt32(value * (1 - f * saturation));
-            byte t = (byte)Convert.ToInt32(value * (1 - (1 - f) * saturation));
-
-            if (hi == 0)
-                return Color.FromArgb(255, v, t, p);
-            else if (hi == 1)
-                return Color.FromArgb(255, q, v, p);
-            else if (hi == 2)
-                return Color.FromArgb(255, p, v, t);
-            else if (hi == 3)
-                return Color.FromArgb(255, p, q, v);
-            else if (hi == 4)
-                return Color.FromArgb(255, t, p, v);
-            else
-                return Color.FromArgb(255, v, p, q);
         }
 
         public static DateTime FindSolarTermMoment(int termIndex, int year)
