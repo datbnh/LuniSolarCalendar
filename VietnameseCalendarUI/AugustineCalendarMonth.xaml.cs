@@ -51,6 +51,7 @@ namespace Augustine.VietnameseCalendar.UI
         private DayOfWeek firstDayOfWeek = DayOfWeek.Sunday;
 
         private Label monthLabel;
+        private UserControl solarTermBar;
         private Label todayInfoLabel;
         private Label selectedDateInfoLabel;
         private Label[] cwLabels;
@@ -78,7 +79,7 @@ namespace Augustine.VietnameseCalendar.UI
 
             InitializeDays();
             InitializeMonthLabel();
-            InitializeSolarTermBar();
+            //InitializeSolarTermBar();
             InitializeTodayLabel();
             InitializeSelectedDateLabel();
             InitializeDayOfWeekLabels();
@@ -108,7 +109,8 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void InitializeSolarTermBar()
         {
-            var solarTermBar = SolarTermDecorator.CreateSolarTermBar(today.Year, 7);
+            solarTermBar = new UserControl();
+            solarTermBar.Content = SolarTermDecorator.CreateSolarTermBar(today.Year, 7);
             Grid.SetRow(solarTermBar, ROW_IDX_SOLAR_TERM_DECORATOR);
             Grid.SetColumn(solarTermBar, 0);
             Grid.SetColumnSpan(solarTermBar, MAX_COL_SPAN);
@@ -172,7 +174,7 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 Content = "✔",
                 HorizontalAlignment = HorizontalAlignment.Right,
-                FontFamily = new FontFamily("Segoe UI Symbol"),
+                //FontFamily = new FontFamily("Segoe UI Symbol"),
                 Background = Brushes.White,
                 Foreground = Brushes.DarkGreen,
                 Padding = new Thickness(3, 0, 3, 0),
@@ -416,8 +418,13 @@ namespace Augustine.VietnameseCalendar.UI
             }
 
             String solarInfo = String.Format("Th. {0}/{1}", thisMonth, thisYear);
-            
+
             monthLabel.Content = solarInfo + " - " + lunarInfo;
+        }
+
+        private void UpdateSolarTermBar()
+        {
+            solarTermBar.Content = SolarTermDecorator.CreateSolarTermBar(SelectedDate.Year, 7);
         }
 
         private void UpdateDays()
@@ -466,6 +473,7 @@ namespace Augustine.VietnameseCalendar.UI
             UpdateReferenceDates();
             UpdateDays();
             UpdateMonthLabels();
+            //UpdateSolarTermBar();
             UpdateSelectedDateInfoLabel();
         }
         

@@ -78,19 +78,19 @@ namespace Augustine.VietnameseCalendar.UI
                 var nextDay = dateTime.Date.AddDays(1);
                 var thisDay = dateTime.Date;
                 var prevDay = dateTime.Date.AddDays(-1);
-                var description = String.Format("{0:dd/MM/yyyy HH:mm UTC+07} = {3}\r\n" +
-                                                "{1:dd/MM/yyyy HH:mm UTC+07} = {4}\r\n" +
-                                                "{2:dd/MM/yyyy HH:mm UTC+07} = {5}\r\n",
-                                                prevDay.AddHours(23).AddMinutes(59),
-                                                thisDay.AddHours(23).AddMinutes(59),
-                                                nextDay.AddHours(23).AddMinutes(59),
-                                                LunarDate.GetSolarTermIndex(prevDay, 7),
-                                                LunarDate.GetSolarTermIndex(thisDay, 7),
-                                                LunarDate.GetSolarTermIndex(nextDay, 7));
+                //var description = String.Format("{0:dd/MM/yyyy HH:mm UTC+07} = {3}\r\n" +
+                //                                "{1:dd/MM/yyyy HH:mm UTC+07} = {4}\r\n" +
+                //                                "{2:dd/MM/yyyy HH:mm UTC+07} = {5}\r\n",
+                //                                prevDay.AddHours(23).AddMinutes(59),
+                //                                thisDay.AddHours(23).AddMinutes(59),
+                //                                nextDay.AddHours(23).AddMinutes(59),
+                //                                LunarDate.GetSolarTermIndex(prevDay, 7),
+                //                                LunarDate.GetSolarTermIndex(thisDay, 7),
+                //                                LunarDate.GetSolarTermIndex(nextDay, 7));
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
 
-                var rec = CreateRectangle(idx, dateTime, description);
-                if (todaySolarTermIdx == idx)
+                var rec = CreateRectangle(idx, dateTime, "");
+                if (DateTime.Today.Year == year && todaySolarTermIdx == idx)
                     rec.Name = CURRENT_TERM_LABEL;
                 Grid.SetColumn(rec, i);
                 grid.Children.Add(rec);

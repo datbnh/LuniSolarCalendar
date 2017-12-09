@@ -70,6 +70,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CalendarDayToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Converter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,11 +95,15 @@
     <Compile Include="AugustineCalendarMonth.xaml.cs">
       <DependentUpon>AugustineCalendarMonth.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CalendarDayToolTip.xaml.cs">
+      <DependentUpon>CalendarDayToolTip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converter.xaml.cs">
       <DependentUpon>Converter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
     <Compile Include="SolarTermDecorator.cs" />
+    <Compile Include="SpecialDayManager.cs" />
     <Compile Include="Styles.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

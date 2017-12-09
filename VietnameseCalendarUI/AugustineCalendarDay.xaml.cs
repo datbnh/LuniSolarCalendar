@@ -34,6 +34,9 @@ namespace Augustine.VietnameseCalendar.UI
             lunarDate = null;
         }
 
+        public bool IsSolarSpecial { get; private set; }
+        public bool IsLunarSpecial { get; private set; }
+
         private LunarDate lunarDate;
         public LunarDate LunarDate { get => lunarDate; private set => lunarDate = value; }
 
@@ -53,13 +56,18 @@ namespace Augustine.VietnameseCalendar.UI
                     isLunarMonthVisible = (lunarDate.Day == 1) || (solarDate.Day == 1);
                 }
                 ToolTip = lunarDate.FullDayInfo;
-                if (lunarDate.IsTermBegin)
-                {
-                    Label = lunarDate.SolarTerm;
-                } else
-                {
-                    Label = "";
-                }
+                //Label = solarDate.GetSpecialSolarDateInfo();
+                //if (Label.Length == 0)
+                //{
+                    if (lunarDate.IsTermBegin)
+                    {
+                        Label = lunarDate.SolarTerm;
+                    }
+                    else
+                    {
+                        Label = "";
+                    }
+                //}
                 UpdateSolarDateLabel();
                 UpdateLunarDateLabel();
             }

@@ -90,9 +90,9 @@ namespace Augustine.VietnameseCalendar.Core
         public string FullDayInfo
         {
             get => String.Format("Ngày {0} tháng {1} năm {2}" + Environment.NewLine +
-                "\tTháng {3}" + Environment.NewLine +
-                "\tNgày {4}" + Environment.NewLine +
-                "\tTiết {5}",
+                " Tháng {3}" + Environment.NewLine +
+                " Ngày {4}" + Environment.NewLine +
+                " Tiết {5}",
                 Day, MonthShortName, YearName,
                 MonthLongName,
                 DayName,

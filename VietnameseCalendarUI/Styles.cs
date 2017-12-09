@@ -68,7 +68,7 @@ namespace Augustine.VietnameseCalendar.UI
                     FontWeight = FontWeights.Medium,
                     SolarFontSize = 24f,
                     LunarFontSize = 16f,
-                    LabelFontSize = 12f,
+                    LabelFontSize = 9f,
                 };
             }
         }
