@@ -11,6 +11,7 @@ using Augustine.VietnameseCalendar.Core;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Augustine.VietnameseCalendar.UI
 {
@@ -55,7 +56,13 @@ namespace Augustine.VietnameseCalendar.UI
                 {
                     isLunarMonthVisible = (lunarDate.Day == 1) || (solarDate.Day == 1);
                 }
-                ToolTip = lunarDate.FullDayInfo;
+                ToolTip = new ToolTip()
+                {
+                    Background = Brushes.Salmon,
+                    Foreground = Brushes.DarkRed,
+                    Content = new CalendarDayToolTip()
+                };//lunarDate.FullDayInfo;
+                
                 //Label = solarDate.GetSpecialSolarDateInfo();
                 //if (Label.Length == 0)
                 //{

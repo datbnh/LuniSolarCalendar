@@ -102,7 +102,7 @@
       <DependentUpon>Converter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
-    <Compile Include="SolarTermDecorator.cs" />
+    <Compile Include="SolarTermBar.cs" />
     <Compile Include="SpecialDayManager.cs" />
     <Compile Include="Styles.cs" />
     <Compile Include="MainWindow.xaml.cs">
