@@ -427,7 +427,7 @@ namespace Augustine.VietnameseCalendar.Core
 			//		"This algorithm is only valid after 1st January 2000, 12:00:00 UT.");
 
 			// Time in Julian centuries from 2000-01-01 12:00:00 GMT
-			var T = (jd - J2000) / 36525;
+			var T = (jd - J2000) / JulianCentury;
 			var T2 = T * T;
 
 			// mean anomaly, degree
@@ -444,10 +444,13 @@ namespace Augustine.VietnameseCalendar.Core
 
 			// convert to radians
 			L = L.ToRadians();
+            L = Math.Abs(L);
+            while (L > 2 * Math.PI)
+                L = L - 2 * Math.PI;
 			// normalize to (0, 2*PI)
-			L = L - Math.PI * 2 * ((int)(L / (Math.PI * 2)));
-			if (L < 0)
-				L = L + Math.PI;
+			//L = L - Math.PI * 2 * ((int)(L / (Math.PI * 2)));
+			//while (L < 0)
+			//	L = L + Math.PI;
 
 			return L;
 		}
