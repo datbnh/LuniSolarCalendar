@@ -468,10 +468,6 @@ namespace Augustine.VietnameseCalendar.Core
             double currentSunLong = Astronomy.GetSunLongitudeAtJulianDate(
                 estimatedDateTime.UniversalDateTimeToJulianDate());
 
-            //Console.WriteLine("========================================");
-            //Console.WriteLine("Desired: {0} radians = {1} degrees", desiredSunLong, desiredSunLong.ToDegrees());
-
-            //double offset = (desireSunLongitude - currentSunLongitude).ToDegrees() / degreePerDay;
             currentSunLong = Astronomy.GetSunLongitudeAtJulianDate(
                 estimatedDateTime.UniversalDateTimeToJulianDate());
 
@@ -480,33 +476,6 @@ namespace Augustine.VietnameseCalendar.Core
             if (error > Math.PI)
                 direction = -1;
 
-            //Console.WriteLine("Current: {0} radians = {1} degrees, direction = {2}",
-            //    currentSunLong, currentSunLong.ToDegrees(), direction);
-
-            // crossing-zero check: crossing zero if
-            // |   increasing: currentSunLong - previousSunLong < 0
-            // |   decreasing: currentSunLong - previousSunLong > 0
-            // +-< both cases: (currentSunLong - previousSunLong)*direction < 0
-            // if zero-crossing occurs: modify the longtitude to do the comparison in the next step
-            //     currentSunLong = currentSunLong + 360*direction;
-            //
-            // exit condition
-            // |   increasing:
-            // |       if currentSunLong < desiredSunLong
-            // |           continue increasing
-            // |       else
-            // |           change the direction
-            // |   decreasing:
-            // |       if currentSunLong > desiredSunLong
-            // |           continue decreasing
-            // |       else
-            // |           change the direction
-            // | / generalized (both increasing and decreasing cases):
-            // | |     if (currentSunLong - desiredSunLong)*direction < 0
-            // +-|         continue the current direction
-            //   |     else
-            //   \         change the direction
-
             double resolution = 1; // days
             double previousSunLong = currentSunLong;
             var count = 0;
@@ -514,7 +483,7 @@ namespace Augustine.VietnameseCalendar.Core
             {
                 estimatedDateTime = estimatedDateTime.AddDays(resolution * direction);
                 currentSunLong = Astronomy.GetSunLongitudeAtJulianDate(estimatedDateTime.UniversalDateTimeToJulianDate());
-                // C < D
+
                 double error1 = (currentSunLong - desiredSunLong).ToNormalizedArc();
                 double error2 = (desiredSunLong + 2 * Math.PI - currentSunLong).ToNormalizedArc();
 
@@ -530,44 +499,9 @@ namespace Augustine.VietnameseCalendar.Core
                 else
                     error = error2;
 
-                //Console.WriteLine("----C = {0:0.0000} deg = {1:0.0000} rad | direction = {8} | resolution = {9} \r\n" +
-                //                  "   E1 = {2:0.0000} deg = {3:0.0000} rad \r\n" +
-                //                  "   E2 = {4:0.0000} deg = {5:0.0000} rad \r\n" +
-                //                  "    E = {6:0.0000} deg = {7:0.0000} rad \r\n",
-                //        currentSunLong.ToDegrees(), currentSunLong,
-                //        error1.ToDegrees(), error1,
-                //        error2.ToDegrees(), error2,
-                //        error.ToDegrees(), error, direction, resolution);
-
-                //do
-                //{
-                //    estimatedDateTime = estimatedDateTime.AddDays(resolution * direction);
-                //    currentSunLong = Astronomy.GetSunLongitudeAtJulianDate(estimatedDateTime.UniversalDateTimeToJulianDate());
-
-                //    // crossing-zero (full circle) check
-                //    Console.WriteLine("    Current = {0:0.0000} deg | Previous = {1:0.0000} deg | direction = {2} | IsCrossingZero = {3}",
-                //            currentSunLong.ToDegrees(), previousSunLong.ToDegrees(), direction, (currentSunLong - previousSunLong) * direction < 0);
-                //    if ((currentSunLong - previousSunLong) * direction < 0)
-                //    {
-                //        previousSunLong = currentSunLong; // take snapshot before modifying
-                //        currentSunLong = currentSunLong + Math.PI * 2 * direction;
-                //    }
-                //    else
-                //    {
-                //        previousSunLong = currentSunLong;
-                //    }
-
-                //    Console.WriteLine("    Current = {0:0.0000} deg | Current - Desired = {1:0.0000} deg | direction = {2} | resolution = {3}",
-                //            currentSunLong.ToDegrees(), (currentSunLong - desiredSunLong).ToDegrees(), direction, resolution);
-                //}
-                //while ((currentSunLong - desiredSunLong) * direction < 0);
-                //direction = direction * (-1); // change direction
-                //resolution = resolution / 10;
                 count++;
             } while (resolution > (1f / 86400) && Math.Abs(error) > 0.00001);
-            //Console.WriteLine(count);
-            //Console.WriteLine("    Current: {0} radians = {1} degrees, direction = {2}",
-            //    currentSunLong, currentSunLong.ToDegrees(), direction);
+
             return estimatedDateTime;
         }
 
