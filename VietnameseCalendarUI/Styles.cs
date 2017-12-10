@@ -64,6 +64,7 @@ namespace Augustine.VietnameseCalendar.UI
                 {
                     Foreground = Brushes.Black,
                     Backcolor = Brushes.White,
+                    //Backcolor = new SolidColorBrush(Color.FromArgb(1,255,255,255)),
 
                     FontWeight = FontWeights.Medium,
                     SolarFontSize = 24f,
