@@ -102,23 +102,23 @@ namespace Augustine.VietnameseCalendar.UI
 
             GradientStopCollection normalTermGradient = new GradientStopCollection
             {
-                new GradientStop(Colors.White, 0),
-                new GradientStop(Colors.White, 0.45),
+                new GradientStop(zeroAlphaBackground, 0),
+                new GradientStop(zeroAlphaBackground, 0.45),
                 new GradientStop(normalBackground, 0.45),
                 new GradientStop(normalBackground, 0.65),
-                new GradientStop(Colors.White, 0.65),
-                new GradientStop(Colors.White, 1)
+                new GradientStop(zeroAlphaBackground, 0.65),
+                new GradientStop(zeroAlphaBackground, 1)
             };
             LinearGradientBrush normalTermBrush = new LinearGradientBrush(normalTermGradient, 90);
 
             GradientStopCollection currentTermGradient = new GradientStopCollection
             {
-                new GradientStop(Colors.White, 0),
-                new GradientStop(Colors.White, 0.35),
+                new GradientStop(zeroAlphaBackground, 0),
+                new GradientStop(zeroAlphaBackground, 0.35),
                 new GradientStop(normalBackground, 0.35),
                 new GradientStop(normalBackground, 0.75),
-                new GradientStop(Colors.White, 0.75),
-                new GradientStop(Colors.White, 1)
+                new GradientStop(zeroAlphaBackground, 0.75),
+                new GradientStop(zeroAlphaBackground, 1)
             };
             LinearGradientBrush currentTermBrush = new LinearGradientBrush(currentTermGradient, 90);
 
