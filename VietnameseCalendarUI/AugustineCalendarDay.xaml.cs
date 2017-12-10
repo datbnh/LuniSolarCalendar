@@ -12,6 +12,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static Augustine.VietnameseCalendar.UI.SpecialDayManager;
 
 namespace Augustine.VietnameseCalendar.UI
 {
@@ -55,30 +56,51 @@ namespace Augustine.VietnameseCalendar.UI
                 if (lunarDate != null)
                 {
                     isLunarMonthVisible = (lunarDate.Day == 1) || (solarDate.Day == 1);
-                }
-                Label = solarDate.GetSpecialSolarDateInfo();
-                CalendarDayToolTipView toolTipContent = 
-                    new CalendarDayToolTipView(new CalendarDayToolTipModel(lunarDate, Label, lunarDate.SolarDate.Day.ToString()));
-                ToolTip = new ToolTip()
-                {
-                    //Background = Brushes.MistyRose,
-                    //Foreground = Brushes.DarkRed,
-                    Content = toolTipContent,
-                };
-                //lunarDate.FullDayInfo;
-                
-                //Label = solarDate.GetSpecialSolarDateInfo();
-                //if (Label.Length == 0)
-                //{
-                    if (lunarDate.IsTermBeginThisDay)
+                    string decorator = "";
+                    if (lunarDate.GetSpecialDateInfo(out SpecialDateInfo specialDayInfo))
                     {
-                        Label = lunarDate.SolarTerm;
+                        Label = specialDayInfo.Label;
+                        decorator = specialDayInfo.Decorator;
                     }
                     else
                     {
-                        Label = "";
+                        if (lunarDate.IsTermBeginThisDay)
+                        {
+                            Label = lunarDate.SolarTerm;
+                            switch (lunarDate.SolarTermIndex)
+                            {
+                                case 0:
+                                    decorator = SolarTermDecorator.VernalEquinox;
+                                    break;
+                                case 6:
+                                    decorator = SolarTermDecorator.SummerSolstice;
+                                    break;
+                                case 12:
+                                    decorator = SolarTermDecorator.AutumnalEquinox;
+                                    break;
+                                case 18:
+                                    decorator = SolarTermDecorator.WinterSolstice;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Label = "";
+                        }
                     }
-                //}
+                    if (string.IsNullOrEmpty(decorator))
+                        decorator = lunarDate.SolarDate.Day.ToString();
+                    CalendarDayToolTipView toolTipContent =
+                        new CalendarDayToolTipView(new CalendarDayToolTipModel(lunarDate, Label, decorator));
+                    ToolTip = new ToolTip()
+                    {
+                        Content = toolTipContent,
+                    };
+                }
+                
+
                 UpdateSolarDateLabel();
                 UpdateLunarDateLabel();
             }

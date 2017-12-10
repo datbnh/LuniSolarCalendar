@@ -43,9 +43,11 @@ namespace Augustine.VietnameseCalendar.Core
         public double TimeZone { get; private set; }
         public DateTime SolarDate { get; private set;}
         public bool IsTermBeginThisDay { get => GetSolarTermIndex(SolarDate.AddDays(-1), TimeZone) != GetSolarTermIndex(SolarDate, TimeZone); }
+        public int SolarTermIndex { get => GetSolarTermIndex(SolarDate, TimeZone); }
 
         private static int cacheSize = 400;
-        private static Dictionary<string, LuniSolarDate> dateCache;
+        private static Dictionary<string, LuniSolarDate> cache;
+        private static Queue<string> cacheKeys;
 
         #region String properties
 
@@ -106,16 +108,6 @@ namespace Augustine.VietnameseCalendar.Core
         internal string MonthTerrestrialBranchName { get => GetMonthTerrestrialBranchName(Month); }
         
         #endregion
-
-        //internal LuniSolarDate(int lunarYear, int lunarMonth, bool isLeapMonth, int lunarDay, double timeZone)
-        //{
-        //    Year = lunarYear;
-        //    Month = lunarMonth;
-        //    IsLeapMonth = isLeapMonth;
-        //    Day = lunarDay;
-        //    TimeZone = timeZone;
-        //    SolarDate = LuniSolarDate(Year, Month, IsLeapMonth, Day, TimeZone);
-        //}
 
         internal LuniSolarDate(int year, int month, bool isLeapMonth, int day, DateTime solarDate, double timeZone)
         {
@@ -236,31 +228,34 @@ namespace Augustine.VietnameseCalendar.Core
             if (cacheSize > 0)
             {
                 // init dictionary for the first time
-                if (dateCache == null)
+                if (cache == null)
                 {
-                    dateCache = new Dictionary<string, LuniSolarDate>();
+                    cache = new Dictionary<string, LuniSolarDate>(cacheSize);
+                    cacheKeys = new Queue<string>(cacheSize);
                 }
 
                 // hash the year and time zone
                 string key = string.Format("{0}.{1}.{2}+{3:0.00}", year, month, day, timeZone);
 
                 // if year is already cached, just take it out
-                if (dateCache.ContainsKey(key))
+                if (cache.ContainsKey(key))
                 {
-                    return dateCache[key];
+                    return cache[key];
                 }
                 // else, calculate the year and add cache to dictionay
                 else
                 {
                     // if dictionary is already full, remove the oldest pair.
-                    if (dateCache.Count == cacheSize)
+                    if (cache.Count == cacheSize)
                     {
-                        dateCache.Remove(dateCache.GetEnumerator().Current.Key);
+                        var oldestKey = cacheKeys.Dequeue();
+                        cache.Remove(oldestKey);
                     }
                     // calculate the year
                     var luniSolarDate = CalculateLuniSolarDateFromSolarDate(year, month, day, timeZone);
                     // do not forget to add new year to dictionay :))
-                    dateCache.Add(key, luniSolarDate);
+                    cache.Add(key, luniSolarDate);
+                    cacheKeys.Enqueue(key);
                     return luniSolarDate;
                 }
             }
@@ -456,9 +451,7 @@ namespace Augustine.VietnameseCalendar.Core
 
         public static int GetSolarTermIndex(DateTime date, double timeZone)
         {
-            var julianDate = Astronomy.UniversalDateTimeToJulianDate(date.AddHours(-timeZone).AddHours(24));
-            var termIndex = (int)(Astronomy.GetSunLongitudeAtJulianDate(julianDate) / Math.PI * 12);
-            return termIndex;
+            return Astronomy.GetSolarTermIndex(date.AddHours(-timeZone).AddHours(24));
         }
 
         public static string GetSolarTermName(DateTime date, double timeZone)
