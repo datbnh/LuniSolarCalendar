@@ -65,13 +65,14 @@ namespace Augustine.VietnameseCalendar.UI
                     {
                         Label = specialDayInfo.Label;
                         Decorator.Text = specialDayInfo.Decorator;
+                        toolTipTitle = Label;
                     }
                     else
                     {
                         if (lunarDate.IsTermBeginThisDay)
                         {
                             Label = lunarDate.SolarTerm;
-                            toolTipTitle = Label;
+                            toolTipTitle = "Bắt đầu tiết " + Label;
                             switch (lunarDate.SolarTermIndex)
                             {
                                 case 0:
