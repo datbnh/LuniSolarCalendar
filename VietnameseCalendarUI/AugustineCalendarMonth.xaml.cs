@@ -96,7 +96,8 @@ namespace Augustine.VietnameseCalendar.UI
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(0),
-                Padding = new Thickness(0,0,0,0),
+                Padding = new Thickness(0, 0, 0, 0),
+                //Foreground = Brushes.Wheat,
             };
             monthLabel.MouseWheel += MonthLabel_MouseWheel;
 
