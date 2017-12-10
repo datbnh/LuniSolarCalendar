@@ -372,84 +372,54 @@ namespace Augustine.VietnameseCalendar.Core
 			int[] DateTime = JulianDayNumberToUniversalDate(jdn);
 			return new DateTime(DateTime[0], DateTime[1], DateTime[2]).AddDays(time);
 		}
-		
-		#endregion
 
-		#endregion
+        #endregion
 
-		#region === Moon and Sun ===
+        #endregion
 
-		/* Base on algorithm of Ho Ngoc Duc, at
-		 * http://www.informatik.uni-leipzig.de/~duc/amlich/
-		 * 
-		 */
-        
-		public static double GetNewMoon(int k)
-		{
-			var T = k / 1236.85; // Time in Julian centuries from 1900 January 0.5
-			var T2 = T * T;
-			var T3 = T2 * T;
-			var Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
-			Jd1 = Jd1 + 0.00033 * Math.Sin((166.56 + 132.87 * T - 0.009173 * T2).ToRadians()); // Mean new moon
-			var M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3; // Sun's mean anomaly
-			var Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.00001236 * T3; // Moon's mean anomaly
-			var F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3; // Moon's argument of latitude
-			var C1 = (0.1734 - 0.000393 * T) * Math.Sin(M.ToRadians()) + 0.0021 * Math.Sin((2 * M).ToRadians());
-			C1 = C1 - 0.4068 * Math.Sin(Mpr.ToRadians()) + 0.0161 * Math.Sin(2 * Mpr.ToRadians());
-			C1 = C1 - 0.0004 * Math.Sin((3 * Mpr).ToRadians());
-			C1 = C1 + 0.0104 * Math.Sin((2 * F).ToRadians()) - 0.0051 * Math.Sin((M + Mpr).ToRadians());
-			C1 = C1 - 0.0074 * Math.Sin((M - Mpr).ToRadians()) + 0.0004 * Math.Sin((2 * F + M).ToRadians());
-			C1 = C1 - 0.0004 * Math.Sin((2 * F - M).ToRadians()) - 0.0006 * Math.Sin((2 * F + Mpr).ToRadians());
-			C1 = C1 + 0.0010 * Math.Sin((2 * F - Mpr).ToRadians()) + 0.0005 * Math.Sin((2 * Mpr + M).ToRadians());
-			double deltat;
-			if (T < -11)
-				deltat = 0.001 + 0.000839 * T + 0.0002261 * T2 - 0.00000845 * T3 - 0.000000081 * T * T3;
-			else
-				deltat = -0.000278 + 0.000265 * T + 0.000262 * T2;
-			var JdNew = Jd1 + C1 - deltat;
-			return (JdNew);
-		}
+        #region === Moon and Sun ===
 
-		/* Jean Meeus: Astronomical Algorithms
-		 * Accuracy: 0.01 degree
-		 * // http://www.geoastro.de/elevaz/basics/meeus.htm
-		 */
-		/// <summary>
-		/// Returns the sun longitude at a moment given by Julian Date (jd).
-		/// The unit is in radians.
-		/// </summary>
-		/// <param name="jd"></param>
-		/// <returns></returns>
-		public static double GetSunLongitudeAtJulianDate(double jd)
-		{
-			//if (jd < J2000)
-			//	throw new ArgumentOutOfRangeException(
-			//		"This algorithm is only valid after 1st January 2000, 12:00:00 UT.");
+        #region Sun
+        /* Jean Meeus: Astronomical Algorithms
+         * Accuracy: 0.01 degree
+         * // http://www.geoastro.de/elevaz/basics/meeus.htm
+         */
+        /// <summary>
+        /// Returns the sun longitude at a moment given by Julian Date (jd).
+        /// The unit is in radians.
+        /// </summary>
+        /// <param name="jd"></param>
+        /// <returns></returns>
+        public static double GetSunLongitudeAtJulianDate(double jd)
+        {
+            //if (jd < J2000)
+            //	throw new ArgumentOutOfRangeException(
+            //		"This algorithm is only valid after 1st January 2000, 12:00:00 UT.");
 
-			// Time in Julian centuries from 2000-01-01 12:00:00 GMT
-			var T = (jd - J2000) / JulianCentury;
-			var T2 = T * T;
+            // Time in Julian centuries from 2000-01-01 12:00:00 GMT
+            var T = (jd - J2000) / JulianCentury;
+            var T2 = T * T;
 
-			// mean anomaly, degree
-			var M = 357.52910 + 35999.05030 * T - 0.0001559 * T2 - 0.00000048 * T * T2;
+            // mean anomaly, degree
+            var M = 357.52910 + 35999.05030 * T - 0.0001559 * T2 - 0.00000048 * T * T2;
 
-			// mean longitude, degree
-			var L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T2;
+            // mean longitude, degree
+            var L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T2;
 
-			var DL = (1.914600 - 0.004817 * T - 0.000014 * T2) * Math.Sin(M.ToRadians())
-				+ (0.019993 - 0.000101 * T) * Math.Sin(2 * M.ToRadians()) + 0.000290 * Math.Sin(3 * M.ToRadians());
+            var DL = (1.914600 - 0.004817 * T - 0.000014 * T2) * Math.Sin(M.ToRadians())
+                + (0.019993 - 0.000101 * T) * Math.Sin(2 * M.ToRadians()) + 0.000290 * Math.Sin(3 * M.ToRadians());
 
-			// true longitude, degree
-			var L = L0 + DL;
+            // true longitude, degree
+            var L = L0 + DL;
 
-			// convert to radians
-			L = L.ToRadians();
+            // convert to radians
+            L = L.ToRadians();
 
             // normalize to (0, 2*PI)
             return L.ToNormalizedArc();
-		}
+        }
 
-        public static DateTime FindSolarTermMoment(int termIndex, int year)
+        public static DateTime GetDateTimeOfSolarTerm(int termIndex, int year)
         {
             int[] trialMonths =
                 { 3,  4,  4,  5,  5,  6,
@@ -505,7 +475,42 @@ namespace Augustine.VietnameseCalendar.Core
             return estimatedDateTime;
         }
 
-        /* Analisation of algorithm of Hồ Ngọc Đức
+        #endregion
+
+        #region Moon
+
+        /* Base on algorithm of Ho Ngoc Duc, at
+		 * http://www.informatik.uni-leipzig.de/~duc/amlich/
+		 * 
+		 */
+
+        public static double GetNewMoon(int k)
+		{
+			var T = k / 1236.85; // Time in Julian centuries from 1900 January 0.5
+			var T2 = T * T;
+			var T3 = T2 * T;
+			var Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
+			Jd1 = Jd1 + 0.00033 * Math.Sin((166.56 + 132.87 * T - 0.009173 * T2).ToRadians()); // Mean new moon
+			var M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3; // Sun's mean anomaly
+			var Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.00001236 * T3; // Moon's mean anomaly
+			var F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3; // Moon's argument of latitude
+			var C1 = (0.1734 - 0.000393 * T) * Math.Sin(M.ToRadians()) + 0.0021 * Math.Sin((2 * M).ToRadians());
+			C1 = C1 - 0.4068 * Math.Sin(Mpr.ToRadians()) + 0.0161 * Math.Sin(2 * Mpr.ToRadians());
+			C1 = C1 - 0.0004 * Math.Sin((3 * Mpr).ToRadians());
+			C1 = C1 + 0.0104 * Math.Sin((2 * F).ToRadians()) - 0.0051 * Math.Sin((M + Mpr).ToRadians());
+			C1 = C1 - 0.0074 * Math.Sin((M - Mpr).ToRadians()) + 0.0004 * Math.Sin((2 * F + M).ToRadians());
+			C1 = C1 - 0.0004 * Math.Sin((2 * F - M).ToRadians()) - 0.0006 * Math.Sin((2 * F + Mpr).ToRadians());
+			C1 = C1 + 0.0010 * Math.Sin((2 * F - Mpr).ToRadians()) + 0.0005 * Math.Sin((2 * Mpr + M).ToRadians());
+			double deltat;
+			if (T < -11)
+				deltat = 0.001 + 0.000839 * T + 0.0002261 * T2 - 0.00000845 * T3 - 0.000000081 * T * T3;
+			else
+				deltat = -0.000278 + 0.000265 * T + 0.000262 * T2;
+			var JdNew = Jd1 + C1 - deltat;
+			return (JdNew);
+		}
+
+        /* Analysation of algorithm of Hồ Ngọc Đức
 		 * ---------------------------------------
 		 * double off = LocalToJD(31, 12, Y) - 2415021.076998695;
 		 *              ^ returns Julian Date of 31st December #Year, 00:00:00 UTC+7
@@ -550,7 +555,7 @@ namespace Augustine.VietnameseCalendar.Core
         /// <param name="lunarYear"></param>
         /// <param name="timeZone"></param>
         /// <returns></returns>
-        public static DateTime NewMoon11(int lunarYear, double timeZone)
+        public static DateTime GetNewMoon11(int lunarYear, double timeZone)
 		{
             // number of days from J1900 to local midnight of 31st December #Year
             // (lunarYear, 12, 31): local
@@ -597,7 +602,9 @@ namespace Augustine.VietnameseCalendar.Core
             
             return newMoonLocalDateTime;
 		}
+        
+        #endregion
 
-		#endregion
-	}
+        #endregion
+    }
 }
