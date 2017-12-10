@@ -34,14 +34,7 @@ namespace Augustine.VietnameseCalendar.UI
             IsLunarMonthVisible = false;
             Label = "Label";
             Decorator.Text = "*";
-            lunarDate = null;
         }
-
-        public bool IsSolarSpecial { get; private set; }
-        public bool IsLunarSpecial { get; private set; }
-
-        private LuniSolarDate lunarDate;
-        public LuniSolarDate LunarDate { get => lunarDate; private set => lunarDate = value; }
 
         private DateTime solarDate;
         public DateTime SolarDate
@@ -50,9 +43,20 @@ namespace Augustine.VietnameseCalendar.UI
             set
             {
                 solarDate = value;
-                try { lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(solarDate, 7); }
-                catch { lunarDate = null; }
+                try
+                {
+                    lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(solarDate, 7);
+                }
+                catch
+                {
+                    lunarDate = null;
+                }
+
                 isSolarMonthVisible = solarDate.Day == 1;
+
+                var toolTipTitle = "";
+                var toolTipDecorator = "";
+
                 // in case of invalid date - BUG!!!
                 if (lunarDate != null)
                 {
@@ -67,6 +71,7 @@ namespace Augustine.VietnameseCalendar.UI
                         if (lunarDate.IsTermBeginThisDay)
                         {
                             Label = lunarDate.SolarTerm;
+                            toolTipTitle = Label;
                             switch (lunarDate.SolarTermIndex)
                             {
                                 case 0:
@@ -82,6 +87,7 @@ namespace Augustine.VietnameseCalendar.UI
                                     Decorator.Text = SolarTermDecorator.WinterSolstice;
                                     break;
                                 default:
+                                    toolTipTitle = ""; // normal term is ignored.
                                     Decorator.Text = "";
                                     break;
                             }
@@ -92,22 +98,28 @@ namespace Augustine.VietnameseCalendar.UI
                             Decorator.Text = "";
                         }
                     }
-                    var toolTipDecorator = Decorator.Text;
+
+                    toolTipDecorator = Decorator.Text;
                     if (string.IsNullOrEmpty(toolTipDecorator))
                         toolTipDecorator = lunarDate.SolarDate.Day.ToString();
                     CalendarDayToolTipView toolTipContent =
-                        new CalendarDayToolTipView(new CalendarDayToolTipModel(lunarDate, Label, toolTipDecorator));
+                        new CalendarDayToolTipView(new CalendarDayToolTipModel(lunarDate, toolTipTitle, toolTipDecorator));
                     ToolTip = new ToolTip()
                     {
                         Content = toolTipContent,
                     };
                 }
                 
-
                 UpdateSolarDateLabel();
                 UpdateLunarDateLabel();
             }
         }
+
+        //public bool IsSolarSpecial { get; private set; }
+        //public bool IsLunarSpecial { get; private set; }
+
+        private LuniSolarDate lunarDate;
+        public LuniSolarDate LunarDate { get => lunarDate; private set => lunarDate = value; }
 
         private bool isSolarMonthVisible;
         public bool IsSolarMonthVisible { get => isSolarMonthVisible; set { isSolarMonthVisible = value; UpdateSolarDateLabel(); } }
