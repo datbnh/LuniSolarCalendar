@@ -56,12 +56,16 @@ namespace Augustine.VietnameseCalendar.UI
                 {
                     isLunarMonthVisible = (lunarDate.Day == 1) || (solarDate.Day == 1);
                 }
+                Label = solarDate.GetSpecialSolarDateInfo();
+                CalendarDayToolTipView toolTipContent = 
+                    new CalendarDayToolTipView(new CalendarDayToolTipModel(lunarDate, Label, lunarDate.SolarDate.Day.ToString()));
                 ToolTip = new ToolTip()
                 {
-                    Background = Brushes.Salmon,
-                    Foreground = Brushes.DarkRed,
-                    Content = new CalendarDayToolTip()
-                };//lunarDate.FullDayInfo;
+                    //Background = Brushes.MistyRose,
+                    //Foreground = Brushes.DarkRed,
+                    Content = toolTipContent,
+                };
+                //lunarDate.FullDayInfo;
                 
                 //Label = solarDate.GetSpecialSolarDateInfo();
                 //if (Label.Length == 0)

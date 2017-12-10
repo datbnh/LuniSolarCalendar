@@ -12,13 +12,13 @@ using System;
 namespace Augustine.VietnameseCalendar.Core
 {
     public class LunarDate
-	{
-        public static readonly string[] MonthNames = 
+    {
+        public static readonly string[] MonthNames =
             { "Giêng", "Hai", "Ba", "Tư", "Năm", "Sáu",
               "Bảy", "Tám", "Chín", "Mười", "Mười Một", "Chạp"};
-		public static readonly string[] Stems = 
+        public static readonly string[] Stems =
             {"Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"};
-		public static readonly string[] Branches = 
+        public static readonly string[] Branches =
             {"Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ",
              "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"};
         public static readonly string[] SolarTermsVietnamese = {"Xuân Phân", "Thanh Minh",
@@ -36,11 +36,11 @@ namespace Augustine.VietnameseCalendar.Core
                                              };
 
         public int Year { get; private set; }
-		public int Month { get; private set; }
+        public int Month { get; private set; }
         public bool IsLeapMonth { get; private set; }
         public int Day { get; private set; }
         public double TimeZone { get; private set; }
-        public bool IsTermBegin { get => GetSolarTermIndex(solarDate.AddDays(-1), TimeZone) != GetSolarTermIndex(solarDate, TimeZone); }
+        public bool IsTermBegin { get => GetSolarTermIndex(SolarDate.AddDays(-1), TimeZone) != GetSolarTermIndex(SolarDate, TimeZone); }
 
         public int CelestialStemIndex { get => GetYearCelestialStemIndex(Year); }
         public int TerrestrialBranchIndex { get => GetYearTerrestrialBranchIndex(Year); }
@@ -52,8 +52,8 @@ namespace Augustine.VietnameseCalendar.Core
         public int MonthTerrestrialBranchIndex { get => GetMonthTerrestrialIndex(Month); }
         public string MonthCelestialStemName { get => GetMonthCelestialStemName(Year, Month); }
         public string MonthTerrestrialBranchName { get => GetMonthTerrestrialBranchName(Month); }
-        
-        private DateTime solarDate;
+
+        public DateTime SolarDate { get; private set;}
 
         /// <summary>
         /// Returns "Giêng, Hai, Ba..."
@@ -83,9 +83,9 @@ namespace Augustine.VietnameseCalendar.Core
         /// <returns></returns>
         public string MonthFullName { get => GetMonthFullName(Year, Month, IsLeapMonth); }
 
-        public string DayName { get => GetDayName(solarDate.Year, solarDate.Month, solarDate.Day); }
+        public string DayName { get => GetDayName(SolarDate.Year, SolarDate.Month, SolarDate.Day); }
 
-        public string SolarTerm { get => GetSolarTermName(solarDate, TimeZone); }
+        public string SolarTerm { get => GetSolarTermName(SolarDate, TimeZone); }
 
         public string FullDayInfo
         {
@@ -106,7 +106,7 @@ namespace Augustine.VietnameseCalendar.Core
             IsLeapMonth = isLeapMonth;
             Day = day;
             TimeZone = timeZone;
-            solarDate = ToSolar(Year, Month, IsLeapMonth, Day, TimeZone);
+            SolarDate = ToSolar(Year, Month, IsLeapMonth, Day, TimeZone);
         }
 
         internal LunarDate(int year, int month, bool isLeapMonth, int day, DateTime solarDate, double timeZone)
@@ -116,7 +116,7 @@ namespace Augustine.VietnameseCalendar.Core
 			IsLeapMonth = isLeapMonth;
 			Day = day;
             TimeZone = timeZone;
-            this.solarDate = solarDate;
+            this.SolarDate = solarDate;
 		}
 
         public override string ToString()

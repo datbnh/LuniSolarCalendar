@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +19,12 @@ namespace Augustine.VietnameseCalendar.UI
     /// <summary>
     /// Interaction logic for CalendarDayToolTip.xaml
     /// </summary>
-    public partial class CalendarDayToolTip : UserControl
+    public partial class CalendarDayToolTipView : UserControl
     {
-        public CalendarDayToolTip()
+        public CalendarDayToolTipView(CalendarDayToolTipModel model)
         {
             InitializeComponent();
+            DataContext = model;
         }
     }
 }

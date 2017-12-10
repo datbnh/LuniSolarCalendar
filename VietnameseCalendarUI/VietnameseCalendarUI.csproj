@@ -70,7 +70,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CalendarDayToolTip.xaml">
+    <Page Include="CalendarDayToolTipView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -95,9 +95,10 @@
     <Compile Include="AugustineCalendarMonth.xaml.cs">
       <DependentUpon>AugustineCalendarMonth.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CalendarDayToolTip.xaml.cs">
-      <DependentUpon>CalendarDayToolTip.xaml</DependentUpon>
+    <Compile Include="CalendarDayToolTipView.xaml.cs">
+      <DependentUpon>CalendarDayToolTipView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CalendarDayToolTipModel.cs" />
     <Compile Include="Converter.xaml.cs">
       <DependentUpon>Converter.xaml</DependentUpon>
     </Compile>
