@@ -42,5 +42,20 @@ namespace Augustine.VietnameseCalendar.UI
             else
                 return Color.FromArgb(255, v, p, q);
         }
+
+        public static Color GetBackgroundFromHue(double h)
+        {
+            return ColorFromHSV(h, BACKGROUND_S, BACKGROUND_V);
+        }
+
+        public static Color GetForegroundFromHue(double h)
+        {
+            return ColorFromHSV(h, FOREGROUND_S, FOREGROUND_V);
+        }
+
+        public static readonly double BACKGROUND_S = 0.1;
+        public static readonly double BACKGROUND_V = 1.0;
+        public static readonly double FOREGROUND_S = 0.5;
+        public static readonly double FOREGROUND_V = 0.3;
     }
 }
