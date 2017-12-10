@@ -38,8 +38,8 @@ namespace Augustine.VietnameseCalendar.UI
         public bool IsSolarSpecial { get; private set; }
         public bool IsLunarSpecial { get; private set; }
 
-        private LunarDate lunarDate;
-        public LunarDate LunarDate { get => lunarDate; private set => lunarDate = value; }
+        private LuniSolarDate lunarDate;
+        public LuniSolarDate LunarDate { get => lunarDate; private set => lunarDate = value; }
 
         private DateTime solarDate;
         public DateTime SolarDate
@@ -48,7 +48,7 @@ namespace Augustine.VietnameseCalendar.UI
             set
             {
                 solarDate = value;
-                try { lunarDate = LunarDate.FromSolar(solarDate, 7); }
+                try { lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(solarDate, 7); }
                 catch { lunarDate = null; }
                 isSolarMonthVisible = solarDate.Day == 1;
                 // in case of invalid date
@@ -70,7 +70,7 @@ namespace Augustine.VietnameseCalendar.UI
                 //Label = solarDate.GetSpecialSolarDateInfo();
                 //if (Label.Length == 0)
                 //{
-                    if (lunarDate.IsTermBegin)
+                    if (lunarDate.IsTermBeginThisDay)
                     {
                         Label = lunarDate.SolarTerm;
                     }

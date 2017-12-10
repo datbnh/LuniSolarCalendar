@@ -65,8 +65,8 @@ namespace Augustine.VietnameseCalendar.UI
         private DateTime pageBegin;
         private DateTime monthBegin;
         private DateTime monthEnd;
-        private LunarDate monthBeginLunarDate;
-        private LunarDate monthEndLunarDate;
+        private LuniSolarDate monthBeginLunarDate;
+        private LuniSolarDate monthEndLunarDate;
 
         #endregion
 
@@ -521,7 +521,7 @@ namespace Augustine.VietnameseCalendar.UI
         { 
             return String.Format("{0} {1:dd/MM/yyyy} - {2}",
                 DayOfWeekLabels[(int)date.DayOfWeek], date,
-                LunarDate.FromSolar(date.Year, date.Month, date.Day, 7));
+                LuniSolarDate.LuniSolarDateFromSolarDate(date.Year, date.Month, date.Day, 7));
         }
 
         public void SelectDate(DateTime date)

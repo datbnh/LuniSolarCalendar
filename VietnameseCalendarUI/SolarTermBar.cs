@@ -71,12 +71,12 @@ namespace Augustine.VietnameseCalendar.UI
             Grid grid = new Grid();
             grid.SnapsToDevicePixels = true;
             DateTime dateTime = new DateTime(year, 1, 1);
-            var todaySolarTermIdx = LunarDate.GetSolarTermIndex(DateTime.Today, 7);
+            var todaySolarTermIdx = LuniSolarDate.GetSolarTermIndex(DateTime.Today, 7);
 
             for (int i = 0; i < 24; i++)
             {
                 var idx = (24 + i - 5) % 24;
-                dateTime = Astronomy.FindSolarTermMoment(idx, year).AddHours(timeZone);
+                dateTime = Astronomy.GetDateTimeOfSolarTerm(idx, year).AddHours(timeZone);
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 var rec = CreateRectangle(idx, dateTime, "");
                 if (DateTime.Today.Year == year && todaySolarTermIdx == idx)

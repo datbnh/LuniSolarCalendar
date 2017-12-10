@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Astronomy.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="LunarDate.cs" />
+    <Compile Include="LuniSolarDate.cs" />
     <Compile Include="LunarYear.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

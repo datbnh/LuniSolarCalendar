@@ -11,15 +11,15 @@ namespace Augustine.VietnameseCalendar.UI
 {
     public class CalendarDayToolTipModel : INotifyPropertyChanged
     {
-        public CalendarDayToolTipModel(LunarDate lunarDate, string title = "", string decorativeText = "")
+        public CalendarDayToolTipModel(LuniSolarDate lunarDate, string title = "", string decorativeText = "")
         {
             LunarDate = lunarDate;
             Title = title;
             DecorativeText = decorativeText;//"♥";
         }
 
-        private LunarDate lunarDate;
-        public LunarDate LunarDate
+        private LuniSolarDate lunarDate;
+        public LuniSolarDate LunarDate
         {
             get => lunarDate;
             set

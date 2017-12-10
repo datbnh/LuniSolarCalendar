@@ -9,34 +9,52 @@ namespace Augustine.VietnameseCalendar.UI
 {
     public static class SpecialDayManager
     {
-        public static Dictionary<DateTime, string> SpecialSolarDays = new Dictionary<DateTime, string>()
+        public static List<SpecialDate> SpecialSolarDays = new List<SpecialDate>()
         {
-             { new DateTime(1,1,1), "Tết Dương Lịch"},
-             { new DateTime(1,12,25), "Giáng Sinh"},
+             new SpecialDate( 1,  1, "Tết Dương Lịch"),
+             new SpecialDate(12, 24, "Giáng Sinh") ,
         };
 
-        public static Dictionary<LunarDate, string> SpecialLunarDays = new Dictionary<LunarDate, string>()
+        public static List<SpecialDate> SpecialLunarDays = new List<SpecialDate>()
         {
-            { new LunarDate(1, 1, false, 1, 7), "Tết Nguyên Đán" },
-            { new LunarDate(1, 1, false, 2, 7), "Mồng Hai Tết" },
-            { new LunarDate(1, 1, false, 3, 7), "Mồng Ba Tết" },
-            { new LunarDate(1, 1, false, 15, 7), "Rằm tháng Giêng" },
-            { new LunarDate(1, 3, false, 10, 7), "Giỗ Tổ Hùng Vương" },
-            { new LunarDate(1, 4, false, 15, 7), "Phật Đản" },
-            { new LunarDate(1, 5, false, 5, 7), "Tết Đoan Ngọ" },
-            { new LunarDate(1, 7, false, 15, 7), "Vu Lan" },
-            { new LunarDate(1, 8, false, 15, 7), "Tết Trung Thu" },
-            { new LunarDate(1, 12, false, 23, 7), "Ông Táo về trời" },
+            new SpecialDate( 1,  1, "Tết Nguyên Đán"),
+            new SpecialDate( 1,  2, "Mồng Hai Tết"),
+            new SpecialDate( 1,  3, "Mồng Ba Tết"),
+            new SpecialDate( 1, 15, "Rằm tháng Giêng"),
+            new SpecialDate( 3, 10, "Giỗ Tổ Hùng Vương"),
+            new SpecialDate( 4, 15, "Phật Đản"),
+            new SpecialDate( 5,  5, "Tết Đoan Ngọ"),
+            new SpecialDate( 7, 15, "Vu Lan"),
+            new SpecialDate( 8, 15, "Tết Trung Thu"),
+            new SpecialDate(12, 23, "Ông Táo về trời"),
         };
 
         public static string GetSpecialSolarDateInfo(this DateTime date) {
-            var key = new DateTime(1, date.Month, date.Day);
-            if (SpecialSolarDays.Keys.Contains(key))
+            //if (date.Day == 29 && date.Month == 2)
+            //    return "";
+            //var key = new DateTime(1, date.Month, date.Day);
+            //if (SpecialSolarDays.Contains())
+            //{
+            //    return SpecialSolarDays[key];
+            //} else
+            //{
+            //    return "";
+            //}
+            return "";
+        }
+
+        public class SpecialDate
+        {
+            public int Day { get; set; }
+            public int Month { get; set; }
+            public string Label { get; set; }
+            public string Decorator { get; set; }
+            public SpecialDate(int month, int day, string label, string decorator = "")
             {
-                return SpecialSolarDays[key];
-            } else
-            {
-                return "";
+                Month = month;
+                Day = day;
+                Label = label;
+                Decorator = decorator;
             }
         }
     }

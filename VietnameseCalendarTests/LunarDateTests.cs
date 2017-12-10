@@ -80,8 +80,8 @@ namespace Augustine.VietnameseCalendar.Core.Tests
             {
                 try
                 {
-                    LunarDate lunarDate = LunarDate.FromSolar(date, 7);
-                    DateTime solarDate = LunarDate.ToSolar(lunarDate);
+                    LuniSolarDate lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(date, 7);
+                    DateTime solarDate = LuniSolarDate.ToSolar(lunarDate);
                     Trace.WriteLine(String.Format("{0:dd/MM/yyyy} = {1}", date, lunarDate.FullDayInfo));
                     if ((date != solarDate))
                     {
@@ -127,7 +127,7 @@ namespace Augustine.VietnameseCalendar.Core.Tests
         public void GetDayNameTest()
         {
             DateTime today = DateTime.Today;
-            Console.WriteLine(LunarDate.GetDayName(today.Year, today.Month, today.Day));
+            Console.WriteLine(LuniSolarDate.GetDayName(today.Year, today.Month, today.Day));
         }
     }
 }

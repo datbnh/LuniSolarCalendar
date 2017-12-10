@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Augustine.VietnameseCalendar.Core;
 
 namespace Augustine.VietnameseCalendar.UI
@@ -34,15 +24,13 @@ namespace Augustine.VietnameseCalendar.UI
         // *  list of solar months never changes
 
         private int lastTrackedIndex;
-        private DateTime selectedDate;
-        private LunarDate selectedLunarDate;
+        private LuniSolarDate selectedLunarDate;
         private bool isUpdatingComboBoxes;
 
-        public DateTime SelectedDate { get => selectedDate; set { selectedDate = value; SelectDate(selectedDate); } }
+        public DateTime SelectedDate { get => selectedLunarDate.SolarDate; set { selectedLunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(value, 7); SelectDate(selectedLunarDate.SolarDate); } }
 
         private void SelectDate(DateTime date)
         {
-            selectedDate = date;
             isUpdatingComboBoxes = true;
             SyncSelectedDateToSolarComboBoxes();
             SyncSolarComboBoxesToLunar();
@@ -70,20 +58,19 @@ namespace Augustine.VietnameseCalendar.UI
         {
             InitializeComponent();
 
-            selectedDate = targetDate;
-            selectedLunarDate = LunarDate.FromSolar(SelectedDate, 7);
+            selectedLunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(targetDate, 7);
 
             isUpdatingComboBoxes = true;
 
             PopulateComboBoxYearItems();
-            comboBoxSolarYear.SelectedItem = SelectedDate.Year;
+            comboBoxSolarYear.SelectedItem = selectedLunarDate.SolarDate.Year;
             SyncSelectedLunarYear();
 
             PopulateComboBoxSolarMonthItems();
-            comboBoxSolarMonth.SelectedItem = SelectedDate.Month;
+            comboBoxSolarMonth.SelectedItem = selectedLunarDate.SolarDate.Month;
 
             PopulateComboBoxSolarDayItems();
-            comboBoxSolarDay.SelectedItem = SelectedDate.Day;
+            comboBoxSolarDay.SelectedItem = selectedLunarDate.SolarDate.Day;
 
             PopulateComboBoxLunarMonthItems();
             SyncSelectedLunarMonth();
@@ -146,7 +133,7 @@ namespace Augustine.VietnameseCalendar.UI
             comboBoxLunarMonth.Items.Clear();
             for (int i = 0; i < thisYear.Months.Length; i++)
             {
-                var month = LunarDate.GetMonth(thisYear.Months[i].Item2);
+                var month = LuniSolarDate.GetMonth(thisYear.Months[i].Item2);
                 var nextMonthBeginDate = i == thisYear.Months.Length - 1 ? nextYear.Months[0].Item1 : thisYear.Months[i + 1].Item1;
                 var monthLength = (nextMonthBeginDate - thisYear.Months[i].Item1).TotalDays;
                 if (month == 11 || month == 12)
@@ -156,7 +143,7 @@ namespace Augustine.VietnameseCalendar.UI
             }
             for (int i = 0; i < nextYear.Months.Length; i++)
             {
-                var month = LunarDate.GetMonth(nextYear.Months[i].Item2);
+                var month = LuniSolarDate.GetMonth(nextYear.Months[i].Item2);
                 if (month == 1)
                     break; // only take #11 and #12 of nextYear
                 var monthLength = (nextYear.Months[i + 1].Item1 - nextYear.Months[i].Item1).TotalDays;
@@ -189,7 +176,7 @@ namespace Augustine.VietnameseCalendar.UI
         private void PopulateDetails()
         {
             solarPlaceHolder.Text = String.Format("Dương lịch: {0} {1:dd/MM/yyyy}",
-                AugustineCalendarMonth.DayOfWeekLabels[(int)selectedDate.DayOfWeek], selectedDate);
+                AugustineCalendarMonth.DayOfWeekLabels[(int)selectedLunarDate.SolarDate.DayOfWeek], selectedLunarDate.SolarDate);
             lunarPlaceHolder.Text = "Âm lịch: " + selectedLunarDate.FullDayInfo;
         }
 
@@ -299,7 +286,7 @@ namespace Augustine.VietnameseCalendar.UI
                 return this.Equals(obj as ComboLunarYearItem);
             }
 
-            public override string ToString() { return Year + " (" + LunarDate.GetYearName(Year) + ")"; }
+            public override string ToString() { return Year + " (" + LuniSolarDate.GetYearName(Year) + ")"; }
         }
 
         internal class ComboLunarMonthItem
@@ -309,7 +296,7 @@ namespace Augustine.VietnameseCalendar.UI
             public int MonthLength { get; set; }
             public bool IsLeapMonth { get; set; }
 
-            public override string ToString() { return LunarDate.GetMonthShortName(Month, IsLeapMonth); }
+            public override string ToString() { return LuniSolarDate.GetMonthShortName(Month, IsLeapMonth); }
         }
 
         #endregion
@@ -317,32 +304,31 @@ namespace Augustine.VietnameseCalendar.UI
         #region Sychronizers
         private void SyncSelectedDateToSolarComboBoxes()
         {
-            comboBoxSolarYear.SelectedItem = selectedDate.Year;
-            comboBoxSolarMonth.SelectedItem = selectedDate.Month;
+            comboBoxSolarYear.SelectedItem = selectedLunarDate.SolarDate.Year;
+            comboBoxSolarMonth.SelectedItem = selectedLunarDate.SolarDate.Month;
             PopulateComboBoxSolarDayItems();
-            comboBoxSolarDay.SelectedItem = selectedDate.Day;
+            comboBoxSolarDay.SelectedItem = selectedLunarDate.SolarDate.Day;
             PopulateDetails();
         }
 
         private void SyncLunarComboBoxesToSolar()
         {
-            selectedLunarDate = new LunarDate(
+            selectedLunarDate = LuniSolarDate.LuniSolarDateFromLunarInfo(
                 ((ComboLunarYearItem)comboBoxLunarYear.SelectedItem).Year,
                 ((ComboLunarMonthItem)comboBoxLunarMonth.SelectedItem).Month,
                 ((ComboLunarMonthItem)comboBoxLunarMonth.SelectedItem).IsLeapMonth,
                 ((int)comboBoxLunarDay.SelectedItem), 7.0);
 
-            selectedDate = LunarDate.ToSolar(selectedLunarDate);
             SyncSelectedDateToSolarComboBoxes();
         }
 
         private void SyncSolarComboBoxesToLunar()
         {
-            selectedDate = new DateTime(
+            var selectedDate = new DateTime(
                 (int)comboBoxSolarYear.SelectedValue,
                 (int)comboBoxSolarMonth.SelectedValue,
                 (int)comboBoxSolarDay.SelectedValue);
-            selectedLunarDate = LunarDate.FromSolar(selectedDate, 7);
+            selectedLunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(selectedDate, 7);
 
             SyncSelectedLunarYear();
             PopulateComboBoxLunarMonthItems();
@@ -409,8 +395,8 @@ namespace Augustine.VietnameseCalendar.UI
 
         public void Show(DateTime date)
         {
-            SelectedDate = date;
-            base.Show();
+            selectedLunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(date,7);
+            Show();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
