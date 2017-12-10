@@ -419,6 +419,12 @@ namespace Augustine.VietnameseCalendar.Core
             return L.ToNormalizedArc();
         }
 
+        public static int GetSolarTermIndex(DateTime dateTime)
+        {
+            var julianDate = UniversalDateTimeToJulianDate(dateTime);
+            return (int)(GetSunLongitudeAtJulianDate(julianDate) / Math.PI * 12);
+        }
+
         public static DateTime GetDateTimeOfSolarTerm(int termIndex, int year)
         {
             int[] trialMonths =
