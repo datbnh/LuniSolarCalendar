@@ -35,8 +35,7 @@ namespace Augustine.VietnameseCalendar.Core
 
         private DateTime month11LastYear;
         private DateTime month11ThisYear;
-        //private int[] majorTermAtMonthBeginnings; // debug
-        //private double[] sunLongitudeAtMonthBeginnings; // debug
+
         private static int cacheSize = 5;
         private static Dictionary<int, LunarYear> yearCache;
 
@@ -86,8 +85,8 @@ namespace Augustine.VietnameseCalendar.Core
             TimeZone = timeZone;
 
             // at 00:00:00 local
-            month11LastYear = Astronomy.NewMoon11(Year - 1, TimeZone).Date;
-            month11ThisYear = Astronomy.NewMoon11(Year, TimeZone).Date;
+            month11LastYear = Astronomy.GetNewMoon11(Year - 1, TimeZone).Date;
+            month11ThisYear = Astronomy.GetNewMoon11(Year, TimeZone).Date;
 
             // Convert the local date to UTC date time by adding AddHours(-TimeZone).
             double jdMonth11LastYear = month11LastYear.AddHours(-TimeZone).UniversalDateTimeToJulianDate();
@@ -107,6 +106,13 @@ namespace Augustine.VietnameseCalendar.Core
             }
         }
 
+        /// <summary>
+        /// Hashes the year and time zone info. A year and timezone pair
+        /// has a unique hash.
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="timeZone"></param>
+        /// <returns></returns>
         private static int GetYearAndTimeZoneHash(int year, double timeZone)
         {
             // 2015 UTC-12:45
