@@ -81,7 +81,7 @@ namespace Augustine.VietnameseCalendar.Core.Tests
                 try
                 {
                     LuniSolarDate lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(date, 7);
-                    DateTime solarDate = LuniSolarDate.ToSolar(lunarDate);
+                    DateTime solarDate = LuniSolarDate.LuniSolarDateFromLunarInfo(lunarDate.Year, lunarDate.Month, lunarDate.IsLeapMonth,lunarDate.Day, lunarDate.TimeZone).SolarDate;
                     Trace.WriteLine(String.Format("{0:dd/MM/yyyy} = {1}", date, lunarDate.FullDayInfo));
                     if ((date != solarDate))
                     {
