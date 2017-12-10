@@ -155,8 +155,8 @@ namespace Augustine.VietnameseCalendar.UI
                 solarTermIndex = solarTermIndex % 24;
 
             int H = GetHueValue(solarTermIndex);
-            Color background = Helper.ColorFromHSV(H, 0.1, 1); // very light color
-            Color foreground = Helper.ColorFromHSV(H, 0.5, 0.3); // dark color
+            Color background = Helper.GetBackgroundFromHue(H); // very light color
+            Color foreground = Helper.GetForegroundFromHue(H); // dark color
             ToolTip toolTip = new ToolTip
             {
                 MaxWidth = 200,

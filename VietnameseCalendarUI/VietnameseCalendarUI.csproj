@@ -95,6 +95,7 @@
     <Compile Include="AugustineCalendarMonth.xaml.cs">
       <DependentUpon>AugustineCalendarMonth.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CalendarDayToolTip.cs" />
     <Compile Include="CalendarDayToolTipView.xaml.cs">
       <DependentUpon>CalendarDayToolTipView.xaml</DependentUpon>
     </Compile>

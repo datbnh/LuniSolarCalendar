@@ -103,12 +103,13 @@ namespace Augustine.VietnameseCalendar.UI
                     toolTipDecorator = Decorator.Text;
                     if (string.IsNullOrEmpty(toolTipDecorator))
                         toolTipDecorator = lunarDate.SolarDate.Day.ToString();
-                    CalendarDayToolTipView toolTipContent =
-                        new CalendarDayToolTipView(new CalendarDayToolTipModel(lunarDate, toolTipTitle, toolTipDecorator));
-                    ToolTip = new ToolTip()
-                    {
-                        Content = toolTipContent,
-                    };
+                    //CalendarDayToolTipView toolTipContent =
+                    //    new CalendarDayToolTipView(new CalendarDayToolTipModel(lunarDate, toolTipTitle, toolTipDecorator));
+                    //ToolTip = new ToolTip()
+                    //{
+                    //    Content = toolTipContent,
+                    //};
+                    ToolTip = CalendarDayToolTip.CreateToolTip(toolTipTitle, lunarDate, toolTipDecorator, 10);
                 }
                 
                 UpdateSolarDateLabel();
