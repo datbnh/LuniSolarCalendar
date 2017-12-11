@@ -15,7 +15,7 @@ namespace Augustine.VietnameseCalendar.UI
         public static ToolTip CreateToolTip(string header, LuniSolarDate date,
             string decorator, double hueValue = -1, 
             bool overideContentForeground = false, 
-            int maxWidth = 250, int padding = 3)
+            int maxWidth = 400, int padding = 3)
         {
             Grid contentGrid = new Grid();
             contentGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -38,6 +38,7 @@ namespace Augustine.VietnameseCalendar.UI
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     TextAlignment = TextAlignment.Left,
+                    TextWrapping = TextWrapping.Wrap,
                     Text = columnContent[i],
                     FontWeight = FontWeights.SemiBold,
                 };
@@ -48,8 +49,10 @@ namespace Augustine.VietnameseCalendar.UI
                 contentGrid.Children.Add(headerCell);
                 contentGrid.Children.Add(contentCell);
             }
-            ContentControl cc = new ContentControl();
-            cc.Content = contentGrid;
+            ContentControl cc = new ContentControl
+            {
+                Content = contentGrid
+            };
 
             return ToolTipWithHeader.CreateToolTip(header, null, cc,
             decorator, hueValue, overideContentForeground, maxWidth, padding);
@@ -120,8 +123,11 @@ namespace Augustine.VietnameseCalendar.UI
                 decoratorVisualBrush.AlignmentX = AlignmentX.Right;
                 decoratorVisualBrush.AlignmentY = AlignmentY.Bottom;
                 decoratorVisualBrush.Visual = decoratorTextBlock;
-                Grid decoratorGrid = new Grid();
-                decoratorGrid.Background = decoratorVisualBrush;
+                Grid decoratorGrid = new Grid
+                {
+                    Background = decoratorVisualBrush,
+                    Margin = new Thickness(0, 0, -15, -15),
+                };
                 Grid mainGrid = new Grid();
                 mainGrid.Children.Add(decoratorGrid);
 
