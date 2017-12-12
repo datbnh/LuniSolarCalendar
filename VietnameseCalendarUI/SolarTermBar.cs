@@ -9,10 +9,6 @@
 
 using Augustine.VietnameseCalendar.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -21,14 +17,15 @@ namespace Augustine.VietnameseCalendar.UI
 {
     public static class SolarTermBar
     {
-        // Non-linear hue interpolation: the values in [brackets] are selected value for each season.
+        // Linear hue interpolation with different slopes: 
+        // The values in [brackets] are selected value for each season.
         // Other values are linearly interpolated by segment.
-        //                  339   300   260   220   180   140   110   90    70    
-        //        Hue:  [359]  319   280  [240]  200   160  [120]  100   80   [60]50 40 30 20 10/[0=359]
-        // Term Index:   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23/ 0
-        //               ^-winter solstice ^-spring equinox  ^-summer solstice ^-autumn equinox / ^-winter solstice
-        //           ...________/\________________/\________________/\________________/\________/__...
-        //               winter        spring            summer            autumn        winter
+        //                                                      
+        //        Hue:  [120]110 100|90  80  70 [60] 50  40 |30  20  10 [0]  340 320|300 280 260[240]220 200|180 160 140/120
+        // Term Index:   0   1   2  |3   4   5   6   7   8  |9   10  11  12  13  14 |15  16  17  18  19  20 |21  22  23 /0
+        //               ^-winter solstice       ^-spring equinox        ^-summer solstice       ^-autumn equinox       /^-winter solstice
+        //           ...____________/\______________________/\_____________________/\_______________________/\__________/__...
+        //                 winter            spring                   summer                 autumn             winter
 
         /// <summary>
         /// Hue pallet for solar terms.
@@ -36,7 +33,7 @@ namespace Augustine.VietnameseCalendar.UI
         /// </summary>
         public static readonly int[] Hues = {120, 110, 100,  90,  80,  70,
                                               60,  50,  40,  30,  20,  10,
-                                             359, 339, 319, 300, 280, 260,
+                                               0, 340, 320, 300, 280, 260,
                                              240, 220, 200, 180, 160, 140 };
         public static readonly string[] SolarTermsVietnamese = {"Xuân Phân", "Thanh Minh",
                                                  "Cốc Vũ", "Lập Hạ",
@@ -129,7 +126,10 @@ namespace Augustine.VietnameseCalendar.UI
                 Height = 10,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                ToolTip = CreateToolTip(solarTermIndex, date, description),
+                ToolTip = ToolTipWithHeader.CreateToolTip(
+                    SolarTermsVietnamese[solarTermIndex], 
+                    "Từ ngày " + date.ToString("dd /MM/yyyy HH:mm ± 15\\'"), 
+                    null, null, GetHueValue(solarTermIndex), true, 200, 3, 12),
             };
             rectangle.Style = new Style()
             {
@@ -147,46 +147,6 @@ namespace Augustine.VietnameseCalendar.UI
             };
 
             return rectangle;
-        }
-
-        private static ToolTip CreateToolTip(int solarTermIndex, DateTime date, string description)
-        {
-            if (solarTermIndex >= 24)
-                solarTermIndex = solarTermIndex % 24;
-
-            int H = GetHueValue(solarTermIndex);
-            Color background = Helper.GetBackgroundFromHue(H); // very light color
-            Color foreground = Helper.GetForegroundFromHue(H); // dark color
-            ToolTip toolTip = new ToolTip
-            {
-                MaxWidth = 200,
-                Padding = new Thickness(3),
-                Background = new SolidColorBrush(background),
-                Foreground = new SolidColorBrush(foreground)
-            };
-            StackPanel stackPanel = new StackPanel();
-            TextBlock headerTextBlock = new TextBlock
-            {
-                Text = SolarTermsVietnamese[solarTermIndex],
-                TextWrapping = TextWrapping.Wrap,
-                FontWeight = FontWeights.SemiBold,
-            };
-            TextBlock subHeaderTextBlock = new TextBlock
-            {
-                Text = (date != null ? date.ToString("dd/MM/yyyy HH:mm UTC+07") : ""),
-                TextWrapping = TextWrapping.Wrap,
-            };
-            TextBlock contentTextBlock = new TextBlock
-            {
-                Text = description,//"Description (to be added).",
-                TextWrapping = TextWrapping.Wrap,
-            };
-            stackPanel.Children.Add(headerTextBlock);
-            stackPanel.Children.Add(subHeaderTextBlock);
-            stackPanel.Children.Add(new Separator());
-            stackPanel.Children.Add(contentTextBlock);
-            toolTip.Content = stackPanel;
-            return toolTip;
         }
     }
 }
