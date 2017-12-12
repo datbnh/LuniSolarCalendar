@@ -62,7 +62,8 @@ namespace Augustine.VietnameseCalendar.UI
     public static class ToolTipWithHeader
     {
         public static ToolTip CreateToolTip(string header, string subHeader, Control content,
-            string decorator, double hueValue = -1, bool overideContentForeground = false, int maxWidth=200, int padding=3)
+            string decorator, double hueValue = -1, bool overrideContentForeground = false, 
+            int maxWidth=200, int padding=3, double headerFontSize = 14)
         {
             ToolTip toolTip = new ToolTip
             {
@@ -80,7 +81,7 @@ namespace Augustine.VietnameseCalendar.UI
                     TextAlignment = TextAlignment.Center,
                     TextWrapping = TextWrapping.Wrap,
                     FontWeight = FontWeights.SemiBold,
-                    FontSize = 14,
+                    FontSize = headerFontSize,
                 };
                 stackPanel.Children.Add(headerTextBlock);
             }
@@ -95,8 +96,14 @@ namespace Augustine.VietnameseCalendar.UI
                 stackPanel.Children.Add(subHeaderTextBlock);
             }
 
-            if (!(string.IsNullOrEmpty(header) && string.IsNullOrEmpty(subHeader))) {
+            if (!(string.IsNullOrEmpty(header) && string.IsNullOrEmpty(subHeader)) 
+                && content != null) {
                 stackPanel.Children.Add(new Separator());
+            }
+
+            if (content != null)
+            {
+                stackPanel.Children.Add(content);
             }
 
             if (hueValue >= 0)
@@ -105,32 +112,36 @@ namespace Augustine.VietnameseCalendar.UI
                 Color foreground = Helper.GetForegroundFromHue(hueValue);
                 toolTip.Background = new SolidColorBrush(background);
                 toolTip.Foreground = new SolidColorBrush(foreground);
-                if (overideContentForeground)
+                if (overrideContentForeground && content != null)
                 {
                     content.Foreground = new SolidColorBrush(foreground);
                 }
             }
 
-            stackPanel.Children.Add(content);
-
             if (!string.IsNullOrEmpty(decorator))
             {
-                TextBlock decoratorTextBlock = new TextBlock();
-                decoratorTextBlock.Opacity = 0.2;
-                decoratorTextBlock.Text = decorator;
-                VisualBrush decoratorVisualBrush = new VisualBrush();
-                decoratorVisualBrush.Stretch = Stretch.Uniform;
-                decoratorVisualBrush.AlignmentX = AlignmentX.Right;
-                decoratorVisualBrush.AlignmentY = AlignmentY.Bottom;
-                decoratorVisualBrush.Visual = decoratorTextBlock;
+                TextBlock decoratorTextBlock = new TextBlock
+                {
+                    Opacity = 0.2,
+                    Text = decorator
+                };
+
+                VisualBrush decoratorVisualBrush = new VisualBrush
+                {
+                    Stretch = Stretch.Uniform,
+                    AlignmentX = AlignmentX.Right,
+                    AlignmentY = AlignmentY.Bottom,
+                    Visual = decoratorTextBlock
+                };
+
                 Grid decoratorGrid = new Grid
                 {
                     Background = decoratorVisualBrush,
                     Margin = new Thickness(0, 0, -15, -15),
                 };
+
                 Grid mainGrid = new Grid();
                 mainGrid.Children.Add(decoratorGrid);
-
                 mainGrid.Children.Add(stackPanel);
 
                 toolTip.Content = mainGrid;
