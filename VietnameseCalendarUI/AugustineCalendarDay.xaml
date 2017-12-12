@@ -18,8 +18,10 @@
             <Grid.Background>
                 <VisualBrush Stretch="Uniform" AlignmentX="Right" AlignmentY="Bottom">
                     <VisualBrush.Visual>
-                        <TextBlock x:Name="Decorator" Opacity="0.2" FontFamily="Segoe UI Symbol"
-                                   Text="*"/>
+                        <TextBlock x:Name="Decorator" 
+                                   Opacity="0.2"
+                                   Text="*" 
+                                   TextOptions.TextFormattingMode="Ideal"/>
                     </VisualBrush.Visual>
                 </VisualBrush>
             </Grid.Background>
@@ -34,30 +36,34 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock x:Name="textSolar" 
+                       Grid.Row="0" 
+                       Grid.RowSpan="2"
                        HorizontalAlignment="Left" 
                        VerticalAlignment="Top" 
                        Margin="0,-5,0,0" 
                        TextWrapping="Wrap" 
                        Text="27/5" 
-                       Grid.Row="0" 
-                       Grid.RowSpan="1"
-                       FontSize="24" FontFamily="Segoe UI"/>
+                       FontSize="24"/>
             <TextBlock x:Name="textLunar" 
+                       Grid.Row="0" 
+                       Grid.RowSpan="2"
                        HorizontalAlignment="Right" 
                        VerticalAlignment="Bottom" 
                        Margin="0" 
                        TextWrapping="Wrap" 
                        Text="27/6" 
-                       Grid.Row="0" 
-                       Grid.RowSpan="2"
-                       FontSize="16" FontFamily="Segoe UI"/>
+                       FontSize="16"/>
             <TextBlock x:Name="textLabel" 
-
-                       TextWrapping="WrapWithOverflow" 
+                       Grid.Row="2" 
+                       Grid.RowSpan="3" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom" 
+                       Margin="0,-5,0,-3"
                        Text="Tết Nguyên Đán"
                        TextAlignment="Center"
-                       Grid.Row="2" 
-                       Grid.RowSpan="1" TextTrimming="CharacterEllipsis" FontSize="10" VerticalAlignment="Bottom" Margin="0,0,0,-3"/>
+                       TextTrimming="CharacterEllipsis" 
+                       TextWrapping="WrapWithOverflow" 
+                       FontSize="10"/>
         </Grid>
     </Grid>
 </UserControl>
