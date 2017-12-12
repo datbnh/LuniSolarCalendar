@@ -95,6 +95,7 @@
     <Compile Include="Converter.xaml.cs">
       <DependentUpon>Converter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DayTypes.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="SolarTermBar.cs" />
     <Compile Include="SpecialDayManager.cs" />
