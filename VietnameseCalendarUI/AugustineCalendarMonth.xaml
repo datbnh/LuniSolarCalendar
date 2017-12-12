@@ -13,23 +13,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" SnapsToDevicePixels="True" TextOptions.TextHintingMode="Fixed">
-    <!--<UserControl.Resources>
-        <Style x:Key="ForegroundInheritanceFixStyle"
-       TargetType="Control">
-            <Setter Property="Foreground"
-            Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"/>
-        </Style>
-
-        <Style TargetType="{x:Type Label}"
-       BasedOn="{StaticResource ForegroundInheritanceFixStyle}">
-        </Style>
-
-        <Style TargetType="{x:Type CheckBox}"
-       BasedOn="{StaticResource ForegroundInheritanceFixStyle}">
-        </Style>
-    </UserControl.Resources>-->
-
+             d:DesignHeight="300" d:DesignWidth="300" SnapsToDevicePixels="True" TextOptions.TextHintingMode="Fixed" Loaded="UserControl_Loaded">
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
