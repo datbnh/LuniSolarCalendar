@@ -8,10 +8,6 @@
  *************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace Augustine.VietnameseCalendar.UI
@@ -55,7 +51,11 @@ namespace Augustine.VietnameseCalendar.UI
 
         public static readonly double BACKGROUND_S = 0.1;
         public static readonly double BACKGROUND_V = 1.0;
-        public static readonly double FOREGROUND_S = 0.5;
+        public static readonly double FOREGROUND_S = 1.0;
         public static readonly double FOREGROUND_V = 0.3;
+
+        public static readonly double RED_HUE = 0;
+        public static readonly double GREEN_HUE = 120;
+        public static readonly double BLUE_HUE = 240;
     }
 }
