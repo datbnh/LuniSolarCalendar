@@ -27,13 +27,15 @@ namespace Augustine.VietnameseCalendar.UI
 
             HorizontalAlignment = HorizontalAlignment.Stretch;
             VerticalAlignment = VerticalAlignment.Stretch;
-            FaceStyle = FaceStyles.Normal;
-            BorderStyle = BorderStyles.Normal;
+            Theme = Themes.Dark;
+            //FaceStyle = FaceStyles.Normal;
+            //BorderStyle = BorderStyles.Normal;
 
             IsSolarMonthVisible = false;
             IsLunarMonthVisible = false;
             Label = "Label";
             Decorator.Text = "*";
+            DayType = DayTypes.Normal;
         }
 
         private DateTime solarDate;
@@ -43,6 +45,7 @@ namespace Augustine.VietnameseCalendar.UI
             set
             {
                 solarDate = value;
+
                 try
                 {
                     lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(solarDate, 7);
@@ -66,6 +69,7 @@ namespace Augustine.VietnameseCalendar.UI
                         Label = specialDayInfo.Label;
                         Decorator.Text = specialDayInfo.Decorator;
                         toolTipTitle = Label;
+                        DayType = specialDayInfo.DayType;
                     }
                     else
                     {
@@ -98,6 +102,13 @@ namespace Augustine.VietnameseCalendar.UI
                             Label = "";
                             Decorator.Text = "";
                         }
+
+                        if (solarDate.DayOfWeek == DayOfWeek.Saturday)
+                            DayType = DayTypes.Saturday;
+                        else if (solarDate.DayOfWeek == DayOfWeek.Sunday)
+                            DayType = DayTypes.Sunday;
+                        else
+                            DayType = DayTypes.Normal;
                     }
 
                     toolTipDecorator = Decorator.Text;
@@ -109,9 +120,9 @@ namespace Augustine.VietnameseCalendar.UI
                     //{
                     //    Content = toolTipContent,
                     //};
-                    ToolTip = CalendarDayToolTip.CreateToolTip(toolTipTitle, lunarDate, toolTipDecorator, 10);
+                    ToolTip = CalendarDayToolTip.CreateToolTip(toolTipTitle, lunarDate, toolTipDecorator, -1);    
                 }
-                
+
                 UpdateSolarDateLabel();
                 UpdateLunarDateLabel();
             }
@@ -132,35 +143,49 @@ namespace Augustine.VietnameseCalendar.UI
         private string label;
         public string Label { get => label; set { label = value; UpdateDayLabel(); } }
 
-        private FaceStyle faceStyle;
-        public FaceStyle FaceStyle
-        {
-            get => faceStyle;
-            set
-            {
-                faceStyle = value;
-                Background = faceStyle.Backcolor;
-                Foreground = faceStyle.Foreground;
-                textSolar.FontSize = faceStyle.SolarFontSize;
-                textLunar.FontSize = faceStyle.LunarFontSize;
-                textLabel.FontSize = faceStyle.LabelFontSize;
-                textSolar.FontWeight = faceStyle.FontWeight;
-                textLunar.FontWeight = faceStyle.FontWeight;
-            }
-        }
+        //private FaceStyle faceStyle;
+        //public FaceStyle FaceStyle
+        //{
+        //    get => faceStyle;
+        //    set
+        //    {
+        //        faceStyle = value;
+        //        Background = faceStyle.Backcolor;
+        //        Foreground = faceStyle.Foreground;
+        //        textSolar.FontSize = faceStyle.SolarFontSize;
+        //        textLunar.FontSize = faceStyle.LunarFontSize;
+        //        textLabel.FontSize = faceStyle.LabelFontSize;
+        //        textSolar.FontWeight = faceStyle.FontWeight;
+        //        textLunar.FontWeight = faceStyle.FontWeight;
+        //    }
+        //}
 
-        private BorderStyle borderStyle;
-        public BorderStyle BorderStyle
-        {
-            get => borderStyle;
-            set
-            {
-                borderStyle = value;
-                Padding = borderStyle.Padding;
-                BorderBrush = borderStyle.BorderColor;
-                BorderThickness = borderStyle.BorderThickness;
-            }
-        }
+        //private BorderStyle borderStyle;
+        //public BorderStyle BorderStyle
+        //{
+        //    get => borderStyle;
+        //    set
+        //    {
+        //        borderStyle = value;
+        //        Padding = borderStyle.Padding;
+        //        BorderBrush = borderStyle.BorderColor;
+        //        BorderThickness = borderStyle.BorderThickness;
+        //    }
+        //}
+
+        //private Theme theme;
+        //public Theme Theme
+        //{
+        //    get => theme;
+        //    set
+        //    {
+        //        if (value != theme)
+        //        {
+        //            theme = value;
+        //            this.Style = theme.DayTileStyle;
+        //        }
+        //    }
+        //}
 
         private void UpdateSolarDateLabel()
         {
@@ -192,5 +217,26 @@ namespace Augustine.VietnameseCalendar.UI
                 textLabel.Text = label;
             }
         }
+
+        public DayTypes DayType { get => (DayTypes)GetValue(DayTypeProperty); set => SetValue(DayTypeProperty, value); }
+
+        public bool IsSelected { get  => (bool)GetValue(IsSelectedProperty); set => SetValue(IsSelectedProperty, value); }
+
+        public Theme Theme { get => (Theme)GetValue(ThemeProperty); set
+            {
+                SetValue(ThemeProperty, value);
+                Style = value.DayTileStyle;
+            }
+        }
+
+        public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
+            "Theme", typeof(Theme), typeof(AugustineCalendarDay), new PropertyMetadata(Themes.Light));
+
+        public static readonly DependencyProperty DayTypeProperty = DependencyProperty.Register(
+            "DayType", typeof(DayTypes), typeof(AugustineCalendarDay), new PropertyMetadata(DayTypes.Normal));
+
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
+            "IsSelected", typeof(bool), typeof(AugustineCalendarDay), new PropertyMetadata(false));
+
     }
 }
