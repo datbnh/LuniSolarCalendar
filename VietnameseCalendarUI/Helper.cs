@@ -8,6 +8,8 @@
  *************************************************************/
 
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Media;
 
 namespace Augustine.VietnameseCalendar.UI
@@ -90,5 +92,17 @@ namespace Augustine.VietnameseCalendar.UI
         public static readonly double RED_HUE = 0;
         public static readonly double GREEN_HUE = 120;
         public static readonly double BLUE_HUE = 240;
+
+        public static T DeepClone<T>(T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
+            }
+        }
     }
 }
