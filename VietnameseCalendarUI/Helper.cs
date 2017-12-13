@@ -14,7 +14,27 @@ namespace Augustine.VietnameseCalendar.UI
 {
     public static class Helper
     {
+        /// <summary>
+        /// hue form 0 to 360, saturation from 0 to 1, value from 0 to 1.
+        /// </summary>
+        /// <param name="hue"></param>
+        /// <param name="saturation"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Color ColorFromHSV(double hue, double saturation, double value)
+        {
+            return ColorFromAHSV(255, hue, saturation, value);
+        }
+
+        /// <summary>
+        /// alpha from 0 to 255, hue form 0 to 360, saturation from 0 to 1, value from 0 to 1.
+        /// </summary>
+        /// <param name="alpha">0 to 255</param>
+        /// <param name="hue">0 to 360</param>
+        /// <param name="saturation">0 to 1</param>
+        /// <param name="value">0 to 1</param>
+        /// <returns></returns>
+        public static Color ColorFromAHSV(byte alpha, double hue, double saturation, double value)
         {
             int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
             double f = hue / 60 - Math.Floor(hue / 60);
@@ -26,17 +46,30 @@ namespace Augustine.VietnameseCalendar.UI
             byte t = (byte)Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
             if (hi == 0)
-                return Color.FromArgb(255, v, t, p);
+                return Color.FromArgb(alpha, v, t, p);
             else if (hi == 1)
-                return Color.FromArgb(255, q, v, p);
+                return Color.FromArgb(alpha, q, v, p);
             else if (hi == 2)
-                return Color.FromArgb(255, p, v, t);
+                return Color.FromArgb(alpha, p, v, t);
             else if (hi == 3)
-                return Color.FromArgb(255, p, q, v);
+                return Color.FromArgb(alpha, p, q, v);
             else if (hi == 4)
-                return Color.FromArgb(255, t, p, v);
+                return Color.FromArgb(alpha, t, p, v);
             else
-                return Color.FromArgb(255, v, p, q);
+                return Color.FromArgb(alpha, v, p, q);
+        }
+
+        public static void ColorToAHSV(Color color, out byte alpha, out double hue, out double saturation, out double value)
+        {
+            System.Drawing.Color sysColor =
+                System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+            int max = Math.Max(color.R, Math.Max(color.G, color.B));
+            int min = Math.Min(color.R, Math.Min(color.G, color.B));
+
+            alpha = color.A;
+            hue = sysColor.GetHue();
+            saturation = (max == 0) ? 0 : 1d - (1d * min / max);
+            value = max / 255d;
         }
 
         public static Color GetBackgroundFromHue(double h)
