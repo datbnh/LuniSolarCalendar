@@ -7,31 +7,82 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
+using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 
 namespace Augustine.VietnameseCalendar.UI
 {
-    public class ThemeColor
+    public class ThemeColor : INotifyPropertyChanged
     {
-        public Brush BaseBorder;
-        public Brush HighlightBorder;
-        public Brush BaseBackground;
-        public Brush BaseForeground;
-        public Brush HighlightBackground;
-        public Brush HighlightForeground;
-        public Brush SaturdayBackground;
-        public Brush SaturdayForeground;
-        public Brush SundayBackground;
-        public Brush SundayForeground;
-        public Brush SpecialLevel1Background;
-        public Brush SpecialLevel1Foreground;
-        public Brush SpecialLevel2Background;
-        public Brush SpecialLevel2Foreground;
-        public Brush SpecialLevel3Background;
-        public Brush SpecialLevel3Foreground;
-        public Brush GrayedOutBackground;
-        public Brush GrayedOutForeground;
+        private Brush border;
+        private Brush selectedBorder;
+        private Brush background;
+        private Brush foreground;
+        private Brush normalBackground;
+        private Brush mouseOverBackground;
+        private Brush highlightForeground;
+        private Brush saturdayBackground;
+        private Brush saturdayForeground;
+        private Brush sundayBackground;
+        private Brush sundayForeground;
+        private Brush specialLevel1Background;
+        private Brush specialLevel1Foreground;
+        private Brush specialLevel2Background;
+        private Brush specialLevel2Foreground;
+        private Brush specialLevel3Background;
+        private Brush specialLevel3Foreground;
+        private Brush grayedOutBackground;
+        private Brush grayedOutForeground;
+
+        public Brush Border { get => border; set { if (value != border) { border = value; OnPropertyChanged("Border"); } } }
+        public Brush SelectedBorder { get => selectedBorder; set { if (value != selectedBorder) { selectedBorder = value; OnPropertyChanged("SelectedBorder"); } } }
+        public Brush Background { get => background; set { if (value != background) { background = value; OnPropertyChanged("Background"); } } }
+        public Brush Foreground { get => foreground; set { if (value != foreground) { foreground = value; OnPropertyChanged("Foreground"); } } }
+        public Brush NormalBackground { get => normalBackground; set { if (value != normalBackground) { normalBackground = value; OnPropertyChanged("NormalBackground"); } } }
+        public Brush MouseOverBackground { get => mouseOverBackground; set { if (value != mouseOverBackground) { mouseOverBackground = value; OnPropertyChanged("MouseOverBackground"); } } }
+        public Brush HighlightForeground { get => highlightForeground; set { if (value != highlightForeground) { highlightForeground = value; OnPropertyChanged("HighlightForeground"); } } }
+        public Brush SaturdayBackground { get => saturdayBackground; set { if (value != saturdayBackground) { saturdayBackground = value; OnPropertyChanged("SaturdayBackground"); } } }
+        public Brush SaturdayForeground { get => saturdayForeground; set { if (value != saturdayForeground) { saturdayForeground = value; OnPropertyChanged("SaturdayForeground"); } } }
+        public Brush SundayBackground { get => sundayBackground; set { if (value != sundayBackground) { sundayBackground = value; OnPropertyChanged("SundayBackground"); } } }
+        public Brush SundayForeground { get => sundayForeground; set { if (value != sundayForeground) { sundayForeground = value; OnPropertyChanged("SundayForeground"); } } }
+        public Brush SpecialLevel1Background { get => specialLevel1Background; set { if (value != specialLevel1Background) { specialLevel1Background = value; OnPropertyChanged("SpecialLevel1Background"); } } }
+        public Brush SpecialLevel1Foreground { get => specialLevel1Foreground; set { if (value != specialLevel1Foreground) { specialLevel1Foreground = value; OnPropertyChanged("SpecialLevel1Foreground"); } } }
+        public Brush SpecialLevel2Background { get => specialLevel2Background; set { if (value != specialLevel2Background) { specialLevel2Background = value; OnPropertyChanged("SpecialLevel2Background"); } } }
+        public Brush SpecialLevel2Foreground { get => specialLevel2Foreground; set { if (value != specialLevel2Foreground) { specialLevel2Foreground = value; OnPropertyChanged("SpecialLevel2Foreground"); } } }
+        public Brush SpecialLevel3Background { get => specialLevel3Background; set { if (value != specialLevel3Background) { specialLevel3Background = value; OnPropertyChanged("SpecialLevel3Background"); } } }
+        public Brush SpecialLevel3Foreground { get => specialLevel3Foreground; set { if (value != specialLevel3Foreground) { specialLevel3Foreground = value; OnPropertyChanged("SpecialLevel3Foreground"); } } }
+        public Brush GrayedOutBackground { get => grayedOutBackground; set { if (value != grayedOutBackground) { grayedOutBackground = value; OnPropertyChanged("GrayedOutBackground"); } } }
+        public Brush GrayedOutForeground { get => grayedOutForeground; set { if (value != grayedOutForeground) { grayedOutForeground = value; OnPropertyChanged("GrayedOutForeground"); } } }
+
+        public ThemeColor ()
+        {
+            Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));
+            NormalBackground = new SolidColorBrush(Color.FromArgb(24, 0, 0, 0));
+            MouseOverBackground = new SolidColorBrush(Helper.ColorFromAHSV(16, 0, 0, 0));
+            SpecialLevel1Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.95));
+            SpecialLevel2Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.55));
+            SpecialLevel3Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.35));
+
+            Foreground = Brushes.White;
+            SaturdayForeground = new SolidColorBrush(Helper.ColorFromHSV(206, .85, .94));
+            SundayForeground = new SolidColorBrush(Helper.ColorFromHSV(13, .86, .99));
+            SpecialLevel1Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99));
+            SpecialLevel2Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99));
+            SpecialLevel3Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99));
+            GrayedOutForeground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.6));
+
+            Border = null; //new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
+            SelectedBorder = new SolidColorBrush(Helper.ColorFromAHSV(128, 0, 0, 0.2));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string property)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
     }
 
     public static class ThemeColors
@@ -42,13 +93,13 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 ThemeColor themeColor = new ThemeColor
                 {
-                    BaseBackground = Brushes.White,
-                    HighlightBackground = Brushes.Cornsilk,
+                    Background = Brushes.White,
+                    MouseOverBackground = Brushes.Cornsilk,
                     SpecialLevel1Background = Brushes.Crimson,
                     SpecialLevel2Background = Brushes.LightGreen,
                     SpecialLevel3Background = Brushes.LightPink,
 
-                    BaseForeground = Brushes.Black,
+                    Foreground = Brushes.Black,
                     SaturdayForeground = Brushes.DarkBlue,
                     SundayForeground = Brushes.DarkRed,
                     SpecialLevel1Foreground = Brushes.DarkSalmon,
@@ -56,33 +107,33 @@ namespace Augustine.VietnameseCalendar.UI
                     SpecialLevel3Foreground = Brushes.DarkViolet,
                     GrayedOutForeground = Brushes.LightGray,
 
-                    BaseBorder = Brushes.LightGray,
-                    HighlightBorder = Brushes.LightBlue
+                    Border = Brushes.LightGray,
+                    SelectedBorder = Brushes.LightBlue
                 };
 
-                themeColor.SaturdayBackground = themeColor.BaseBackground;
-                themeColor.SundayBackground = themeColor.BaseBackground;
-                themeColor.GrayedOutBackground = themeColor.BaseBackground;
-                themeColor.HighlightForeground = themeColor.BaseForeground;
+                themeColor.SaturdayBackground = themeColor.Background;
+                themeColor.SundayBackground = themeColor.Background;
+                themeColor.GrayedOutBackground = themeColor.Background;
+                themeColor.HighlightForeground = themeColor.Foreground;
 
                 return themeColor;
             }
         }
 
 
-        public static ThemeColor LightTransparent
+        public static ThemeColor LightSemiTransparent
         {
             get
             {
                 ThemeColor themeColor = new ThemeColor
                 {
-                    BaseBackground = new SolidColorBrush(Color.FromArgb(1, 255, 255, 255)),
-                    HighlightBackground = Brushes.Cornsilk,
+                    Background = new SolidColorBrush(Color.FromArgb(32, 255, 255, 255)),
+                    MouseOverBackground = Brushes.Cornsilk,
                     SpecialLevel1Background = Brushes.Crimson,
                     SpecialLevel2Background = Brushes.LightGreen,
                     SpecialLevel3Background = Brushes.LightPink,
 
-                    BaseForeground = Brushes.Black,
+                    Foreground = Brushes.Black,
                     SaturdayForeground = Brushes.DarkBlue,
                     SundayForeground = Brushes.DarkRed,
                     SpecialLevel1Foreground = Brushes.DarkSalmon,
@@ -90,14 +141,14 @@ namespace Augustine.VietnameseCalendar.UI
                     SpecialLevel3Foreground = Brushes.DarkViolet,
                     GrayedOutForeground = Brushes.LightGray,
 
-                    BaseBorder = Brushes.LightGray,
-                    HighlightBorder = Brushes.LightBlue
+                    Border = null, //Brushes.LightGray,
+                    SelectedBorder = Brushes.LightBlue
                 };
 
-                themeColor.SaturdayBackground = themeColor.BaseBackground;
-                themeColor.SundayBackground = themeColor.BaseBackground;
-                themeColor.GrayedOutBackground = themeColor.BaseBackground;
-                themeColor.HighlightForeground = themeColor.BaseForeground;
+                themeColor.SaturdayBackground = themeColor.Background;
+                themeColor.SundayBackground = themeColor.Background;
+                themeColor.GrayedOutBackground = themeColor.Background;
+                themeColor.HighlightForeground = themeColor.Foreground;
 
                 return themeColor;
             }
@@ -110,13 +161,13 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 ThemeColor themeColor = new ThemeColor()
                 {
-                    BaseBackground = Brushes.Black,
-                    HighlightBackground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
+                    Background = Brushes.Black,
+                    MouseOverBackground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
                     SpecialLevel1Background = new SolidColorBrush(Helper.ColorFromHSV(15, 1, 0.2)), // red
                     SpecialLevel2Background = new SolidColorBrush(Helper.ColorFromHSV(45, 1, 0.2)), // green
                     SpecialLevel3Background = new SolidColorBrush(Helper.ColorFromHSV(215, 1, 0.2)), // blue
 
-                    BaseForeground = Brushes.White,
+                    Foreground = Brushes.White,
                     SaturdayForeground = new SolidColorBrush(Helper.ColorFromHSV(195, 1, 1)),
                     SundayForeground = new SolidColorBrush(Helper.ColorFromHSV(345, 1, 1)),
                     SpecialLevel1Foreground = new SolidColorBrush(Helper.ColorFromHSV(15, 1, 1)),
@@ -124,50 +175,89 @@ namespace Augustine.VietnameseCalendar.UI
                     SpecialLevel3Foreground = new SolidColorBrush(Helper.ColorFromHSV(215, 1, 1)),
                     GrayedOutForeground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.3)),
 
-                    BaseBorder = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
-                    HighlightBorder = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.2)),
+                    Border = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
+                    SelectedBorder = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.2)),
                 };
                 
-                themeColor.SaturdayBackground = themeColor.BaseBackground;
-                themeColor.SundayBackground = themeColor.BaseBackground;
-                themeColor.GrayedOutBackground = themeColor.BaseBackground;
-                themeColor.HighlightForeground = themeColor.BaseForeground;
+                themeColor.SaturdayBackground = themeColor.Background;
+                themeColor.SundayBackground = themeColor.Background;
+                themeColor.GrayedOutBackground = themeColor.Background;
+                themeColor.HighlightForeground = themeColor.Foreground;
 
                 return themeColor;
             }
         }
 
-        public static ThemeColor DarkTransparent
+        public static ThemeColor DarkSemiTransparent
         {
             get
             {
                 ThemeColor themeColor = new ThemeColor()
                 {
-                    BaseBackground = new SolidColorBrush(Color.FromArgb(1,0,0,0)),
-                    HighlightBackground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
-                    SpecialLevel1Background = new SolidColorBrush(Helper.ColorFromHSV(15, 1, 0.2)), // red
-                    SpecialLevel2Background = new SolidColorBrush(Helper.ColorFromHSV(45, 1, 0.2)), // green
-                    SpecialLevel3Background = new SolidColorBrush(Helper.ColorFromHSV(215, 1, 0.2)), // blue
+                    Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0)),
+                    NormalBackground = new SolidColorBrush(Color.FromArgb(24, 0, 0, 0)),
+                    MouseOverBackground = new SolidColorBrush(Helper.ColorFromAHSV(16, 0, 0, 0)),
+                    SpecialLevel1Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.95)),
+                    SpecialLevel2Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.55)), 
+                    SpecialLevel3Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.35)), 
 
-                    BaseForeground = Brushes.White,
-                    SaturdayForeground = new SolidColorBrush(Helper.ColorFromHSV(195, 1, 1)),
-                    SundayForeground = new SolidColorBrush(Helper.ColorFromHSV(345, 1, 1)),
-                    SpecialLevel1Foreground = new SolidColorBrush(Helper.ColorFromHSV(15, 1, 1)),
-                    SpecialLevel2Foreground = new SolidColorBrush(Helper.ColorFromHSV(45, 1, 1)),
-                    SpecialLevel3Foreground = new SolidColorBrush(Helper.ColorFromHSV(215, 1, 1)),
-                    GrayedOutForeground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.3)),
+                    Foreground = Brushes.White,
+                    SaturdayForeground = new SolidColorBrush(Helper.ColorFromHSV(206, .85, .94)),
+                    SundayForeground = new SolidColorBrush(Helper.ColorFromHSV(13, .86, .99)),
+                    SpecialLevel1Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99)),
+                    SpecialLevel2Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99)),
+                    SpecialLevel3Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99)),
+                    GrayedOutForeground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.6)),
 
-                    BaseBorder = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
-                    HighlightBorder = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.2)),
+                    Border = null, //new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
+                    SelectedBorder = new SolidColorBrush(Helper.ColorFromAHSV(128, 0, 0, 0.2)),
                 };
 
-                themeColor.SaturdayBackground = themeColor.BaseBackground;
-                themeColor.SundayBackground = themeColor.BaseBackground;
-                themeColor.GrayedOutBackground = themeColor.BaseBackground;
-                themeColor.HighlightForeground = themeColor.BaseForeground;
+                themeColor.SaturdayBackground = themeColor.NormalBackground;
+                themeColor.SundayBackground = themeColor.NormalBackground;
+                themeColor.GrayedOutBackground = null;//themeColor.Background;
+                themeColor.HighlightForeground = themeColor.Foreground;
 
                 return themeColor;
             }
+        }
+
+        public static ThemeColor CreateSemiTransparentThemeColor(byte baseAlpha, 
+            double normalForegroundHue = 0, 
+            double saturdayForegroundHue = 206, 
+            double sundayForegroundHue = 13,
+            double specialBackgroundHue = 0, 
+            double specialForegroundHue = 43)
+        {
+            byte mouseOverAlpha = (byte)(baseAlpha * 2 / 3 % 255);
+            byte specialAlpha = (byte)(baseAlpha * 2 % 255);
+            ThemeColor themeColor = new ThemeColor()
+            {
+                Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0)),
+                NormalBackground = new SolidColorBrush(Color.FromArgb(baseAlpha, 0, 0, 0)),
+                MouseOverBackground = new SolidColorBrush(Helper.ColorFromAHSV(mouseOverAlpha, 0, 0, 0)),
+                SpecialLevel1Background = new SolidColorBrush(Helper.ColorFromAHSV(specialAlpha, 0, specialBackgroundHue, 0.95)),
+                SpecialLevel2Background = new SolidColorBrush(Helper.ColorFromAHSV(specialAlpha, 0, specialBackgroundHue, 0.55)),
+                SpecialLevel3Background = new SolidColorBrush(Helper.ColorFromAHSV(specialAlpha, 0, specialBackgroundHue, 0.35)),
+
+                Foreground = Brushes.White,
+                SaturdayForeground = new SolidColorBrush(Helper.ColorFromHSV(saturdayForegroundHue, .85, .94)),
+                SundayForeground = new SolidColorBrush(Helper.ColorFromHSV(sundayForegroundHue, .86, .99)),
+                SpecialLevel1Foreground = new SolidColorBrush(Helper.ColorFromHSV(specialForegroundHue, 0.90, 0.99)),
+                SpecialLevel2Foreground = new SolidColorBrush(Helper.ColorFromHSV(specialForegroundHue, 0.90, 0.99)),
+                SpecialLevel3Foreground = new SolidColorBrush(Helper.ColorFromHSV(specialForegroundHue, 0.90, 0.99)),
+                GrayedOutForeground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.6)),
+
+                Border = null, //new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
+                SelectedBorder = new SolidColorBrush(Helper.ColorFromAHSV(128, 0, 0, 0.2)),
+            };
+
+            themeColor.SaturdayBackground = themeColor.NormalBackground;
+            themeColor.SundayBackground = themeColor.NormalBackground;
+            themeColor.GrayedOutBackground = null;//themeColor.Background;
+            themeColor.HighlightForeground = themeColor.Foreground;
+
+            return themeColor;
         }
     }
 
@@ -190,244 +280,60 @@ namespace Augustine.VietnameseCalendar.UI
 
     public static class Themes
     {
-        public static Theme Light
+        
+        public static Theme Light { get => CreateTheme(ThemeColors.Light, null); }
+        public static Theme Dark { get => CreateTheme(ThemeColors.Dark, null); }
+        public static Theme LightSemiTransparent { get => CreateTheme(ThemeColors.LightSemiTransparent, null); }
+        public static Theme DarkSemiTransparent { get => CreateTheme(ThemeColors.DarkSemiTransparent, null); }
+
+        public static Theme CreateTheme(ThemeColor themeColor, ThemeSize themeSize)
         {
-            get
+            Theme theme = new Theme()
             {
-                Theme theme = new Theme()
-                {
-                    ThemeColor = ThemeColors.Light,
-                };
-                theme.DayTileStyle = new Style()
-                {
-                    // lower trigger -> higher priority
-                    Triggers =
-                        {   new Trigger() { Property = AugustineCalendarDay.IsSelectedProperty, Value = true,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.BorderThicknessProperty, Value = new Thickness(1, 1, 2, 2), },
-                                                        new Setter() { Property = AugustineCalendarDay.PaddingProperty, Value = new Thickness(1, 1, 0, 0),},
-                                                        new Setter() { Property = AugustineCalendarDay.BorderBrushProperty, Value = ThemeColors.Light.HighlightBorder, },
-                                                      },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.Saturday,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Light.SaturdayForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Light.SaturdayBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.Sunday,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Light.SundayForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Light.SundayBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel3,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Light.SpecialLevel3Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Light.SpecialLevel3Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel2,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Light.SpecialLevel2Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Light.SpecialLevel2Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel1,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Light.SpecialLevel1Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Light.SpecialLevel1Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.IsMouseOverProperty, Value = true,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Light.HighlightBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.GrayedOut,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Light.GrayedOutForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Light.GrayedOutBackground, },
-                                                        //new Setter() { Property = AugustineCalendarDay.FontWeightProperty, Value =  FontWeights.Light, },
-                                                      },
-                                          },
-                        },
-                    Setters = { new Setter() { Property = AugustineCalendarDay.BorderThicknessProperty, Value = new Thickness(0, 0, 1, 1),},
-                                    new Setter() { Property = AugustineCalendarDay.PaddingProperty, Value = new Thickness(2, 2, 1, 1),},
-                                    new Setter() { Property = AugustineCalendarDay.MarginProperty, Value = new Thickness(0),},
-                                    new Setter() { Property = AugustineCalendarDay.BorderBrushProperty, Value = ThemeColors.Light.BaseBorder, },
-                                    new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value = ThemeColors.Light.BaseBackground, },
-                                    new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value = ThemeColors.Light.BaseForeground, },
-                                  },
-                };
-                return theme;
-            }
+                ThemeColor = themeColor,
+                FontSizes = themeSize,
+            };
+
+            theme.DayTileStyle = new Style();
+            // Triggers
+            theme.DayTileStyle.Triggers.Add(new Trigger {
+                Property = AugustineCalendarDay.IsSelectedProperty, Value = true,
+                Setters = { new Setter(AugustineCalendarDay.BorderBrushProperty, theme.ThemeColor.SelectedBorder), },
+            });
+            theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.Saturday, theme.ThemeColor.SaturdayBackground, theme.ThemeColor.SaturdayForeground));
+            theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.Sunday, theme.ThemeColor.SundayBackground, theme.ThemeColor.SundayForeground));
+            theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.SpecialLevel3, theme.ThemeColor.SpecialLevel3Background, theme.ThemeColor.SpecialLevel3Foreground));
+            theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.SpecialLevel2, theme.ThemeColor.SpecialLevel2Background, theme.ThemeColor.SpecialLevel2Foreground));
+            theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.SpecialLevel1, theme.ThemeColor.SpecialLevel1Background, theme.ThemeColor.SpecialLevel1Foreground));
+            theme.DayTileStyle.Triggers.Add(new Trigger
+            {
+                Property = AugustineCalendarDay.IsMouseOverProperty, Value = true,
+                Setters = { new Setter(AugustineCalendarDay.BackgroundProperty, theme.ThemeColor.MouseOverBackground), },
+            });
+            theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.GrayedOut, theme.ThemeColor.GrayedOutBackground, theme.ThemeColor.GrayedOutForeground));
+            // Setters
+            theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.PaddingProperty, new Thickness(0)));
+            theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.MarginProperty, new Thickness(0)));
+            theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.BorderThicknessProperty, new Thickness(0, 0, 1, 1)));
+            theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.BorderBrushProperty, theme.ThemeColor.Border));
+            theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.BackgroundProperty, theme.ThemeColor.NormalBackground));
+            theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.ForegroundProperty, theme.ThemeColor.Foreground));
+
+            return theme;
         }
 
-        public static Theme LightTransparent
+        private static Trigger CreateDayTypeTrigger(DayTypes dayType, Brush background, Brush foreground)
         {
-            get
+            return new Trigger()
             {
-                Theme theme = new Theme()
+                Property = AugustineCalendarDay.DayTypeProperty,
+                Value = dayType,
+                Setters =
                 {
-                    ThemeColor = ThemeColors.LightTransparent,
-                };
-                theme.DayTileStyle = new Style()
-                {
-                    // lower trigger -> higher priority
-                    Triggers =
-                        {   new Trigger() { Property = AugustineCalendarDay.IsSelectedProperty, Value = true,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.BorderThicknessProperty, Value = new Thickness(1, 1, 2, 2), },
-                                                        new Setter() { Property = AugustineCalendarDay.PaddingProperty, Value = new Thickness(1, 1, 0, 0),},
-                                                        new Setter() { Property = AugustineCalendarDay.BorderBrushProperty, Value = ThemeColors.LightTransparent.HighlightBorder, },
-                                                      },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.Saturday,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.LightTransparent.SaturdayForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.LightTransparent.SaturdayBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.Sunday,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.LightTransparent.SundayForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.LightTransparent.SundayBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel3,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.LightTransparent.SpecialLevel3Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.LightTransparent.SpecialLevel3Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel2,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.LightTransparent.SpecialLevel2Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.LightTransparent.SpecialLevel2Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel1,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.LightTransparent.SpecialLevel1Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.LightTransparent.SpecialLevel1Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.IsMouseOverProperty, Value = true,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.LightTransparent.HighlightBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.GrayedOut,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.LightTransparent.GrayedOutForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.LightTransparent.GrayedOutBackground, },
-                                                        //new Setter() { Property = AugustineCalendarDay.FontWeightProperty, Value =  FontWeights.LightTransparent, },
-                                                      },
-                                          },
-                        },
-                    Setters = { new Setter() { Property = AugustineCalendarDay.BorderThicknessProperty, Value = new Thickness(0, 0, 1, 1),},
-                                    new Setter() { Property = AugustineCalendarDay.PaddingProperty, Value = new Thickness(2, 2, 1, 1),},
-                                    new Setter() { Property = AugustineCalendarDay.MarginProperty, Value = new Thickness(0),},
-                                    new Setter() { Property = AugustineCalendarDay.BorderBrushProperty, Value = ThemeColors.LightTransparent.BaseBorder, },
-                                    new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value = ThemeColors.LightTransparent.BaseBackground, },
-                                    new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value = ThemeColors.LightTransparent.BaseForeground, },
-                                  },
-                };
-                return theme;
-            }
-        }
-
-        public static Theme Dark
-        {
-            get
-            {
-                Theme theme = new Theme()
-                {
-                    ThemeColor = ThemeColors.Dark,
-                };
-                theme.DayTileStyle = new Style()
-                {
-                    // lower trigger -> higher priority
-                    Triggers =
-                        {   new Trigger() { Property = AugustineCalendarDay.IsSelectedProperty, Value = true,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.BorderThicknessProperty, Value = new Thickness(1, 1, 2, 2), },
-                                                        new Setter() { Property = AugustineCalendarDay.PaddingProperty, Value = new Thickness(1, 1, 0, 0),},
-                                                        new Setter() { Property = AugustineCalendarDay.BorderBrushProperty, Value = ThemeColors.Dark.HighlightBorder, },
-                                                      },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.Saturday,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Dark.SaturdayForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Dark.SaturdayBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.Sunday,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Dark.SundayForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Dark.SundayBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel3,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Dark.SpecialLevel3Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Dark.SpecialLevel3Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel2,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Dark.SpecialLevel2Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Dark.SpecialLevel2Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel1,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Dark.SpecialLevel1Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Dark.SpecialLevel1Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.IsMouseOverProperty, Value = true,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Dark.HighlightBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.GrayedOut,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.Dark.GrayedOutForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.Dark.GrayedOutBackground, },
-                                                        //new Setter() { Property = AugustineCalendarDay.FontWeightProperty, Value =  FontWeights.Dark, },
-                                                      },
-                                          },
-                        },
-                    Setters = { new Setter() { Property = AugustineCalendarDay.BorderThicknessProperty, Value = new Thickness(0, 0, 1, 1),},
-                                    new Setter() { Property = AugustineCalendarDay.PaddingProperty, Value = new Thickness(2, 2, 1, 1),},
-                                    new Setter() { Property = AugustineCalendarDay.MarginProperty, Value = new Thickness(0),},
-                                    new Setter() { Property = AugustineCalendarDay.BorderBrushProperty, Value = ThemeColors.Dark.BaseBorder, },
-                                    new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value = ThemeColors.Dark.BaseBackground, },
-                                    new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value = ThemeColors.Dark.BaseForeground, },
-                                  },
-                };
-                return theme;
-            }
-        }
-
-        public static Theme DarkTransparent
-        {
-            get
-            {
-                Theme theme = new Theme()
-                {
-                    ThemeColor = ThemeColors.DarkTransparent,
-                };
-                theme.DayTileStyle = new Style()
-                {
-                    // lower trigger -> higher priority
-                    Triggers =
-                        {   new Trigger() { Property = AugustineCalendarDay.IsSelectedProperty, Value = true,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.BorderThicknessProperty, Value = new Thickness(1, 1, 2, 2), },
-                                                        new Setter() { Property = AugustineCalendarDay.PaddingProperty, Value = new Thickness(1, 1, 0, 0),},
-                                                        new Setter() { Property = AugustineCalendarDay.BorderBrushProperty, Value = ThemeColors.DarkTransparent.HighlightBorder, },
-                                                      },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.Saturday,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.DarkTransparent.SaturdayForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.DarkTransparent.SaturdayBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.Sunday,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.DarkTransparent.SundayForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.DarkTransparent.SundayBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel3,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.DarkTransparent.SpecialLevel3Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.DarkTransparent.SpecialLevel3Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel2,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.DarkTransparent.SpecialLevel2Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.DarkTransparent.SpecialLevel2Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.SpecialLevel1,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.DarkTransparent.SpecialLevel1Foreground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.DarkTransparent.SpecialLevel1Background, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.IsMouseOverProperty, Value = true,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.DarkTransparent.HighlightBackground, }, },
-                                          },
-                            new Trigger() { Property = AugustineCalendarDay.DayTypeProperty, Value = DayTypes.GrayedOut,
-                                            Setters = { new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  ThemeColors.DarkTransparent.GrayedOutForeground, },
-                                                        new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  ThemeColors.DarkTransparent.GrayedOutBackground, },
-                                                        //new Setter() { Property = AugustineCalendarDay.FontWeightProperty, Value =  FontWeights.DarkTransparent, },
-                                                      },
-                                          },
-                        },
-                    Setters = { new Setter() { Property = AugustineCalendarDay.BorderThicknessProperty, Value = new Thickness(0, 0, 1, 1),},
-                                    new Setter() { Property = AugustineCalendarDay.PaddingProperty, Value = new Thickness(2, 2, 1, 1),},
-                                    new Setter() { Property = AugustineCalendarDay.MarginProperty, Value = new Thickness(0),},
-                                    new Setter() { Property = AugustineCalendarDay.BorderBrushProperty, Value = ThemeColors.DarkTransparent.BaseBorder, },
-                                    new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value = ThemeColors.DarkTransparent.BaseBackground, },
-                                    new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value = ThemeColors.DarkTransparent.BaseForeground, },
-                                  },
-                };
-                return theme;
-            }
+                    new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  foreground, },
+                    new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  background, },
+                },
+            };
         }
     }
 }
