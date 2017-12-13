@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:Augustine.VietnameseCalendar.UI"
         mc:Ignorable="d"
         Title="ThemeEditor"
-        SizeToContent="Width"
-        d:DataContext="{d:DesignInstance local:ThemeEditor, IsDesignTimeCreatable=True}" Height="340" Width="520" SizeChanged="Window_SizeChanged">
+        d:DataContext="{d:DesignInstance local:ThemeEditor, IsDesignTimeCreatable=True}" Height="340" Width="520" SizeChanged="Window_SizeChanged" Loaded="window_Loaded">
     <!--<Window.Resources>-->
     <!--<local:BrushToARGBStringConverter x:Key="BrushToARGBStringConverter"/>
         <local:BrushToAHSVStringConverter x:Key="BrushToAHSVStringConverter"/>
@@ -37,14 +36,15 @@
                     <Expander.Header>
                         <TextBlock FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" ScrollViewer.CanContentScroll="True">MÀU SẮC</TextBlock>
                     </Expander.Header>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White">
-                        <StackPanel>
-                            <Expander  Grid.Row="0" IsExpanded="True">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Name="ExpanderColorsStackPanel">
+                            <!--<Expander Grid.Row="0" IsExpanded="True">
                                 <Expander.Header>
                                     <TextBlock>
                                         <Run FontWeight="Bold" Text="CHUNG"/>
                                         <Run Text="[ Mẫu ]" 
-                                             Background="{Binding ThemeColor1.Background}" Foreground="{Binding ThemeColor1.Foreground}"/>
+                                             Background="{Binding ThemeColor1.Background}" 
+                                             Foreground="{Binding ThemeColor1.Foreground}"/>
                                     </TextBlock>
                                 </Expander.Header>
                                 <StackPanel Orientation="Vertical">
@@ -168,15 +168,12 @@
                                     <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
                                        Brush="{Binding ThemeColor1.SpecialLevel3Foreground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" Padding="5,0,0,0" />
                                 </StackPanel>
-                            </Expander>
-
-
-                            <!--</Grid>-->
+                            </Expander>-->
                         </StackPanel>
                     </ScrollViewer>
                 </Expander>
 
-                <Expander  IsExpanded="True" DockPanel.Dock="Top" Padding="3,3,3,0" Expanded="Expander_Expanded">
+                <Expander Name="ExpanderAdvancedSettings" IsExpanded="False" DockPanel.Dock="Top" Padding="3,3,3,0" Expanded="Expander_Expanded">
                     <Expander.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFD6D6D6" Offset="0"/>
@@ -187,19 +184,25 @@
                         <TextBlock FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" ScrollViewer.CanContentScroll="True">NÂNG CAO</TextBlock>
                     </Expander.Header>
 
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
-                            
+
                         </StackPanel>
                     </ScrollViewer>
                 </Expander>
             </StackPanel>
         </ScrollViewer>
         <StackPanel Grid.Row="3" Margin="0,10,0,0" VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button VerticalAlignment="Bottom" Width="100" Margin="5,0,0,0"
+                    x:Name="open" Content="📂 Mở Từ File" IsEnabled="False"/>
+            <Button VerticalAlignment="Bottom" Width="100" Margin="5,0,0,0"
+                    x:Name="save" Content="💾 Lưu Vào File" IsEnabled="False"/>
+            <Button VerticalAlignment="Bottom" Width="75" Margin="15,0,0,0"
+                    x:Name="restore" Content="🔄 Khôi Phục" FontFamily="Segoe UI Symbol" Click="restore_Click" />
+            <Button VerticalAlignment="Bottom" Width="75" Margin="15,0,0,0"
+                    x:Name="cancel" Content="✘ Đóng" IsCancel="True" Click="cancel_Click" />
             <Button VerticalAlignment="Bottom" Width="75" Margin="5,0,0,0"
-                    x:Name="cancel" Content="Cancel" Click="button_Click" />
-            <Button VerticalAlignment="Bottom" Width="75" Margin="5,0,0,0"
-                    x:Name="apply" Content="Apply" Click="button_Click" />
+                    x:Name="apply" Content="✔ Áp Dụng"  Click="apply_Click" IsDefault="True" />
         </StackPanel>
 
     </Grid>
