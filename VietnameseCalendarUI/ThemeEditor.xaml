@@ -1,0 +1,206 @@
+﻿<Window x:Name="window" x:Class="Augustine.VietnameseCalendar.UI.ThemeEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Augustine.VietnameseCalendar.UI"
+        mc:Ignorable="d"
+        Title="ThemeEditor"
+        SizeToContent="Width"
+        d:DataContext="{d:DesignInstance local:ThemeEditor, IsDesignTimeCreatable=True}" Height="340" Width="520" SizeChanged="Window_SizeChanged">
+    <!--<Window.Resources>-->
+    <!--<local:BrushToARGBStringConverter x:Key="BrushToARGBStringConverter"/>
+        <local:BrushToAHSVStringConverter x:Key="BrushToAHSVStringConverter"/>
+        <local:BrushToAConverter x:Key="BrushToAConverter"/>-->
+    <!--<local:ThemeColor x:Key="ThemeColor" Background="#FFB26969"/>-->
+    <!--</Window.Resources>-->
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Name="MasterScrollViewer" HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto">
+            <StackPanel Name="MasterStackPanel" Grid.Row="0">
+                <Expander Name="ExpanderColors" IsExpanded="True" DockPanel.Dock="Top" Padding="3,3,3,0" MaxHeight="230" Expanded="Expander_Expanded">
+                    <Expander.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFD6D6D6" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Expander.Background>
+                    <Expander.Header>
+                        <TextBlock FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" ScrollViewer.CanContentScroll="True">MÀU SẮC</TextBlock>
+                    </Expander.Header>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White">
+                        <StackPanel>
+                            <Expander  Grid.Row="0" IsExpanded="True">
+                                <Expander.Header>
+                                    <TextBlock>
+                                        <Run FontWeight="Bold" Text="CHUNG"/>
+                                        <Run Text="[ Mẫu ]" 
+                                             Background="{Binding ThemeColor1.Background}" Foreground="{Binding ThemeColor1.Foreground}"/>
+                                    </TextBlock>
+                                </Expander.Header>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock>
+                                        <Run Text="Màu Nền:"/>
+                                        <Run Text="{Binding ThemeColor1.Background}"/>
+                                        <Run Text="| Màu Chữ:"/>
+                                        <Run Text="{Binding ThemeColor1.Foreground}"/>      
+                                    </TextBlock>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.Background, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="0,0,5,0" />
+                                        <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.Foreground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" Padding="5,0,0,0" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Expander>
+
+                            <Expander Grid.Row="1" IsExpanded="True">
+                                <Expander.Header>
+                                    <TextBlock>
+                            <Run FontWeight="Bold" Text="Ngày Trong Tuần"/>
+                            <Run Text="// Màu Nền:"/>
+                            <Run Text="{Binding ThemeColor1.NormalBackground}"/>
+                            <Run Text="| Màu Chữ: "/>
+                            <Run Text="(Theo màu chữ chung)"/>
+                                    </TextBlock>
+                                </Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.NormalBackground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" Margin="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="0,0,5,0" />
+                                </StackPanel>
+                            </Expander>
+
+                            <Expander Grid.Row="2" IsExpanded="True">
+                                <Expander.Header>
+                                    <TextBlock>
+                            <Run FontWeight="Bold" Text="Thứ Bảy"/>
+                            <Run Text="// Màu Nền:"/>
+                            <Run Text="{Binding ThemeColor1.SaturdayBackground}"/>
+                            <Run Text="| Màu Chữ: "/>
+                            <Run Text="{Binding ThemeColor1.SaturdayForeground}"/>
+                                    </TextBlock>
+                                </Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SaturdayBackground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="0,0,5,0" />
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SaturdayForeground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" Padding="5,0,0,0" />
+                                </StackPanel>
+                            </Expander>
+
+                            <Expander Grid.Row="3" IsExpanded="True">
+                                <Expander.Header>
+                                    <TextBlock>
+                            <Run FontWeight="Bold" Text="Chủ Nhật"/>
+                            <Run Text="// Màu Nền:"/>
+                            <Run Text="{Binding ThemeColor1.SundayBackground}"/>
+                            <Run Text="| Màu Chữ: "/>
+                            <Run Text="{Binding ThemeColor1.SundayForeground}"/>
+                                    </TextBlock>
+                                </Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SundayBackground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="0,0,5,0" />
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SundayForeground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" Padding="5,0,0,0" />
+                                </StackPanel>
+                            </Expander>
+
+                            <Expander Grid.Row="4" IsExpanded="True">
+                                <Expander.Header>
+                                    <TextBlock>
+                            <Run FontWeight="Bold" Text="Ngày Đặc Biệt loại 1 (Rất quan trọng)"/>
+                            <Run Text="// Màu Nền:"/>
+                            <Run Text="{Binding ThemeColor1.SpecialLevel1Background}"/>
+                            <Run Text="| Màu Chữ: "/>
+                            <Run Text="{Binding ThemeColor1.SpecialLevel1Foreground}"/>
+                                    </TextBlock>
+                                </Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SpecialLevel1Background, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" Margin="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="0,0,5,0" />
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SpecialLevel1Foreground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" Padding="5,0,0,0" />
+                                </StackPanel>
+                            </Expander>
+
+                            <Expander Grid.Row="5" IsExpanded="True">
+                                <Expander.Header>
+                                    <TextBlock>
+                            <Run FontWeight="Bold" Text="Ngày Đặc Biệt loại 2 (Quan trọng)"/>
+                            <Run Text="// Màu Nền:"/>
+                            <Run Text="{Binding ThemeColor1.SpecialLevel2Background}"/>
+                            <Run Text="| Màu Chữ: "/>
+                            <Run Text="{Binding ThemeColor1.SpecialLevel2Foreground}"/>
+                                    </TextBlock>
+                                </Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SpecialLevel2Background, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="0,0,5,0" />
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SpecialLevel2Foreground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" Padding="5,0,0,0" />
+                                </StackPanel>
+                            </Expander>
+
+                            <Expander Grid.Row="6" IsExpanded="True">
+                                <Expander.Header>
+                                    <TextBlock>
+                            <Run FontWeight="Bold" Text="Ngày Đặc Biệt loại 3 (Nhắc nhở)"/>
+                            <Run Text="// Màu Nền:"/>
+                            <Run Text="{Binding ThemeColor1.SpecialLevel3Background}"/>
+                            <Run Text="| Màu Chữ: "/>
+                            <Run Text="{Binding ThemeColor1.SpecialLevel3Foreground}"/>
+                                    </TextBlock>
+                                </Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SpecialLevel3Background, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" BorderBrush="Gray" BorderThickness="0,0,1,0" Padding="0,0,5,0" />
+                                    <local:ColorPicker HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                                       Brush="{Binding ThemeColor1.SpecialLevel3Foreground, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ThemeEditor}}}" Padding="5,0,0,0" />
+                                </StackPanel>
+                            </Expander>
+
+
+                            <!--</Grid>-->
+                        </StackPanel>
+                    </ScrollViewer>
+                </Expander>
+
+                <Expander  IsExpanded="True" DockPanel.Dock="Top" Padding="3,3,3,0" Expanded="Expander_Expanded">
+                    <Expander.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFD6D6D6" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Expander.Background>
+                    <Expander.Header>
+                        <TextBlock FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" ScrollViewer.CanContentScroll="True">NÂNG CAO</TextBlock>
+                    </Expander.Header>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White">
+                        <StackPanel>
+                            
+                        </StackPanel>
+                    </ScrollViewer>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Row="3" Margin="0,10,0,0" VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button VerticalAlignment="Bottom" Width="75" Margin="5,0,0,0"
+                    x:Name="cancel" Content="Cancel" Click="button_Click" />
+            <Button VerticalAlignment="Bottom" Width="75" Margin="5,0,0,0"
+                    x:Name="apply" Content="Apply" Click="button_Click" />
+        </StackPanel>
+
+    </Grid>
+</Window>
