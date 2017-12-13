@@ -109,9 +109,9 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 SetValue(ThemeProperty, value);
 
-                Background = value.ThemeColor.BaseBackground;
-                Foreground = value.ThemeColor.BaseForeground;
-                BorderBrush = value.ThemeColor.BaseBorder;
+                Background = value.ThemeColor.Background;
+                Foreground = value.ThemeColor.Foreground;
+                BorderBrush = value.ThemeColor.Border;
                 for (int i = 0; i < days.Length; i++)
                 {
                     days[i].Theme = value;
@@ -638,7 +638,7 @@ namespace Augustine.VietnameseCalendar.UI
             //{
 
             //};
-            Theme = Themes.DarkTransparent;
+            
             Effect = new DropShadowEffect() {
                 BlurRadius = 3,
                 ShadowDepth = 1,
