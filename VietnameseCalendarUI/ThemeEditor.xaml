@@ -7,6 +7,21 @@
         mc:Ignorable="d"
         Title="ThemeEditor"
         d:DataContext="{d:DesignInstance local:ThemeEditor, IsDesignTimeCreatable=True}" Height="340" Width="520" SizeChanged="Window_SizeChanged" Loaded="window_Loaded">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="CrossBrush" EndPoint="0,3" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="3,0">
+            <LinearGradientBrush.RelativeTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                    <SkewTransform AngleY="0" AngleX="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </LinearGradientBrush.RelativeTransform>
+            <GradientStop Color="Gray"/>
+            <GradientStop Color="White" Offset="1"/>
+            <GradientStop Color="Silver" Offset="0.25"/>
+        </LinearGradientBrush>
+    </Window.Resources>
     <!--<Window.Resources>-->
     <!--<local:BrushToARGBStringConverter x:Key="BrushToARGBStringConverter"/>
         <local:BrushToAHSVStringConverter x:Key="BrushToAHSVStringConverter"/>
@@ -34,10 +49,22 @@
                         </LinearGradientBrush>
                     </Expander.Background>
                     <Expander.Header>
-                        <TextBlock FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" ScrollViewer.CanContentScroll="True">MÀU SẮC</TextBlock>
+                        <!--<Grid HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>-->
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" ScrollViewer.CanContentScroll="True">MÀU SẮC</TextBlock>
+                            <!--<ComboBox Grid.Row="0" Grid.Column="1" Text="Chọn Chủ Đề Định Sẵn..." VerticalAlignment="Center">
+                                <ComboBoxItem Content="Sáng"/>
+                                <ComboBoxItem Content="Tối"/>
+                                <ComboBoxItem Content="Sáng - Trong Suốt"/>
+                                <ComboBoxItem Content="Tối - Trong Suốt"/>
+                            </ComboBox>-->
+                        <!--</Grid>-->
                     </Expander.Header>
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto">
-                        <StackPanel Name="ExpanderColorsStackPanel">
+                        <StackPanel Name="ExpanderColorsStackPanel" MinHeight="100" RenderTransformOrigin="0.5,0.5">
                             <!--<Expander Grid.Row="0" IsExpanded="True">
                                 <Expander.Header>
                                     <TextBlock>
