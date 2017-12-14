@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Augustine.VietnameseCalendar.UI"
         mc:Ignorable="d"
-        Title="ThemeEditor"
+        Title="Lịch Việt Nam: Tùy Biến Giao Diện"
         d:DataContext="{d:DesignInstance local:ThemeEditor, IsDesignTimeCreatable=True}" Height="340" Width="520" SizeChanged="Window_SizeChanged" Loaded="window_Loaded">
     <Window.Resources>
         <LinearGradientBrush x:Key="CrossBrush" EndPoint="0,3" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="3,0">
@@ -82,7 +82,37 @@
 
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Name="isDropShadow" Grid.Row="0" Content="Hiệu ứng đổ bóng" VerticalAlignment="Top"></CheckBox>
+                                
+                                <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,5,0">Blur Radius (px)</TextBlock>
+                                <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,5,0">Shadow Depth (px)</TextBlock>
+                                <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,5,0">Color</TextBlock>
 
+                                <TextBox Name="DropShadowRadius" Grid.Row="0" Grid.Column="2" Width="Auto" HorizontalAlignment="Left" MinWidth="30">3</TextBox>
+                                <TextBox Name="DropShadowDepth"  Grid.Row="1" Grid.Column="2" Width="Auto" HorizontalAlignment="Left" MinWidth="30">0</TextBox>
+                                <TextBox Name="DropShadowColor" Grid.Row="2" Grid.Column="2" Width="Auto" HorizontalAlignment="Left" MinWidth="30">#FF808080</TextBox>
+
+                                <Label Grid.Row="3" Content="Text Formatting Mode" VerticalContentAlignment="Center"></Label>
+                                <ComboBox Name="textFormattingMode"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" VerticalContentAlignment="Center" HorizontalAlignment="Left">
+                                    <ComboBoxItem >Ideal</ComboBoxItem>
+                                    <ComboBoxItem ToolTip="Nên dùng trong trường hợp chữ trắng/sáng trên nền đen/tối.\r\nTuy nhiên kiểu chữ nửa đậm (SemiBold) sẽ chuyển thành bình thường.">Display</ComboBoxItem>
+                                </ComboBox>
+                            </Grid>
                         </StackPanel>
                     </ScrollViewer>
                 </Expander>
