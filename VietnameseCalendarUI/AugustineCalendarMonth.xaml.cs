@@ -54,7 +54,8 @@ namespace Augustine.VietnameseCalendar.UI
 
         private DayOfWeek firstDayOfWeek = DayOfWeek.Sunday;
 
-        private Label monthLabel;
+        private Label monthLabelSolar;
+        private Label monthLabelLunar;
         private UserControl solarTermBar;
         private Label todayInfoLabel;
         private Label selectedDateInfoLabel;
@@ -96,7 +97,7 @@ namespace Augustine.VietnameseCalendar.UI
             InitializeDayOfWeekLabels();
             InitializeCwLabels();
 
-            Theme = Themes.DarkSemiTransparent;
+            Theme = Themes.Light;
         }
 
         #region === Properties ===
@@ -237,23 +238,41 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void InitializeMonthLabel()
         {
-            monthLabel = new Label
+            StackPanel stackPanel = new StackPanel()
             {
-                FontSize = 20f,
+                Orientation = Orientation.Vertical,
+                HorizontalAlignment = HorizontalAlignment.Center,
+            };
+
+            monthLabelSolar = new Label
+            {
+                FontSize = 18f,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(0),
+                Margin = new Thickness(0, 0, 0, -3),
                 Padding = new Thickness(0, 0, 0, 0),
             };
 
-            monthLabel.MouseWheel += MonthLabel_MouseWheel;
-            //BindingOperations.SetBinding(monthLabel, ForegroundProperty, backgroundBinding);
-            BindingOperations.SetBinding(monthLabel, ForegroundProperty, foregroundBinding);
+            monthLabelLunar = new Label
+            {
+                FontSize = 16f,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(0, -3, 0, 0),
+                Padding = new Thickness(0, 0, 0, 0),
+            };
 
-            Grid.SetColumn(monthLabel, COL_IDX_MONTH_LABEL);
-            Grid.SetColumnSpan(monthLabel, MainGrid.ColumnDefinitions.Count - COL_IDX_MONTH_LABEL);
-            Grid.SetRow(monthLabel, ROW_IDX_MONTH_LABEL);
-            MainGrid.Children.Add(monthLabel);
+            stackPanel.Children.Add(monthLabelSolar);
+            stackPanel.Children.Add(monthLabelLunar);
+
+            stackPanel.MouseWheel += MonthLabel_MouseWheel;
+            //BindingOperations.SetBinding(monthLabel, ForegroundProperty, backgroundBinding);
+            BindingOperations.SetBinding(stackPanel, ForegroundProperty, foregroundBinding);
+
+            Grid.SetColumn(stackPanel, COL_IDX_MONTH_LABEL);
+            Grid.SetColumnSpan(stackPanel, MainGrid.ColumnDefinitions.Count - COL_IDX_MONTH_LABEL);
+            Grid.SetRow(stackPanel, ROW_IDX_MONTH_LABEL);
+            MainGrid.Children.Add(stackPanel);
             UpdateMonthLabels();
         }
 
@@ -488,7 +507,7 @@ namespace Augustine.VietnameseCalendar.UI
             String lunarInfo = "";
             if (monthBeginLunarDate.Year != monthEndLunarDate.Year)
             {
-                lunarInfo = String.Format("Th. {0}{1} năm {2}/Th. {3}{4} năm {5}",
+                lunarInfo = String.Format("Tháng {0}{1} năm {2} - Tháng {3}{4} năm {5}",
                     monthBeginLunarDate.MonthName,
                     monthBeginLunarDate.IsLeapMonth ? " nhuận" : "",
                     monthBeginLunarDate.YearName,
@@ -499,14 +518,14 @@ namespace Augustine.VietnameseCalendar.UI
             else if (monthBeginLunarDate.Month == monthEndLunarDate.Month &&
                     monthBeginLunarDate.IsLeapMonth == monthEndLunarDate.IsLeapMonth)
             {
-                lunarInfo = String.Format("Th. {0}{1} năm {2}",
+                lunarInfo = String.Format("Tháng {0}{1} năm {2}",
                     monthEndLunarDate.MonthName,
                     monthEndLunarDate.IsLeapMonth ? " nhuận" : "",
                     monthEndLunarDate.YearName);
             }
             else
             {
-                lunarInfo = String.Format("Th. {0}{1}/{2}{3} năm {4}",
+                lunarInfo = String.Format("Tháng {0}{1}/{2}{3} năm {4}",
                     monthBeginLunarDate.MonthName,
                     monthBeginLunarDate.IsLeapMonth ? " nhuận" : "",
                     monthEndLunarDate.MonthName,
@@ -514,9 +533,10 @@ namespace Augustine.VietnameseCalendar.UI
                     monthEndLunarDate.YearName);
             }
 
-            String solarInfo = String.Format("Th. {0}/{1}", thisMonth, thisYear);
+            String solarInfo = String.Format("Tháng {0} năm {1}", thisMonth, thisYear);
 
-            monthLabel.Content = solarInfo + " - " + lunarInfo;
+            monthLabelSolar.Content = solarInfo;
+            monthLabelLunar.Content = lunarInfo;
         }
 
         private void UpdateSolarTermBar()
