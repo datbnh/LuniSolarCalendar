@@ -9,32 +9,163 @@
 
 using System;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Media;
 
 namespace Augustine.VietnameseCalendar.UI
 {
+    [DataContract]
     public class ThemeColor : INotifyPropertyChanged, ICloneable
     {
+
         private Brush border;
+        [DataMember(Name = "Border")]
+        internal string SBorder {
+            get => GetColorStringFromBrush(Border);
+            set => Border = GetBrushFromColorString(value); }
+
         private Brush selectedBorder;
+        [DataMember(Name = "SelectedBorder")]
+        internal string SSelectedBorder
+        {
+            get => GetColorStringFromBrush(SelectedBorder);
+            set => SelectedBorder = GetBrushFromColorString(value);
+        }
+
         private Brush background;
+        [DataMember(Name = "Background")]
+        internal string SBackground {
+            get => GetColorStringFromBrush(Background);
+            set => Background = GetBrushFromColorString(value); }
+
         private Brush foreground;
+        [DataMember(Name = "Foreground")]
+        internal string SForeground
+        {
+            get => GetColorStringFromBrush(Foreground);
+            set => Foreground = GetBrushFromColorString(value);
+        }
+
         private Brush normalBackground;
+        [DataMember(Name = "NormalBackground")]
+        internal string SNormalBackground
+        {
+            get => GetColorStringFromBrush(NormalBackground);
+            set => NormalBackground = GetBrushFromColorString(value);
+        }
+
         private Brush mouseOverBackground;
+        [DataMember(Name = "MouseOverBackground")]
+        internal string SMouseOverBackground
+        {
+            get => GetColorStringFromBrush(MouseOverBackground);
+            set => MouseOverBackground = GetBrushFromColorString(value);
+        }
+
         private Brush highlightForeground;
+        [DataMember(Name = "HighlightForeground")]
+        internal string SHighlightForeground
+        {
+            get => GetColorStringFromBrush(HighlightForeground);
+            set => HighlightForeground = GetBrushFromColorString(value);
+        }
+
         private Brush saturdayBackground;
+        [DataMember(Name = "SaturdayBackground")]
+        internal string SSaturdayBackground
+        {
+            get => GetColorStringFromBrush(SaturdayBackground);
+            set => SaturdayBackground = GetBrushFromColorString(value);
+        }
+
         private Brush saturdayForeground;
+        [DataMember(Name = "SaturdayForeground")]
+        internal string SSaturdayForeground
+        {
+            get => GetColorStringFromBrush(SaturdayForeground);
+            set => SaturdayForeground = GetBrushFromColorString(value);
+        }
+
         private Brush sundayBackground;
+        [DataMember(Name = "SundayBackground")]
+        internal string SSundayBackground
+        {
+            get => GetColorStringFromBrush(SundayBackground);
+            set => SundayBackground = GetBrushFromColorString(value);
+        }
+
         private Brush sundayForeground;
+        [DataMember(Name = "SundayForeground")]
+        internal string SSundayForeground
+        {
+            get => GetColorStringFromBrush(SundayForeground);
+            set => SundayForeground = GetBrushFromColorString(value);
+        }
+
         private Brush specialLevel1Background;
+        [DataMember(Name = "SpecialLevel1Background")]
+        internal string SSpecialLevel1Background
+        {
+            get => GetColorStringFromBrush(SpecialLevel1Background);
+            set => SpecialLevel1Background = GetBrushFromColorString(value);
+        }
+
         private Brush specialLevel1Foreground;
+        [DataMember(Name = "SpecialLevel1Foreground")]
+        internal string SSpecialLevel1Foreground
+        {
+            get => GetColorStringFromBrush(SpecialLevel1Foreground);
+            set => SpecialLevel1Foreground = GetBrushFromColorString(value);
+        }
+
         private Brush specialLevel2Background;
+        [DataMember(Name = "SpecialLevel2Background")]
+        internal string SSpecialLevel2Background
+        {
+            get => GetColorStringFromBrush(SpecialLevel2Background);
+            set => SpecialLevel2Background = GetBrushFromColorString(value);
+        }
+
         private Brush specialLevel2Foreground;
+        [DataMember(Name = "SpecialLevel2Foreground")]
+        internal string SSpecialLevel2Foreground
+        {
+            get => GetColorStringFromBrush(SpecialLevel2Foreground);
+            set => SpecialLevel2Foreground = GetBrushFromColorString(value);
+        }
+
         private Brush specialLevel3Background;
+        [DataMember(Name = "SpecialLevel3Background")]
+        internal string SSpecialLevel3Background
+        {
+            get => GetColorStringFromBrush(SpecialLevel3Background);
+            set => SpecialLevel3Background = GetBrushFromColorString(value);
+        }
+
         private Brush specialLevel3Foreground;
+        [DataMember(Name = "SpecialLevel3Foreground")]
+        internal string SSpecialLevel3Foreground
+        {
+            get => GetColorStringFromBrush(SpecialLevel3Foreground);
+            set => SpecialLevel3Foreground = GetBrushFromColorString(value);
+        }
+
         private Brush grayedOutBackground;
+        [DataMember(Name = "GrayedOutBackground")]
+        internal string SGrayedOutBackground
+        {
+            get => GetColorStringFromBrush(GrayedOutBackground);
+            set => GrayedOutBackground = GetBrushFromColorString(value);
+        }
+
         private Brush grayedOutForeground;
+        [DataMember(Name = "GrayedOutForeground")]
+        internal string SGrayedOutForeground
+        {
+            get => GetColorStringFromBrush(GrayedOutForeground);
+            set => GrayedOutForeground = GetBrushFromColorString(value);
+        }
 
         public Brush Border { get => border; set { if (value != border) { border = value; OnPropertyChanged("Border"); } } }
         public Brush SelectedBorder { get => selectedBorder; set { if (value != selectedBorder) { selectedBorder = value; OnPropertyChanged("SelectedBorder"); } } }
@@ -56,37 +187,45 @@ namespace Augustine.VietnameseCalendar.UI
         public Brush GrayedOutBackground { get => grayedOutBackground; set { if (value != grayedOutBackground) { grayedOutBackground = value; OnPropertyChanged("GrayedOutBackground"); } } }
         public Brush GrayedOutForeground { get => grayedOutForeground; set { if (value != grayedOutForeground) { grayedOutForeground = value; OnPropertyChanged("GrayedOutForeground"); } } }
 
-        public ThemeColor ()
+        public ThemeColor()
         {
-            Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));
-            NormalBackground = new SolidColorBrush(Color.FromArgb(24, 0, 0, 0));
-            MouseOverBackground = new SolidColorBrush(Helper.ColorFromAHSV(16, 0, 0, 0));
-            SpecialLevel1Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.95));
-            SpecialLevel2Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.55));
-            SpecialLevel3Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.35));
-
-            Foreground = Brushes.White;
-            SaturdayForeground = new SolidColorBrush(Helper.ColorFromHSV(206, .85, .94));
-            SundayForeground = new SolidColorBrush(Helper.ColorFromHSV(13, .86, .99));
-            SpecialLevel1Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99));
-            SpecialLevel2Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99));
-            SpecialLevel3Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99));
-            GrayedOutForeground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.6));
-
-            Border = null; //new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
-            SelectedBorder = new SolidColorBrush(Helper.ColorFromAHSV(128, 0, 0, 0.2));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string property)
+        protected void OnPropertyChanged(string property) 
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+
+        public object Clone() 
+            => this.MemberwiseClone();
+
+        internal static ThemeColor LoadFromFile(string fileName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            ThemeColor deserialized;
+            try { deserialized = Serializer.DeSerializeObject<ThemeColor>(fileName); }
+            catch (Exception ex) { throw new Exception("Cannot parse configuration from file.", ex); }
+            return deserialized;
         }
 
-        public object Clone()
+        internal void SaveToFile(string fileName)
         {
-            return this.MemberwiseClone();
+            try { Serializer.SerializeObject<ThemeColor>(this, fileName); }
+            catch (Exception ex) { throw new Exception("Cannot save current configuration to file.", ex); }
+        }
+
+        internal string GetColorStringFromBrush(Brush brush)
+        {
+            if (brush == null || !(brush is SolidColorBrush))
+                return "#00FFFFFF";
+            return ((SolidColorBrush)brush).Color.ToString();
+        }
+
+        private SolidColorBrush GetBrushFromColorString(string color)
+        {
+            Color c;
+            try { c = (Color)ColorConverter.ConvertFromString(color); }
+            catch (Exception) { c = Color.FromArgb(0, 255, 255, 255); }
+            return new SolidColorBrush(c);
         }
     }
 
@@ -98,29 +237,26 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 ThemeColor themeColor = new ThemeColor
                 {
-                    Background = Brushes.White,
-                    MouseOverBackground = Brushes.Cornsilk,
-                    SpecialLevel1Background = Brushes.Crimson,
-                    SpecialLevel2Background = Brushes.LightGreen,
-                    SpecialLevel3Background = Brushes.LightPink,
-
-                    Foreground = Brushes.Black,
-                    SaturdayForeground = Brushes.DarkBlue,
-                    SundayForeground = Brushes.DarkRed,
-                    SpecialLevel1Foreground = Brushes.DarkSalmon,
-                    SpecialLevel2Foreground = Brushes.DarkTurquoise,
-                    SpecialLevel3Foreground = Brushes.DarkViolet,
-                    GrayedOutForeground = Brushes.LightGray,
-
-                    Border = Brushes.LightGray,
-                    SelectedBorder = Brushes.LightBlue
+                    SBackground              = "#FFFFFFFF",
+                    SBorder                  = "#00FFFFFF",
+                    SForeground              = "#FF000000",
+                    SGrayedOutBackground     = "#00000000",
+                    SGrayedOutForeground     = "#40808080",
+                    SHighlightForeground     = "#FFFFFFFF",
+                    SMouseOverBackground     = "#10000000",
+                    SNormalBackground        = "#0A000000",
+                    SSaturdayBackground      = "#0A000000",
+                    SSaturdayForeground      = "#FF2196F3",
+                    SSelectedBorder          = "#69696969",
+                    SSpecialLevel1Background = "#FFFCE4EC",
+                    SSpecialLevel1Foreground = "#FFE91E63",
+                    SSpecialLevel2Background = "#FFFCE4EC",
+                    SSpecialLevel2Foreground = "#FFE91E63",
+                    SSpecialLevel3Background = "#FFFCE4EC",
+                    SSpecialLevel3Foreground = "#FFE91E63",
+                    SSundayBackground        = "#0A000000",
+                    SSundayForeground        = "#FFF44336",
                 };
-
-                themeColor.SaturdayBackground = themeColor.Background;
-                themeColor.SundayBackground = themeColor.Background;
-                themeColor.GrayedOutBackground = themeColor.Background;
-                themeColor.HighlightForeground = themeColor.Foreground;
-
                 return themeColor;
             }
         }
@@ -132,29 +268,26 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 ThemeColor themeColor = new ThemeColor
                 {
-                    Background = new SolidColorBrush(Color.FromArgb(32, 255, 255, 255)),
-                    MouseOverBackground = Brushes.Cornsilk,
-                    SpecialLevel1Background = Brushes.Crimson,
-                    SpecialLevel2Background = Brushes.LightGreen,
-                    SpecialLevel3Background = Brushes.LightPink,
-
-                    Foreground = Brushes.Black,
-                    SaturdayForeground = Brushes.DarkBlue,
-                    SundayForeground = Brushes.DarkRed,
-                    SpecialLevel1Foreground = Brushes.DarkSalmon,
-                    SpecialLevel2Foreground = Brushes.DarkTurquoise,
-                    SpecialLevel3Foreground = Brushes.DarkViolet,
-                    GrayedOutForeground = Brushes.LightGray,
-
-                    Border = null, //Brushes.LightGray,
-                    SelectedBorder = Brushes.LightBlue
+                    SBackground              = "#60000000",
+                    SBorder                  = "#00FFFFFF",
+                    SForeground              = "#FFFFFFFF",
+                    SGrayedOutBackground     = "#00000000",
+                    SGrayedOutForeground     = "#40808080",
+                    SHighlightForeground     = "#FFFFFFFF",
+                    SMouseOverBackground     = "#20FFFFFF",
+                    SNormalBackground        = "#0AFFFFFF",
+                    SSaturdayBackground      = "#0AFFFFFF",
+                    SSaturdayForeground      = "#FF2196F3",
+                    SSelectedBorder          = "#69696969",
+                    SSpecialLevel1Background = "#10F57F17",
+                    SSpecialLevel1Foreground = "#FFFFEB3B",
+                    SSpecialLevel2Background = "#10F57F17",
+                    SSpecialLevel2Foreground = "#FFFFEB3B",
+                    SSpecialLevel3Background = "#10F57F17",
+                    SSpecialLevel3Foreground = "#FFFFEB3B",
+                    SSundayBackground        = "#0AFFFFFF",
+                    SSundayForeground        = "#FFF44336",
                 };
-
-                themeColor.SaturdayBackground = themeColor.Background;
-                themeColor.SundayBackground = themeColor.Background;
-                themeColor.GrayedOutBackground = themeColor.Background;
-                themeColor.HighlightForeground = themeColor.Foreground;
-
                 return themeColor;
             }
         }
@@ -166,29 +299,26 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 ThemeColor themeColor = new ThemeColor()
                 {
-                    Background = Brushes.Black,
-                    MouseOverBackground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
-                    SpecialLevel1Background = new SolidColorBrush(Helper.ColorFromHSV(15, 1, 0.2)), // red
-                    SpecialLevel2Background = new SolidColorBrush(Helper.ColorFromHSV(45, 1, 0.2)), // green
-                    SpecialLevel3Background = new SolidColorBrush(Helper.ColorFromHSV(215, 1, 0.2)), // blue
-
-                    Foreground = Brushes.White,
-                    SaturdayForeground = new SolidColorBrush(Helper.ColorFromHSV(195, 1, 1)),
-                    SundayForeground = new SolidColorBrush(Helper.ColorFromHSV(345, 1, 1)),
-                    SpecialLevel1Foreground = new SolidColorBrush(Helper.ColorFromHSV(15, 1, 1)),
-                    SpecialLevel2Foreground = new SolidColorBrush(Helper.ColorFromHSV(45, 1, 1)),
-                    SpecialLevel3Foreground = new SolidColorBrush(Helper.ColorFromHSV(215, 1, 1)),
-                    GrayedOutForeground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.3)),
-
-                    Border = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
-                    SelectedBorder = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.2)),
+                    SBackground              = "#FF000000",
+                    SBorder                  = "#00FFFFFF",
+                    SForeground              = "#FFFFFFFF",
+                    SGrayedOutBackground     = "#00000000",
+                    SGrayedOutForeground     = "#40808080",
+                    SHighlightForeground     = "#FFFFFFFF",
+                    SMouseOverBackground     = "#20FFFFFF",
+                    SNormalBackground        = "#0AFFFFFF",
+                    SSaturdayBackground      = "#0AFFFFFF",
+                    SSaturdayForeground      = "#FF2196F3",
+                    SSelectedBorder          = "#69696969",
+                    SSpecialLevel1Background = "#10F57F17",
+                    SSpecialLevel1Foreground = "#FFFFEB3B",
+                    SSpecialLevel2Background = "#10F57F17",
+                    SSpecialLevel2Foreground = "#FFFFEB3B",
+                    SSpecialLevel3Background = "#10F57F17",
+                    SSpecialLevel3Foreground = "#FFFFEB3B",
+                    SSundayBackground        = "#0AFFFFFF",
+                    SSundayForeground        = "#FFF44336",
                 };
-                
-                themeColor.SaturdayBackground = themeColor.Background;
-                themeColor.SundayBackground = themeColor.Background;
-                themeColor.GrayedOutBackground = themeColor.Background;
-                themeColor.HighlightForeground = themeColor.Foreground;
-
                 return themeColor;
             }
         }
@@ -199,70 +329,28 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 ThemeColor themeColor = new ThemeColor()
                 {
-                    Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0)),
-                    NormalBackground = new SolidColorBrush(Color.FromArgb(24, 0, 0, 0)),
-                    MouseOverBackground = new SolidColorBrush(Helper.ColorFromAHSV(16, 0, 0, 0)),
-                    SpecialLevel1Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.95)),
-                    SpecialLevel2Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.55)), 
-                    SpecialLevel3Background = new SolidColorBrush(Helper.ColorFromAHSV(32, 0, 0.50, 0.35)), 
-
-                    Foreground = Brushes.White,
-                    SaturdayForeground = new SolidColorBrush(Helper.ColorFromHSV(206, .85, .94)),
-                    SundayForeground = new SolidColorBrush(Helper.ColorFromHSV(13, .86, .99)),
-                    SpecialLevel1Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99)),
-                    SpecialLevel2Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99)),
-                    SpecialLevel3Foreground = new SolidColorBrush(Helper.ColorFromHSV(43, 0.90, 0.99)),
-                    GrayedOutForeground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.6)),
-
-                    Border = null, //new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
-                    SelectedBorder = new SolidColorBrush(Helper.ColorFromAHSV(128, 0, 0, 0.2)),
+                    SBackground              = "#10FFFFFF",
+                    SBorder                  = "#00FFFFFF",
+                    SForeground              = "#FF000000",
+                    SGrayedOutBackground     = "#00000000",
+                    SGrayedOutForeground     = "#40808080",
+                    SHighlightForeground     = "#FFFFFFFF",
+                    SMouseOverBackground     = "#10000000",
+                    SNormalBackground        = "#0A000000",
+                    SSaturdayBackground      = "#0A000000",
+                    SSaturdayForeground      = "#FF1A237E",
+                    SSelectedBorder          = "#69696969",
+                    SSpecialLevel1Background = "#10FFECB3",
+                    SSpecialLevel1Foreground = "#FFFF6F00",
+                    SSpecialLevel2Background = "#10FFECB3",
+                    SSpecialLevel2Foreground = "#FFFF6F00",
+                    SSpecialLevel3Background = "#10FFECB3",
+                    SSpecialLevel3Foreground = "#FFFF6F00",
+                    SSundayBackground        = "#0A000000",
+                    SSundayForeground        = "#FFB71C1C",
                 };
-
-                themeColor.SaturdayBackground = themeColor.NormalBackground;
-                themeColor.SundayBackground = themeColor.NormalBackground;
-                themeColor.GrayedOutBackground = null;//themeColor.Background;
-                themeColor.HighlightForeground = themeColor.Foreground;
-
                 return themeColor;
             }
-        }
-
-        public static ThemeColor CreateSemiTransparentThemeColor(byte baseAlpha, 
-            double normalForegroundHue = 0, 
-            double saturdayForegroundHue = 206, 
-            double sundayForegroundHue = 13,
-            double specialBackgroundHue = 0, 
-            double specialForegroundHue = 43)
-        {
-            byte mouseOverAlpha = (byte)(baseAlpha * 2 / 3 % 255);
-            byte specialAlpha = (byte)(baseAlpha * 2 % 255);
-            ThemeColor themeColor = new ThemeColor()
-            {
-                Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0)),
-                NormalBackground = new SolidColorBrush(Color.FromArgb(baseAlpha, 0, 0, 0)),
-                MouseOverBackground = new SolidColorBrush(Helper.ColorFromAHSV(mouseOverAlpha, 0, 0, 0)),
-                SpecialLevel1Background = new SolidColorBrush(Helper.ColorFromAHSV(specialAlpha, 0, specialBackgroundHue, 0.95)),
-                SpecialLevel2Background = new SolidColorBrush(Helper.ColorFromAHSV(specialAlpha, 0, specialBackgroundHue, 0.55)),
-                SpecialLevel3Background = new SolidColorBrush(Helper.ColorFromAHSV(specialAlpha, 0, specialBackgroundHue, 0.35)),
-
-                Foreground = Brushes.White,
-                SaturdayForeground = new SolidColorBrush(Helper.ColorFromHSV(saturdayForegroundHue, .85, .94)),
-                SundayForeground = new SolidColorBrush(Helper.ColorFromHSV(sundayForegroundHue, .86, .99)),
-                SpecialLevel1Foreground = new SolidColorBrush(Helper.ColorFromHSV(specialForegroundHue, 0.90, 0.99)),
-                SpecialLevel2Foreground = new SolidColorBrush(Helper.ColorFromHSV(specialForegroundHue, 0.90, 0.99)),
-                SpecialLevel3Foreground = new SolidColorBrush(Helper.ColorFromHSV(specialForegroundHue, 0.90, 0.99)),
-                GrayedOutForeground = new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.6)),
-
-                Border = null, //new SolidColorBrush(Helper.ColorFromHSV(0, 0, 0.1)),
-                SelectedBorder = new SolidColorBrush(Helper.ColorFromAHSV(128, 0, 0, 0.2)),
-            };
-
-            themeColor.SaturdayBackground = themeColor.NormalBackground;
-            themeColor.SundayBackground = themeColor.NormalBackground;
-            themeColor.GrayedOutBackground = null;//themeColor.Background;
-            themeColor.HighlightForeground = themeColor.Foreground;
-
-            return themeColor;
         }
     }
 
@@ -296,7 +384,11 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 Property = AugustineCalendarDay.IsSelectedProperty,
                 Value = true,
-                Setters = { new Setter(AugustineCalendarDay.BorderBrushProperty, theme.ThemeColor.SelectedBorder), },
+                Setters = {
+                    new Setter(AugustineCalendarDay.PaddingProperty, new Thickness(1, 1, 0, 0)),
+                    new Setter(AugustineCalendarDay.BorderThicknessProperty, new Thickness(1, 1, 1, 1)),
+                    new Setter(AugustineCalendarDay.BorderBrushProperty, theme.ThemeColor.SelectedBorder),
+                },
             });
             theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.Saturday, theme.ThemeColor.SaturdayBackground, theme.ThemeColor.SaturdayForeground));
             theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.Sunday, theme.ThemeColor.SundayBackground, theme.ThemeColor.SundayForeground));
@@ -310,17 +402,8 @@ namespace Augustine.VietnameseCalendar.UI
                 Setters = { new Setter(AugustineCalendarDay.BackgroundProperty, theme.ThemeColor.MouseOverBackground), },
             });
             theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.GrayedOut, theme.ThemeColor.GrayedOutBackground, theme.ThemeColor.GrayedOutForeground));
-            //theme.DayTileStyle.Triggers.Add(new Trigger()
-            //{
-            //    Property = AugustineCalendarDay.DayTypeProperty,
-            //    Value = DayTypes.GrayedOut,
-            //    Setters =
-            //    {
-            //        new Setter() { Property = AugustineCalendarDay.EffectProperty, Value = , },
-            //    },
-            //});
             // Setters
-            theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.PaddingProperty, new Thickness(0)));
+            theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.PaddingProperty, new Thickness(2, 2, 0, 0)));
             theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.MarginProperty, new Thickness(0)));
             theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.BorderThicknessProperty, new Thickness(0, 0, 1, 1)));
             theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.BorderBrushProperty, theme.ThemeColor.Border));
