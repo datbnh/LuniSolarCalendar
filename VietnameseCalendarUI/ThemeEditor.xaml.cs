@@ -7,6 +7,7 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
+using Microsoft.Win32;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,8 +28,7 @@ namespace Augustine.VietnameseCalendar.UI
         public ThemeEditor()
         {
             InitializeComponent();
-            DataContext = this;
-            //ThemeColor1 = ThemeColors.DarkSemiTransparent;
+            //DataContext = this;
         }
 
         private void SynchronizeColorPickers()
@@ -276,6 +276,50 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 textFormattingMode.SelectedIndex = 1;
             }
+        }
+
+        private void save_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Vietnamese calendar configuration files (*.vccfg)|*.vccfg|All files (*.*)|*.*";
+            try
+            {
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    ThemeColor1.SaveToFile(saveFileDialog.FileName);
+                    MessageBox.Show("Đã lưu file thành công!", "Lịch Việt Nam: Lưu Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã gặp lỗi trong khi lưu dữ liệu. Vui lòng thử lại."
+                    + Environment.NewLine + Environment.NewLine + "// Dành cho lập trình viên:"
+                    + Environment.NewLine + ex.Message + Environment.NewLine + ex.InnerException.Message,
+                    "Lịch Việt Nam: Lưu Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
+        }
+
+        private void open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Vietnamese calendar configuration files (*.vccfg)|*.vccfg|All files (*.*)|*.*";
+            try
+            {
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    ThemeColor1 = ThemeColor.LoadFromFile(openFileDialog.FileName);
+                    MessageBox.Show("Đã đọc file thành công!", "Lịch Việt Nam: Đọc Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Information);
+                    SynchronizeColorPickers();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đã gặp lỗi trong khi đọc dữ liệu. File đã chọn không hợp lệ. Vui lòng thử lại."
+                    + Environment.NewLine + Environment.NewLine + "// Dành cho lập trình viên:"
+                    + Environment.NewLine + ex.Message + Environment.NewLine + ex.InnerException.Message,
+                    "Lịch Việt Nam: Đọc Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Error);
+            }         
         }
     }
 }
