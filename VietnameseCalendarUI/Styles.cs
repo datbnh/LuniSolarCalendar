@@ -281,15 +281,6 @@ namespace Augustine.VietnameseCalendar.UI
         public ThemeColor ThemeColor;
         public ThemeSize FontSizes;
         public Style DayTileStyle;
-    }
-
-    public static class Themes
-    {
-        
-        public static Theme Light { get => CreateTheme(ThemeColors.Light, null); }
-        public static Theme Dark { get => CreateTheme(ThemeColors.Dark, null); }
-        public static Theme LightSemiTransparent { get => CreateTheme(ThemeColors.LightSemiTransparent, null); }
-        public static Theme DarkSemiTransparent { get => CreateTheme(ThemeColors.DarkSemiTransparent, null); }
 
         public static Theme CreateTheme(ThemeColor themeColor, ThemeSize themeSize)
         {
@@ -301,8 +292,10 @@ namespace Augustine.VietnameseCalendar.UI
 
             theme.DayTileStyle = new Style();
             // Triggers
-            theme.DayTileStyle.Triggers.Add(new Trigger {
-                Property = AugustineCalendarDay.IsSelectedProperty, Value = true,
+            theme.DayTileStyle.Triggers.Add(new Trigger
+            {
+                Property = AugustineCalendarDay.IsSelectedProperty,
+                Value = true,
                 Setters = { new Setter(AugustineCalendarDay.BorderBrushProperty, theme.ThemeColor.SelectedBorder), },
             });
             theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.Saturday, theme.ThemeColor.SaturdayBackground, theme.ThemeColor.SaturdayForeground));
@@ -312,10 +305,20 @@ namespace Augustine.VietnameseCalendar.UI
             theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.SpecialLevel1, theme.ThemeColor.SpecialLevel1Background, theme.ThemeColor.SpecialLevel1Foreground));
             theme.DayTileStyle.Triggers.Add(new Trigger
             {
-                Property = AugustineCalendarDay.IsMouseOverProperty, Value = true,
+                Property = AugustineCalendarDay.IsMouseOverProperty,
+                Value = true,
                 Setters = { new Setter(AugustineCalendarDay.BackgroundProperty, theme.ThemeColor.MouseOverBackground), },
             });
             theme.DayTileStyle.Triggers.Add(CreateDayTypeTrigger(DayTypes.GrayedOut, theme.ThemeColor.GrayedOutBackground, theme.ThemeColor.GrayedOutForeground));
+            //theme.DayTileStyle.Triggers.Add(new Trigger()
+            //{
+            //    Property = AugustineCalendarDay.DayTypeProperty,
+            //    Value = DayTypes.GrayedOut,
+            //    Setters =
+            //    {
+            //        new Setter() { Property = AugustineCalendarDay.EffectProperty, Value = , },
+            //    },
+            //});
             // Setters
             theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.PaddingProperty, new Thickness(0)));
             theme.DayTileStyle.Setters.Add(new Setter(AugustineCalendarDay.MarginProperty, new Thickness(0)));
@@ -340,5 +343,15 @@ namespace Augustine.VietnameseCalendar.UI
                 },
             };
         }
+    }
+
+    public static class Themes
+    {
+        
+        public static Theme Light { get => Theme.CreateTheme(ThemeColors.Light, null); }
+        public static Theme Dark { get => Theme.CreateTheme(ThemeColors.Dark, null); }
+        public static Theme LightSemiTransparent { get => Theme.CreateTheme(ThemeColors.LightSemiTransparent, null); }
+        public static Theme DarkSemiTransparent { get => Theme.CreateTheme(ThemeColors.DarkSemiTransparent, null); }
+      
     }
 }
