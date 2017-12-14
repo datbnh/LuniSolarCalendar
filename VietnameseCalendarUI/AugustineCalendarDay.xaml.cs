@@ -27,9 +27,6 @@ namespace Augustine.VietnameseCalendar.UI
 
             HorizontalAlignment = HorizontalAlignment.Stretch;
             VerticalAlignment = VerticalAlignment.Stretch;
-            Theme = Themes.Dark;
-            //FaceStyle = FaceStyles.Normal;
-            //BorderStyle = BorderStyles.Normal;
 
             IsSolarMonthVisible = false;
             IsLunarMonthVisible = false;
@@ -46,16 +43,10 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 solarDate = value;
 
-                try
-                {
-                    lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(solarDate, 7);
-                }
-                catch
-                {
-                    lunarDate = null;
-                }
+                try { lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(solarDate, 7); }
+                catch { lunarDate = null; }
 
-                isSolarMonthVisible = solarDate.Day == 1;
+                //isSolarMonthVisible = solarDate.Day == 1;
 
                 var toolTipTitle = "";
                 var toolTipDecorator = "";
@@ -114,12 +105,7 @@ namespace Augustine.VietnameseCalendar.UI
                     toolTipDecorator = Decorator.Text;
                     if (string.IsNullOrEmpty(toolTipDecorator))
                         toolTipDecorator = lunarDate.SolarDate.Day.ToString();
-                    //CalendarDayToolTipView toolTipContent =
-                    //    new CalendarDayToolTipView(new CalendarDayToolTipModel(lunarDate, toolTipTitle, toolTipDecorator));
-                    //ToolTip = new ToolTip()
-                    //{
-                    //    Content = toolTipContent,
-                    //};
+
                     ToolTip = CalendarDayToolTip.CreateToolTip(toolTipTitle, lunarDate, toolTipDecorator, -1);    
                 }
 
@@ -127,9 +113,6 @@ namespace Augustine.VietnameseCalendar.UI
                 UpdateLunarDateLabel();
             }
         }
-
-        //public bool IsSolarSpecial { get; private set; }
-        //public bool IsLunarSpecial { get; private set; }
 
         private LuniSolarDate lunarDate;
         public LuniSolarDate LunarDate { get => lunarDate; private set => lunarDate = value; }
@@ -142,50 +125,6 @@ namespace Augustine.VietnameseCalendar.UI
 
         private string label;
         public string Label { get => label; set { label = value; UpdateDayLabel(); } }
-
-        //private FaceStyle faceStyle;
-        //public FaceStyle FaceStyle
-        //{
-        //    get => faceStyle;
-        //    set
-        //    {
-        //        faceStyle = value;
-        //        Background = faceStyle.Backcolor;
-        //        Foreground = faceStyle.Foreground;
-        //        textSolar.FontSize = faceStyle.SolarFontSize;
-        //        textLunar.FontSize = faceStyle.LunarFontSize;
-        //        textLabel.FontSize = faceStyle.LabelFontSize;
-        //        textSolar.FontWeight = faceStyle.FontWeight;
-        //        textLunar.FontWeight = faceStyle.FontWeight;
-        //    }
-        //}
-
-        //private BorderStyle borderStyle;
-        //public BorderStyle BorderStyle
-        //{
-        //    get => borderStyle;
-        //    set
-        //    {
-        //        borderStyle = value;
-        //        Padding = borderStyle.Padding;
-        //        BorderBrush = borderStyle.BorderColor;
-        //        BorderThickness = borderStyle.BorderThickness;
-        //    }
-        //}
-
-        //private Theme theme;
-        //public Theme Theme
-        //{
-        //    get => theme;
-        //    set
-        //    {
-        //        if (value != theme)
-        //        {
-        //            theme = value;
-        //            this.Style = theme.DayTileStyle;
-        //        }
-        //    }
-        //}
 
         private void UpdateSolarDateLabel()
         {
