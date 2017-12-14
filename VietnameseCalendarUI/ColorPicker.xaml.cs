@@ -33,7 +33,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         public static readonly DependencyProperty BrushProperty = DependencyProperty.Register(
             "Brush", typeof(Brush), typeof(ColorPicker),
-            new PropertyMetadata(new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)), OnBrushPropertyChanged, null));
+            new PropertyMetadata(new SolidColorBrush(Color.FromArgb(0, 255, 255, 255)), OnBrushPropertyChanged, null));
 
         public static readonly DependencyProperty AProperty = DependencyProperty.Register(
             "A", typeof(byte), typeof(ColorPicker),
@@ -50,34 +50,6 @@ namespace Augustine.VietnameseCalendar.UI
         public static readonly DependencyProperty BProperty = DependencyProperty.Register(
             "B", typeof(byte), typeof(ColorPicker),
             new PropertyMetadata((byte)255, OnColorComponentPropertyChanged, null));
-
-        //private static object OnCoerceA(DependencyObject d, object baseValue)
-        //{
-        //    Console.WriteLine("Coerce A");
-        ////    return (byte)baseValue;
-        //    return ((SolidColorBrush)((ColorPicker)d).Brush).Color.A;
-        //}
-
-        //private static object OnCoerceR(DependencyObject d, object baseValue)
-        //{
-        //    Console.WriteLine("Coerce R");
-        //    //return (byte)baseValue;
-        //    return ((SolidColorBrush)((ColorPicker)d).Brush).Color.R;
-        //}
-
-        //private static object OnCoerceG(DependencyObject d, object baseValue)
-        //{
-        //    Console.WriteLine("Coerce G");
-        //    //return (byte)baseValue;
-        //    return ((SolidColorBrush)((ColorPicker)d).Brush).Color.G;
-        //}
-
-        //private static object OnCoerceB(DependencyObject d, object baseValue)
-        //{
-        //    Console.WriteLine("Coerce B");
-        //    //return (byte)baseValue;
-        //    return ((SolidColorBrush)((ColorPicker)d).Brush).Color.B;
-        //}
 
         private static void OnColorComponentPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -116,20 +88,6 @@ namespace Augustine.VietnameseCalendar.UI
             if (IsBrushUpdateRequired)
                 cp.SetValue(BrushProperty, new SolidColorBrush(Color.FromArgb(cp.A, cp.R, cp.G, cp.B)));
 
-            //if (cp.GetValue(e.Property) != e.NewValue)
-            //{
-            //    Console.WriteLine(e.Property + " Changed | cp.GetValue(e.Property) = " + cp.GetValue(e.Property) + " | e.NewValue = " + e.NewValue);
-            //    Console.WriteLine(((SolidColorBrush) cp.Brush).Color.A + " " + ((SolidColorBrush)cp.Brush).Color.R + " " +
-            //        ((SolidColorBrush)cp.Brush).Color.G + " " +((SolidColorBrush)cp.Brush).Color.B + " ");
-            //    cp.SetValue(BrushProperty, new SolidColorBrush(Color.FromArgb(cp.A, cp.R, cp.G, cp.B)));
-            //}
-            //else
-            //{
-            //    Console.WriteLine(e.Property + " Unchanged | cp.GetValue(e.Property) = " + cp.GetValue(e.Property) + " | e.NewValue = " + e.NewValue);
-            //    Console.WriteLine(cp.Brush);
-            //    Console.WriteLine(((SolidColorBrush)cp.Brush).Color.A + " " + ((SolidColorBrush)cp.Brush).Color.R + " " +
-            //        ((SolidColorBrush)cp.Brush).Color.G + " " + ((SolidColorBrush)cp.Brush).Color.B + " ");
-            //}
             Console.WriteLine("[<" + e.Property + "]");
         }
 
@@ -145,6 +103,9 @@ namespace Augustine.VietnameseCalendar.UI
                 cp.SetValue(GProperty, ((SolidColorBrush)cp.Brush).Color.G);
                 cp.SetValue(BProperty, ((SolidColorBrush)cp.Brush).Color.B);
                 Console.WriteLine("[<Brush]" + cp.Brush);
+            } else
+            {
+                cp.SetValue(BrushProperty, new SolidColorBrush(Color.FromArgb(0, 255, 255, 255)));
             }
         }
 
