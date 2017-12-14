@@ -95,33 +95,43 @@ namespace Augustine.VietnameseCalendar.UI
             InitializeSelectedDateLabel();
             InitializeDayOfWeekLabels();
             InitializeCwLabels();
+
+            Theme = Themes.DarkSemiTransparent;
         }
 
         #region === Properties ===
 
         public DateTime SelectedDate { get; private set; }
 
-        //private Theme theme;
+        private Theme theme;
+        //TODO reimplememnt dependency property or change back to normal property!
         public Theme Theme
         {
-            get => (Theme)GetValue(ThemeProperty);
+            //get => (Theme)GetValue(ThemeProperty);
+            get => theme;
             set
             {
-                SetValue(ThemeProperty, value);
-
-                Background = value.ThemeColor.Background;
-                Foreground = value.ThemeColor.Foreground;
-                BorderBrush = value.ThemeColor.Border;
-                for (int i = 0; i < days.Length; i++)
+                if (value != theme)
                 {
-                    days[i].Theme = value;
-                }
+                    //SetValue(ThemeProperty, value);
+                    theme = value;
 
+                    Background = value.ThemeColor.Background;
+                    Foreground = value.ThemeColor.Foreground;
+                    BorderBrush = value.ThemeColor.Border;
+                    if (days != null)
+                    {
+                        for (int i = 0; i < days.Length; i++)
+                        {
+                            days[i].Theme = value;
+                        }
+                    }
+                }
             }
         }
 
-        public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
-            "Theme", typeof(Theme), typeof(AugustineCalendarMonth), new PropertyMetadata(Themes.Light));
+        //public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
+        //    "Theme", typeof(Theme), typeof(AugustineCalendarMonth), new PropertyMetadata(Themes.Light));
 
         #endregion
 
