@@ -15,14 +15,14 @@ namespace Augustine.VietnameseCalendar.UI
 {
     public static class SpecialDayManager
     {
-        public static Dictionary<string, SpecialDateInfo> SpecialSolarDays = new Dictionary<string, SpecialDateInfo>()
+        public static readonly Dictionary<string, SpecialDateInfo> SpecialSolarDays = new Dictionary<string, SpecialDateInfo>()
         {
             { "0101", new SpecialDateInfo("Tết Dương Lịch", "🎆", DayTypes.SpecialLevel1) },
             { "1402", new SpecialDateInfo("Valentine", "♥", DayTypes.SpecialLevel2) },
             { "2512", new SpecialDateInfo("Giáng Sinh", "🎄", DayTypes.SpecialLevel1) },
         };
 
-        public static Dictionary<string, SpecialDateInfo> SpecialLunarDays = new Dictionary<string, SpecialDateInfo>()
+        public static readonly Dictionary<string, SpecialDateInfo> SpecialLunarDays = new Dictionary<string, SpecialDateInfo>()
         {
             { "0101", new SpecialDateInfo("Tết Nguyên Đán", "🎆", DayTypes.SpecialLevel1) },
             { "0201", new SpecialDateInfo("Mồng Hai Tết", "②", DayTypes.SpecialLevel2) },
@@ -47,14 +47,14 @@ namespace Augustine.VietnameseCalendar.UI
             var key = GetSolarKey(luniSolarDate);
             if (SpecialSolarDays.ContainsKey(key))
             {
-                spInfo = SpecialSolarDays[key];
+                spInfo = (SpecialDateInfo)SpecialSolarDays[key].Clone();
             }
             key = GetLunarKey(luniSolarDate);
             if (SpecialLunarDays.ContainsKey(key))
             {
                 if (spInfo == null)
                 {
-                    spInfo = SpecialLunarDays[key];
+                    spInfo = (SpecialDateInfo)SpecialLunarDays[key].Clone();
                 }
                 else
                 {
@@ -69,7 +69,7 @@ namespace Augustine.VietnameseCalendar.UI
                 return true;
         }
 
-        public class SpecialDateInfo
+        public class SpecialDateInfo : ICloneable
         {
             public string Label { get; set; }
             public string Decorator { get; set; }
@@ -79,6 +79,11 @@ namespace Augustine.VietnameseCalendar.UI
                 Label = label;
                 Decorator = decorator;
                 DayType = dayType;
+            }
+
+            public object Clone()
+            {
+                return this.MemberwiseClone();
             }
         }
 
