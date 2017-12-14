@@ -1,4 +1,13 @@
-﻿<Window x:Name="window" x:Class="Augustine.VietnameseCalendar.UI.ThemeEditor"
+﻿<!--**********************************************************
+ * ===// The Vietnamese Calendar Project | 2014 - 2017 //=== *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *  // Copyright (C) Augustine Bùi Nhã Đạt 2017      //      *
+ * // Melbourne, December 2017                      //       *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *              https://github.com/datbnh/SolarLunarCalendar *
+ ***********************************************************-->
+
+<Window x:Name="window" x:Class="Augustine.VietnameseCalendar.UI.ThemeEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -41,10 +50,10 @@
         </Grid.ColumnDefinitions>
         <ScrollViewer Name="MasterScrollViewer" HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto">
             <StackPanel Name="MasterStackPanel" Grid.Row="0">
-                <Expander Name="ExpanderColors" IsExpanded="True" DockPanel.Dock="Top" Padding="3,3,3,0" MaxHeight="230" Expanded="Expander_Expanded">
+                <Expander Name="ExpanderColors" IsExpanded="True" DockPanel.Dock="Top" Padding="3,3,3,3" MaxHeight="230" Expanded="Expander_Expanded" BorderBrush="#FFC4C4C4">
                     <Expander.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFD6D6D6" Offset="0"/>
+                            <GradientStop Color="#FFC4C4C4" Offset="0"/>
                             <GradientStop Color="White" Offset="1"/>
                         </LinearGradientBrush>
                     </Expander.Background>
@@ -54,7 +63,7 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>-->
-                        <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" ScrollViewer.CanContentScroll="True">MÀU SẮC</TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" ScrollViewer.CanContentScroll="True">MÀU SẮC</TextBlock>
                         <!--<ComboBox Grid.Row="0" Grid.Column="1" Text="Chọn Chủ Đề Định Sẵn..." VerticalAlignment="Center">
                                 <ComboBoxItem Content="Sáng"/>
                                 <ComboBoxItem Content="Tối"/>
@@ -69,18 +78,18 @@
                     </ScrollViewer>
                 </Expander>
 
-                <Expander Name="ExpanderAdvancedSettings" IsExpanded="False" DockPanel.Dock="Top" Padding="3,3,3,0" Expanded="Expander_Expanded">
+                <Expander Name="ExpanderAdvancedSettings" IsExpanded="False" DockPanel.Dock="Top" Padding="3,3,3,3" Expanded="Expander_Expanded" BorderBrush="#FFC4C4C4">
                     <Expander.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFD6D6D6" Offset="0"/>
+                            <GradientStop Color="#FFC4C4C4" Offset="0"/>
                             <GradientStop Color="White" Offset="1"/>
                         </LinearGradientBrush>
                     </Expander.Background>
                     <Expander.Header>
-                        <TextBlock FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" ScrollViewer.CanContentScroll="True">NÂNG CAO</TextBlock>
+                        <TextBlock FontWeight="Bold" ScrollViewer.CanContentScroll="True">NÂNG CAO</TextBlock>
                     </Expander.Header>
 
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto" Padding="5" >
                         <StackPanel>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -98,7 +107,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <CheckBox Name="isDropShadow" Grid.Row="0" Content="Hiệu ứng đổ bóng" VerticalAlignment="Top"></CheckBox>
-                                
+
                                 <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,5,0">Blur Radius (px)</TextBlock>
                                 <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,5,0">Shadow Depth (px)</TextBlock>
                                 <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,5,0">Color</TextBlock>
@@ -123,9 +132,9 @@
                     x:Name="open" Content="📂 Mở Từ File" IsEnabled="False"/>
             <Button VerticalAlignment="Bottom" Width="100" Margin="5,0,0,0"
                     x:Name="save" Content="💾 Lưu Vào File" IsEnabled="False"/>
-            <Button VerticalAlignment="Bottom" Width="75" Margin="15,0,0,0"
+            <Button VerticalAlignment="Bottom" Width="75" Margin="10,0,0,0"
                     x:Name="restore" Content="🔄 Khôi Phục" FontFamily="Segoe UI Symbol" Click="restore_Click" />
-            <Button VerticalAlignment="Bottom" Width="75" Margin="15,0,0,0"
+            <Button VerticalAlignment="Bottom" Width="75" Margin="10,0,0,0"
                     x:Name="cancel" Content="✘ Đóng" IsCancel="True" Click="cancel_Click" />
             <Button VerticalAlignment="Bottom" Width="75" Margin="5,0,0,0"
                     x:Name="apply" Content="✔ Áp Dụng"  Click="apply_Click" IsDefault="True" />
