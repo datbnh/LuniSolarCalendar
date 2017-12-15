@@ -207,7 +207,7 @@ namespace Augustine.VietnameseCalendar.UI
         private void apply_Click(object sender, RoutedEventArgs e)
         {
             initialState = (ThemeColor)ThemeColor1.Clone();
-            target.Theme = Theme.CreateTheme(ThemeColor1, null);
+            target.Theme = new Theme(ThemeColor1, null, null);
             if ((bool)isDropShadow.IsChecked)
             {
                 double r = 3;
@@ -308,7 +308,8 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    ThemeColor1 = ThemeColor.LoadFromFile(openFileDialog.FileName);
+                    Serializer.LoadFromFile<ThemeColor>(openFileDialog.FileName, out ThemeColor loadedTheme);
+                    ThemeColor1 = loadedTheme;
                     MessageBox.Show("Đã đọc file thành công!", "Lịch Việt Nam: Đọc Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Information);
                     SynchronizeColorPickers();
                 }
