@@ -104,5 +104,35 @@ namespace Augustine.VietnameseCalendar.UI
                 return (T)formatter.Deserialize(ms);
             }
         }
+
+        public static string ToColorHexString(this Brush brush)
+        {
+            if (brush == null || !(brush is SolidColorBrush))
+                return "#00FFFFFF";
+            return ((SolidColorBrush)brush).Color.ToString();
+        }
+
+        public static SolidColorBrush ToBrush(this string color)
+        {
+            Color c;
+            try { c = (Color)ColorConverter.ConvertFromString(color); }
+            catch (Exception) { c = Color.FromArgb(0, 255, 255, 255); }
+            return new SolidColorBrush(c);
+        }
+
+        public static string ToColorHexString(this Color color)
+        {
+            if (color == null)
+                return "#00FFFFFF";
+            return color.ToString();
+        }
+
+        public static Color ToColor(this string colorHexString)
+        {
+            Color c;
+            try { c = (Color)ColorConverter.ConvertFromString(colorHexString); }
+            catch (Exception) { c = Color.FromArgb(0, 255, 255, 255); }
+            return c;
+        }
     }
 }
