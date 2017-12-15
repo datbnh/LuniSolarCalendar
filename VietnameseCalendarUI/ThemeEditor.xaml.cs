@@ -23,7 +23,7 @@ namespace Augustine.VietnameseCalendar.UI
     public partial class ThemeEditor : Window
     {
         private AugustineCalendarMonth target;
-        private ThemeColor initialState;
+        private Theme newTheme;
 
         public ThemeEditor()
         {
@@ -156,8 +156,8 @@ namespace Augustine.VietnameseCalendar.UI
         public void SetTarget(AugustineCalendarMonth calendar)
         {
             target = calendar;
-            ThemeColor1 = (ThemeColor)target.Theme.ThemeColor.Clone();
-            initialState = (ThemeColor)ThemeColor1.Clone();
+            newTheme = target.Theme.DataContractDeepClone() as Theme;
+            ThemeColor1 = newTheme.ThemeColor;
 
             SynchronizeColorPickers();
             SynchronizeAdvancedSettings();
@@ -206,8 +206,8 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void apply_Click(object sender, RoutedEventArgs e)
         {
-            initialState = (ThemeColor)ThemeColor1.Clone();
-            target.Theme = new Theme(ThemeColor1, null, null);
+            //initialState = (ThemeColor)ThemeColor1.Clone();
+            target.Theme = newTheme.DataContractDeepClone() as Theme;
             if ((bool)isDropShadow.IsChecked)
             {
                 double r = 3;
@@ -253,7 +253,8 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void restore_Click(object sender, RoutedEventArgs e)
         {
-            ThemeColor1 = (ThemeColor)initialState.Clone();
+            newTheme = target.Theme.DataContractDeepClone() as Theme;
+            ThemeColor1 = newTheme.ThemeColor;
             SynchronizeColorPickers();
             SynchronizeAdvancedSettings();
         }
@@ -286,7 +287,7 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    ThemeColor1.SaveToFile(saveFileDialog.FileName);
+                    newTheme.SaveToFile(saveFileDialog.FileName);
                     MessageBox.Show("Đã lưu file thành công!", "Lịch Việt Nam: Lưu Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
@@ -309,7 +310,8 @@ namespace Augustine.VietnameseCalendar.UI
                 if (openFileDialog.ShowDialog() == true)
                 {
                     Serializer.LoadFromFile<ThemeColor>(openFileDialog.FileName, out ThemeColor loadedTheme);
-                    ThemeColor1 = loadedTheme;
+                    newTheme.ThemeColor = loadedTheme;
+                    ThemeColor1 = newTheme.ThemeColor;
                     MessageBox.Show("Đã đọc file thành công!", "Lịch Việt Nam: Đọc Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Information);
                     SynchronizeColorPickers();
                 }

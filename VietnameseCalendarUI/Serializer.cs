@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -65,6 +66,41 @@ namespace Augustine.VietnameseCalendar.UI
 
 
         // binary serializing
+        public static T DataContractDeepClone<T>(this T serializableObject)
+        {
+            T copy = default(T);
+            if (serializableObject == null) { return copy; }
+            using (MemoryStream stream = new MemoryStream())
+            {
+                DataContractSerializer serializer = new DataContractSerializer(serializableObject.GetType());
+                using (XmlDictionaryWriter binaryDictionaryWriter = XmlDictionaryWriter.CreateBinaryWriter(stream))
+                {
+                    serializer.WriteObject(binaryDictionaryWriter, serializableObject);
+                    binaryDictionaryWriter.Flush();
+                    stream.Seek(0, SeekOrigin.Begin);
+                    using (XmlDictionaryReader binaryDictionaryReader = XmlDictionaryReader.CreateBinaryReader(stream, XmlDictionaryReaderQuotas.Max))
+                    {
+                        copy = (T)serializer.ReadObject(binaryDictionaryReader);
+                        binaryDictionaryReader.Close();
+                    }
+                    binaryDictionaryWriter.Close();
+                }
+                stream.Close();
+            }
+            return copy;
+        }
+
+        //public static T DeepClone<T>(this T toClone)
+        //{
+        //    using (var stream = new MemoryStream())
+        //    {
+        //        var formatter = new BinaryFormatter();
+        //        formatter.Serialize(stream, toClone);
+        //        stream.Seek(0, SeekOrigin.Begin);
+        //        return (T)formatter.Deserialize(stream);
+        //    }
+        //}
+
         public static void BinarySerializeObject<T>(this T serializableObject, string fileName)
         {
             if (serializableObject == null) { return; }

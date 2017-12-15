@@ -10,7 +10,7 @@ using System.Windows.Media;
 namespace Augustine.VietnameseCalendar.UI
 {
     [DataContract]
-    public class ThemeColor : INotifyPropertyChanged, ICloneable
+    public class ThemeColor : INotifyPropertyChanged //, ICloneable
     {
         private Brush border;
         [DataMember(Name = "Border")]
@@ -193,7 +193,7 @@ namespace Augustine.VietnameseCalendar.UI
         protected void OnPropertyChanged(string property)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
-        public object Clone()
-            => this.MemberwiseClone();
+        //public object Clone()
+        //    => this.MemberwiseClone();
     }
 }
