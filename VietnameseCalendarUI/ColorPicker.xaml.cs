@@ -13,8 +13,6 @@ namespace Augustine.VietnameseCalendar.UI
     /// </summary>
     public partial class ColorPicker : UserControl
     {
-        internal bool IsInitializing = true;
-
         public ColorPicker()
         {
             InitializeComponent();
@@ -55,7 +53,7 @@ namespace Augustine.VietnameseCalendar.UI
         {
             var IsBrushUpdateRequired = false;
             var cp = d as ColorPicker;
-            Console.WriteLine("[" + e.Property + ">] NewValue = " + e.NewValue);
+            //Console.WriteLine("[" + e.Property + ">] NewValue = " + e.NewValue);
             if (e.Property == AProperty)
             {
                 if ((byte)cp.GetValue(AProperty) != ((SolidColorBrush)cp.Brush).Color.A)
@@ -84,11 +82,11 @@ namespace Augustine.VietnameseCalendar.UI
                     IsBrushUpdateRequired = true;
                 }
             }
-            Console.WriteLine("IsBrushUpdateRequired = " + IsBrushUpdateRequired);
+            //Console.WriteLine("IsBrushUpdateRequired = " + IsBrushUpdateRequired);
             if (IsBrushUpdateRequired)
                 cp.SetValue(BrushProperty, new SolidColorBrush(Color.FromArgb(cp.A, cp.R, cp.G, cp.B)));
 
-            Console.WriteLine("[<" + e.Property + "]");
+            //Console.WriteLine("[<" + e.Property + "]");
         }
 
         private static void OnBrushPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -96,13 +94,13 @@ namespace Augustine.VietnameseCalendar.UI
             var cp = d as ColorPicker;
             if (cp.Brush != null)
             {
-                Console.WriteLine("[Brush>]" + e.Property + " Changed. NewValue = " + e.NewValue);
+                //Console.WriteLine("[Brush>]" + e.Property + " Changed. NewValue = " + e.NewValue);
                 cp.SetValue(BrushProperty, e.NewValue);
                 cp.SetValue(AProperty, ((SolidColorBrush)cp.Brush).Color.A);
                 cp.SetValue(RProperty, ((SolidColorBrush)cp.Brush).Color.R);
                 cp.SetValue(GProperty, ((SolidColorBrush)cp.Brush).Color.G);
                 cp.SetValue(BProperty, ((SolidColorBrush)cp.Brush).Color.B);
-                Console.WriteLine("[<Brush]" + cp.Brush);
+                //Console.WriteLine("[<Brush]" + cp.Brush);
             } else
             {
                 cp.SetValue(BrushProperty, new SolidColorBrush(Color.FromArgb(0, 255, 255, 255)));
