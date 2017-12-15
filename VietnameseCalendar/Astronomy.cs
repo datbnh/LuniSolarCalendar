@@ -398,6 +398,9 @@ namespace Augustine.VietnameseCalendar.Core
 
             // Time in Julian centuries from 2000-01-01 12:00:00 GMT
             var T = (jd - J2000) / JulianCentury;
+            if (jd < J2000)
+                T = (jd - J1900) / JulianCentury;
+
             var T2 = T * T;
 
             // mean anomaly, degree
