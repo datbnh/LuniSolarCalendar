@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿/*************************************************************
+ * ===// The Vietnamese Calendar Project | 2014 - 2017 //=== *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *  // Copyright (C) Augustine Bùi Nhã Đạt 2017      //      *
+ * // Melbourne, December 2017                      //       *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *              https://github.com/datbnh/SolarLunarCalendar *
+ *************************************************************/
 
 namespace Augustine.VietnameseCalendar.UI
 {
@@ -22,14 +24,14 @@ namespace Augustine.VietnameseCalendar.UI
                 IsDropShadow = true,
                 ShadowDepth = 2,
                 ShadowRadius = 3,
-                ShadowColor = Colors.White,
+                ShadowColor = System.Windows.Media.Colors.White,
                 TextFormattingMode = System.Windows.Media.TextFormattingMode.Ideal, }); }
         public static Theme DarkSemiTransparent {
             get => new Theme(ThemeColors.DarkSemiTransparent, null, new TextAndShadow() {
                 IsDropShadow = true,
                 ShadowDepth = 2,
                 ShadowRadius = 3,
-                ShadowColor = Colors.Black,
+                ShadowColor = System.Windows.Media.Colors.Black,
                 TextFormattingMode = System.Windows.Media.TextFormattingMode.Ideal, }); }
     }
 }

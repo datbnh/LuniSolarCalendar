@@ -1,9 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿/*************************************************************
+ * ===// The Vietnamese Calendar Project | 2014 - 2017 //=== *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *  // Copyright (C) Augustine Bùi Nhã Đạt 2017      //      *
+ * // Melbourne, December 2017                      //       *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *              https://github.com/datbnh/SolarLunarCalendar *
+ *************************************************************/
+
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
@@ -17,8 +21,8 @@ namespace Augustine.VietnameseCalendar.UI
         public TextAndShadow TextAndShadow;
         [DataMember]
         public ThemeColor ThemeColor;
-
-        public ThemeSize FontSizes;
+        [DataMember]
+        public TextSize TextSize;
 
         private Style dayTileStyle;
         public Style DayTileStyle
@@ -31,11 +35,11 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        public Theme(ThemeColor themeColor, ThemeSize themeSize, TextAndShadow textAndShadow)
+        public Theme(ThemeColor themeColor, TextSize themeSize, TextAndShadow textAndShadow)
         {
-            ThemeColor = themeColor;
-            FontSizes = themeSize;
-            TextAndShadow = textAndShadow;
+            ThemeColor = themeColor ?? ThemeColors.Light;
+            TextSize = themeSize ?? new TextSize();
+            TextAndShadow = new TextAndShadow();
         }
 
         public static Style CreateDayTileStyle(ThemeColor themeColor)

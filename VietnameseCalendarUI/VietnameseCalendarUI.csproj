@@ -65,7 +65,7 @@
     </Compile>
     <Compile Include="Configuration.cs" />
     <Compile Include="Serializer.cs" />
-    <Compile Include="Styles.cs" />
+    <Compile Include="TextSize.cs" />
     <Compile Include="TextAndShadow.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="ThemeColor.cs" />
