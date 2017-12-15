@@ -267,7 +267,8 @@ namespace Augustine.VietnameseCalendar.UI
 
             stackPanel.MouseWheel += MonthLabel_MouseWheel;
             //BindingOperations.SetBinding(monthLabel, ForegroundProperty, backgroundBinding);
-            BindingOperations.SetBinding(stackPanel, ForegroundProperty, foregroundBinding);
+            BindingOperations.SetBinding(monthLabelSolar, ForegroundProperty, foregroundBinding);
+            BindingOperations.SetBinding(monthLabelLunar, ForegroundProperty, foregroundBinding);
 
             Grid.SetColumn(stackPanel, COL_IDX_MONTH_LABEL);
             Grid.SetColumnSpan(stackPanel, MainGrid.ColumnDefinitions.Count - COL_IDX_MONTH_LABEL);
@@ -346,8 +347,6 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 Content = "✔",
                 HorizontalAlignment = HorizontalAlignment.Right,
-                //FontFamily = new FontFamily("Segoe UI Symbol"),
-                //Background = Brushes.White,
                 Foreground = Brushes.DarkGreen,
                 Padding = new Thickness(3, 0, 3, 0),
             };
