@@ -61,7 +61,7 @@ namespace Augustine.VietnameseCalendar.UI
         private Label selectedDateInfoLabel;
         private Label[] cwLabels;
         private Label[] dayOfWeekLabels;
-        private AugustineCalendarDay[] days;
+        private DayTile[] days;
         private StackPanel datePickerStackPanel;
         private DatePicker datePicker;
 
@@ -176,7 +176,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void Day_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var day = ((AugustineCalendarDay)sender);
+            var day = ((DayTile)sender);
             day.IsSelected = true;
             SelectedDate = day.SolarDate;
 
@@ -422,13 +422,13 @@ namespace Augustine.VietnameseCalendar.UI
         private void InitializeDays()
         {
             UpdateReferenceDates();
-            days = new AugustineCalendarDay[DAYS_PER_WEEK * WEEKS];
+            days = new DayTile[DAYS_PER_WEEK * WEEKS];
 
             for (int i = 0; i < DAYS_PER_WEEK; i++)
             {
                 for (int j = 0; j < WEEKS; j++)
                 {
-                    AugustineCalendarDay day = new AugustineCalendarDay
+                    DayTile day = new DayTile
                     {
                         SolarDate = pageBegin.AddDays(i + j * 7),
                     };
@@ -598,7 +598,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         #region --- Miscelanous ---
 
-        private void StyleThisDay(AugustineCalendarDay day)
+        private void StyleThisDay(DayTile day)
         {
             // TODO check special days
 

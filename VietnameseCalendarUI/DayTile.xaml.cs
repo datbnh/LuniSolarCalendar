@@ -19,9 +19,9 @@ namespace Augustine.VietnameseCalendar.UI
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class AugustineCalendarDay : UserControl
+    public partial class DayTile : UserControl
     {
-        public AugustineCalendarDay()
+        public DayTile()
         {
             InitializeComponent();
 
@@ -169,13 +169,13 @@ namespace Augustine.VietnameseCalendar.UI
         }
 
         public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
-            "Theme", typeof(Theme), typeof(AugustineCalendarDay), new PropertyMetadata(Themes.Light));
+            "Theme", typeof(Theme), typeof(DayTile), new PropertyMetadata(Themes.Light));
 
         public static readonly DependencyProperty DayTypeProperty = DependencyProperty.Register(
-            "DayType", typeof(DayTypes), typeof(AugustineCalendarDay), new PropertyMetadata(DayTypes.Normal));
+            "DayType", typeof(DayTypes), typeof(DayTile), new PropertyMetadata(DayTypes.Normal));
 
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
-            "IsSelected", typeof(bool), typeof(AugustineCalendarDay), new PropertyMetadata(false));
+            "IsSelected", typeof(bool), typeof(DayTile), new PropertyMetadata(false));
 
     }
 }

@@ -48,12 +48,12 @@ namespace Augustine.VietnameseCalendar.UI
             // Triggers
             style.Triggers.Add(new Trigger
             {
-                Property = AugustineCalendarDay.IsSelectedProperty,
+                Property = DayTile.IsSelectedProperty,
                 Value = true,
                 Setters = {
-                    new Setter(AugustineCalendarDay.PaddingProperty, new Thickness(1, 1, 0, 0)),
-                    new Setter(AugustineCalendarDay.BorderThicknessProperty, new Thickness(1, 1, 1, 1)),
-                    new Setter(AugustineCalendarDay.BorderBrushProperty, themeColor.SelectedBorder),
+                    new Setter(DayTile.PaddingProperty, new Thickness(1, 1, 0, 0)),
+                    new Setter(DayTile.BorderThicknessProperty, new Thickness(1, 1, 1, 1)),
+                    new Setter(DayTile.BorderBrushProperty, themeColor.SelectedBorder),
                 },
             });
             style.Triggers.Add(CreateDayTypeTrigger(DayTypes.Saturday, themeColor.SaturdayBackground, themeColor.SaturdayForeground));
@@ -63,18 +63,18 @@ namespace Augustine.VietnameseCalendar.UI
             style.Triggers.Add(CreateDayTypeTrigger(DayTypes.SpecialLevel1, themeColor.SpecialLevel1Background, themeColor.SpecialLevel1Foreground));
             style.Triggers.Add(new Trigger
             {
-                Property = AugustineCalendarDay.IsMouseOverProperty,
+                Property = DayTile.IsMouseOverProperty,
                 Value = true,
-                Setters = { new Setter(AugustineCalendarDay.BackgroundProperty, themeColor.MouseOverBackground), },
+                Setters = { new Setter(DayTile.BackgroundProperty, themeColor.MouseOverBackground), },
             });
             style.Triggers.Add(CreateDayTypeTrigger(DayTypes.GrayedOut, themeColor.GrayedOutBackground, themeColor.GrayedOutForeground));
             // Setters
-            style.Setters.Add(new Setter(AugustineCalendarDay.PaddingProperty, new Thickness(2, 2, 0, 0)));
-            style.Setters.Add(new Setter(AugustineCalendarDay.MarginProperty, new Thickness(0)));
-            style.Setters.Add(new Setter(AugustineCalendarDay.BorderThicknessProperty, new Thickness(0, 0, 1, 1)));
-            style.Setters.Add(new Setter(AugustineCalendarDay.BorderBrushProperty, themeColor.Border));
-            style.Setters.Add(new Setter(AugustineCalendarDay.BackgroundProperty, themeColor.NormalBackground));
-            style.Setters.Add(new Setter(AugustineCalendarDay.ForegroundProperty, themeColor.Foreground));
+            style.Setters.Add(new Setter(DayTile.PaddingProperty, new Thickness(2, 2, 0, 0)));
+            style.Setters.Add(new Setter(DayTile.MarginProperty, new Thickness(0)));
+            style.Setters.Add(new Setter(DayTile.BorderThicknessProperty, new Thickness(0, 0, 1, 1)));
+            style.Setters.Add(new Setter(DayTile.BorderBrushProperty, themeColor.Border));
+            style.Setters.Add(new Setter(DayTile.BackgroundProperty, themeColor.NormalBackground));
+            style.Setters.Add(new Setter(DayTile.ForegroundProperty, themeColor.Foreground));
             return style;
         }
 
@@ -82,12 +82,12 @@ namespace Augustine.VietnameseCalendar.UI
         {
             return new Trigger()
             {
-                Property = AugustineCalendarDay.DayTypeProperty,
+                Property = DayTile.DayTypeProperty,
                 Value = dayType,
                 Setters =
                 {
-                    new Setter() { Property = AugustineCalendarDay.ForegroundProperty, Value =  foreground, },
-                    new Setter() { Property = AugustineCalendarDay.BackgroundProperty, Value =  background, },
+                    new Setter() { Property = DayTile.ForegroundProperty, Value =  foreground, },
+                    new Setter() { Property = DayTile.BackgroundProperty, Value =  background, },
                 },
             };
         }

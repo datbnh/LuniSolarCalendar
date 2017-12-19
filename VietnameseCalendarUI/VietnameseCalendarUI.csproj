@@ -42,6 +42,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -78,7 +79,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AugustineCalendarDay.xaml">
+    <Page Include="DayTile.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -105,8 +106,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AugustineCalendarDay.xaml.cs">
-      <DependentUpon>AugustineCalendarDay.xaml</DependentUpon>
+    <Compile Include="DayTile.xaml.cs">
+      <DependentUpon>DayTile.xaml</DependentUpon>
     </Compile>
     <Compile Include="AugustineCalendarMonth.xaml.cs">
       <DependentUpon>AugustineCalendarMonth.xaml</DependentUpon>
