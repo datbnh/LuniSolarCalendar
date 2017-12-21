@@ -50,8 +50,8 @@ namespace Augustine.VietnameseCalendar.UI
         private void InitializeNotifyIcon()
         {
             notifyIcon = new System.Windows.Forms.NotifyIcon();
-            notifyIcon.Click += new EventHandler(notifyIcon_Click);
-            notifyIcon.DoubleClick += new EventHandler(notifyIcon_DoubleClick);
+            notifyIcon.Click += new EventHandler(NotifyIcon_Click);
+            notifyIcon.DoubleClick += new EventHandler(NotifyIcon_DoubleClick);
             //notifyIcon.ContextMenu = 
             notifyIcon.Icon = System.Drawing.SystemIcons.Application;
             notifyIcon.Visible = true;
@@ -59,13 +59,13 @@ namespace Augustine.VietnameseCalendar.UI
 
         }
 
-        private void notifyIcon_DoubleClick(object sender, EventArgs e)
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
         {
             Console.WriteLine("DC");
             notifyIcon.ShowBalloonTip(0, "You", "double clicked on me!", System.Windows.Forms.ToolTipIcon.Info);
         }
 
-        private void notifyIcon_Click(object sender, EventArgs e)
+        private void NotifyIcon_Click(object sender, EventArgs e)
         {
             notifyIcon.ShowBalloonTip(0, "You", "clicked on me!", System.Windows.Forms.ToolTipIcon.Info);
         }
@@ -117,14 +117,14 @@ namespace Augustine.VietnameseCalendar.UI
                 
         }
 
-        private void buttonSettings_Click(object sender, RoutedEventArgs e)
+        private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
             ThemeEditor te = new ThemeEditor();
             te.SetTarget(augustineCalendarMonth);
             te.Show();
         }
 
-        private void buttonWidget_Click(object sender, RoutedEventArgs e)
+        private void ButtonWidget_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
             if (WindowStyle != WindowStyle.None)
@@ -161,17 +161,17 @@ namespace Augustine.VietnameseCalendar.UI
             ToolsPopup.IsOpen = false;
         }
 
-        private void buttonClose_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ButtonClose_MouseDown(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void buttonMove_MouseUp(object sender, MouseButtonEventArgs e)
+        private void ButtonMove_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ToolsPopup.IsOpen = false;
         }
 
-        private void buttonMove_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ButtonMove_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
         }
@@ -190,7 +190,7 @@ namespace Augustine.VietnameseCalendar.UI
             ToolsPopup.HorizontalOffset = offset;
         }
 
-        private void buttonMaximize_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ButtonMaximize_MouseDown(object sender, RoutedEventArgs e)
         {
             if (WindowState == WindowState.Normal)
             {

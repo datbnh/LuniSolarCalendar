@@ -25,34 +25,23 @@
         LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" WindowStyle="None" AllowsTransparency="True"
         >
     <Window.Resources>
-        
-        <Style x:Key="ControlButton" TargetType="Control">
+        <Style x:Key="BaseButton" TargetType="{x:Type Button}">
             <Setter Property="BorderBrush" Value="{x:Null}"/>
-            <Setter Property="Background" Value="{x:Null}"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Background" Value="#FF2D2D30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Width" Value="15"/>
+            <Setter Property="Height" Value="15"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+            <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!--<Style TargetType="{x:Type Button}" BasedOn="{StaticResource ControlButton}">
-            <Setter Property="BorderBrush" Value="{x:Null}"/>
-            <Setter Property="Background" Value="{x:Null}"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{x:Null}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
@@ -60,12 +49,17 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="Red"/>
+                    <Setter Property="Background" Value="#FF413F3F"/>
+                    <!--<Setter Property="BorderBrush" Value="Black"/>-->
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FFCC7A00"/>
+                    <!--<Setter Property="BorderBrush" Value="Black"/>-->
                 </Trigger>
             </Style.Triggers>
-        </Style>-->
+        </Style>
 
-        <Style x:Key="CloseButton" BasedOn="{StaticResource ControlButton}" TargetType="Label">
+        <Style x:Key="CloseButton" BasedOn="{StaticResource BaseButton}" TargetType="Button">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="LightCoral"/>
@@ -73,8 +67,8 @@
             </Style.Triggers>
             <Setter Property="Content" Value="✖"/>
         </Style>
-        
-        <Style x:Key="MaximizeButton" BasedOn="{StaticResource ControlButton}" TargetType="Label">
+
+        <Style x:Key="MaximizeButton" BasedOn="{StaticResource BaseButton}" TargetType="Button">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
                         AncestorType={x:Type Window}}, Path=WindowState}" Value="Maximized">
@@ -86,6 +80,16 @@
             <Setter Property="ToolTip" Value="Toàn màn hình"/>
             <Setter Property="FontFamily" Value="Webdings"/>
         </Style>
+
+        <Style x:Key="DisableWhenMaximized" BasedOn="{StaticResource BaseButton}" TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
+                    AncestorType={x:Type Window}}, Path=WindowState}" Value="Maximized">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="IsEnabled" Value="True"/>
+        </Style>
                 
         <Style x:Key="CollapseWhenNotInWidgetMode" TargetType="StackPanel">
             <Style.Triggers>
@@ -96,21 +100,6 @@
             </Style.Triggers>
             <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
-        
-        <Style x:Key="DisableWhenMaximized" BasedOn="{StaticResource ControlButton}" TargetType="Control">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
-                    AncestorType={x:Type Window}}, Path=WindowState}" Value="Maximized">
-                    <Setter Property="IsEnabled" Value="False"/>
-                </DataTrigger>
-            </Style.Triggers>
-            <Setter Property="IsEnabled" Value="True"/>
-        </Style>
-
-        
-
-        <!--<local:WindowStateToMovability x:Key="IsMaximized"/>
-        <local:WindowStyleToCloseAndMoveVisibility x:Key="IsNotWidget"/>-->
     </Window.Resources>
 
     <Grid>
@@ -120,44 +109,40 @@
                HorizontalOffset="5"
                AllowsTransparency="True"
                PopupAnimation="Fade"
-               MouseLeave="Popup_MouseLeave"
-               >
-            <Popup.Effect>
-                <DropShadowEffect BlurRadius="3" ShadowDepth="2" RenderingBias="Quality"/>
-            </Popup.Effect>
-            <Border 
-                    DockPanel.Dock="Right" 
+               MouseLeave="Popup_MouseLeave">
+            <Border DockPanel.Dock="Right" 
+                    Background="#FF2D2D30"
+                    BorderBrush="#FF463F3F"
+                    BorderThickness="1" 
                     CornerRadius="5" 
-                    Padding="3"
-                    BorderBrush="Gray"
-                    BorderThickness="1" Background="LightGray">
+                    Padding="3">
                 <StackPanel>
                     <!--<StackPanel Visibility="{Binding WindowStyle, ElementName=window, Converter={StaticResource IsNotWidget}}">-->
                     <StackPanel Style="{StaticResource CollapseWhenNotInWidgetMode}">
-                        <Label x:Name="buttonClose" Style="{StaticResource CloseButton}"  MouseDown="buttonClose_MouseDown" />
-                        <Label x:Name="buttonMaximize" Style="{StaticResource MaximizeButton}" MouseDown="buttonMaximize_MouseDown" />
-                        <Label x:Name="buttonMove" Content="⋮⋮⋮" 
+                        <Button x:Name="buttonClose" Style="{StaticResource CloseButton}"  Click="ButtonClose_MouseDown" />
+                        <Button x:Name="buttonMaximize" Style="{StaticResource MaximizeButton}" Click="ButtonMaximize_MouseDown" />
+                        <Button x:Name="buttonMove" Content="⋮⋮⋮" 
                            Style="{StaticResource DisableWhenMaximized}"
                            ToolTip="Di chuyển" 
-                           MouseDown="buttonMove_MouseDown" 
-                           MouseUp="buttonMove_MouseUp"
-                           Cursor="SizeAll"/>
+                           PreviewMouseDown="ButtonMove_MouseDown" 
+                           MouseUp="ButtonMove_MouseUp"
+                           Cursor="UpArrow"/>
                         <Separator></Separator>
                     </StackPanel>
-                    <Label x:Name="buttonConverterTool" Content="🔀" 
-                            Style="{StaticResource ControlButton}"
-                            ToolTip="Công cụ chuyển đổi âm/dương lịch..." MouseDown="ConverterToolButton_Click" 
+                    <Button x:Name="buttonConverterTool" Content="🔀" 
+                            Style="{StaticResource BaseButton}"
+                            ToolTip="Công cụ chuyển đổi âm/dương lịch..." Click="ConverterToolButton_Click" 
                             FontFamily="Segoe UI Symbol"/>
-                    <Label x:Name="buttonWidget" Content="⛶" 
-                            Style="{StaticResource ControlButton}"
-                            ToolTip="Chế độ widget..." MouseDown="buttonWidget_Click" />
-                    <Label x:Name="buttonSettings" Content="🔧" 
-                            Style="{StaticResource ControlButton}"
-                            ToolTip="Tùy chỉnh giao diện..." MouseDown="buttonSettings_Click"/>
+                    <Button x:Name="buttonWidget" Content="⛶" 
+                            Style="{StaticResource BaseButton}"
+                            ToolTip="Chế độ widget..." Click="ButtonWidget_Click" />
+                    <Button x:Name="buttonSettings" Content="🔧" 
+                            Style="{StaticResource BaseButton}"
+                            ToolTip="Tùy chỉnh giao diện..." Click="ButtonSettings_Click"/>
                     <Separator></Separator>
-                    <Label x:Name="buttonAbout" Content="&#xE2C0;" 
-                            Style="{StaticResource ControlButton}"
-                            ToolTip="Thông tin chương trình..." MouseDown="AboutButton_Click" Cursor="Help" FontFamily="Segoe UI Symbol"/>
+                    <Button x:Name="buttonAbout" Content="&#xE2C0;" 
+                            Style="{StaticResource BaseButton}"
+                            ToolTip="Thông tin chương trình..." Click="AboutButton_Click" Cursor="Help" FontFamily="Segoe UI Symbol"/>
                 </StackPanel>
             </Border>
         </Popup>
