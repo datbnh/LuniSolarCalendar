@@ -136,13 +136,24 @@ namespace Augustine.VietnameseCalendar.UI
             return objectOut;
         }
 
-
-        public static void LoadFromBinaryFile<T>(string fileName, out T serializableObject)
+        public static bool TryLoadFromBinaryFile<T>(string fileName, out T serializableObject)
         {
-            T deserialized;
-            try { deserialized = Serializer.BinaryDeSerializeObject<T>(fileName); }
+            serializableObject = default(T);
+            try { serializableObject = Serializer.BinaryDeSerializeObject<T>(fileName); return true; }
+            catch (Exception) { return false; }
+        }
+
+
+        public static T LoadFromBinaryFile<T>(string fileName)
+        {
+            try { return Serializer.BinaryDeSerializeObject<T>(fileName); }
             catch (Exception ex) { throw new Exception("Cannot parse data from file.", ex); }
-            serializableObject = deserialized;
+        }
+
+        public static bool TrySaveToBinaryFile<T>(this T serializableObject, string fileName)
+        {
+            try { Serializer.BinarySerializeObject<T>(serializableObject, fileName); return true; }
+            catch (Exception) { return false; }
         }
 
         public static void SaveToBinaryFile<T>(this T serializableObject, string fileName)
