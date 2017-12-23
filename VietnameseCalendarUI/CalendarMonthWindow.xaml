@@ -7,7 +7,7 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  ***********************************************************-->
 
-<Window x:Name="window" x:Class="Augustine.VietnameseCalendar.UI.MainWindow"
+<Window x:Name="window" x:Class="Augustine.VietnameseCalendar.UI.CalendarMonthWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -22,7 +22,9 @@
         ResizeMode="CanResizeWithGrip" 
         Loaded="Window_Loaded" 
         StateChanged="Window_StateChanged"
-        LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" WindowStyle="None" AllowsTransparency="True"
+        LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" 
+        Closing="Window_Closing"
+        WindowStyle="None" AllowsTransparency="True"
         >
     <Window.Resources>
         <Style x:Key="BaseButton" TargetType="{x:Type Button}">
@@ -103,8 +105,8 @@
     </Window.Resources>
 
     <Grid>
-        <local:AugustineCalendarMonth x:Name="augustineCalendarMonth"/>
-        <Popup Name="ToolsPopup"
+        <local:AugustineCalendarMonth x:Name="AugustineCalendarMonth"/>
+        <Popup Name="PopupToolBar"
                Placement="Right"
                HorizontalOffset="5"
                AllowsTransparency="True"

@@ -8,6 +8,7 @@
  *************************************************************/
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -19,9 +20,52 @@ namespace Augustine.VietnameseCalendar.UI
     /// </summary>
     public partial class App : Application
     {
+        private System.Windows.Forms.NotifyIcon notifyIcon = null;
+        private Configuration configuration;
+        CalendarMonthWindow currentWindow;
+
+
         public App()
         {
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(AssemblyResolver);
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        }
+
+        private void InitializeNotifyIcon()
+        {
+            notifyIcon = new System.Windows.Forms.NotifyIcon();
+            notifyIcon.Click += new EventHandler(NotifyIcon_Click);
+            notifyIcon.DoubleClick += new EventHandler(NotifyIcon_DoubleClick);
+            notifyIcon.Icon = System.Drawing.SystemIcons.Application;
+            notifyIcon.Visible = true;
+
+            System.Windows.Forms.ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
+            contextMenu.MenuItems.Add("Thông tin chương trình", (s, a) => { (new About()).Show(); });
+            contextMenu.MenuItems.Add("-");
+            contextMenu.MenuItems.Add("Thoát", (s, a) => { Shutdown(); });
+            notifyIcon.ContextMenu = contextMenu;
+            //notifyIcon.ShowBalloonTip(0, "Lịch Việt Nam", "Chào bạn! Lịch Việt Nam đã khởi động.", System.Windows.Forms.ToolTipIcon.Info);
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            Console.WriteLine("DC");
+            notifyIcon.ShowBalloonTip(0, "You", "double clicked on me!", System.Windows.Forms.ToolTipIcon.Info);
+        }
+
+        private void NotifyIcon_Click(object sender, EventArgs e)
+        {
+            if (currentWindow != null && currentWindow.IsLoaded)
+            {
+                if (currentWindow.Visibility == Visibility.Hidden)
+                {
+                    currentWindow.Show();
+                    currentWindow.Activate();
+                } else
+                {
+                    currentWindow.Hide();
+                }
+            }
         }
 
         public Assembly AssemblyResolver(object sender, ResolveEventArgs args)
@@ -32,6 +76,58 @@ namespace Augustine.VietnameseCalendar.UI
             System.Resources.ResourceManager rm = new System.Resources.ResourceManager(GetType().Namespace + ".Properties.Resources", System.Reflection.Assembly.GetExecutingAssembly());
             byte[] bytes = (byte[])rm.GetObject(dllName);
             return Assembly.Load(bytes);
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            if (!Serializer.TryLoadFromBinaryFile<Configuration>("VietnameseCalendar.state", out configuration))
+                configuration = Configuration.DefaultConfiguration;
+
+            CreateCalendarMonthWindow();
+            InitializeNotifyIcon();
+        }
+
+        private void CreateCalendarMonthWindow()
+        {
+            currentWindow = new CalendarMonthWindow(configuration);
+            currentWindow.OnRequestChangeViewMode += new CalendarMonthWindow.RequestChangeViewMode(ChangeViewMode);
+            currentWindow.Show();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            notifyIcon.Visible = false;
+            SyncCurrentStateToConfiguration();
+            Serializer.TrySaveToBinaryFile(configuration, "VietnameseCalendar.state");
+        }
+
+        private void ChangeViewMode()
+        {
+            SyncCurrentStateToConfiguration();
+            configuration.ViewMode = (configuration.ViewMode == ViewMode.Normal) ? ViewMode.Widget : ViewMode.Normal;
+            currentWindow.RequestClose();
+            foreach (var item in Application.Current.Windows)
+            {
+                if (item is ThemeEditor)
+                {
+                    ((ThemeEditor)item).Close();
+                    break;
+                }
+            }
+            CreateCalendarMonthWindow();
+        }
+
+        private void SyncCurrentStateToConfiguration()
+        {
+            configuration.Theme = currentWindow.AugustineCalendarMonth.Theme;
+            configuration.ViewMode = (currentWindow.WindowStyle == WindowStyle.None) ? ViewMode.Widget : ViewMode.Normal;
+            configuration.Location = new Location()
+            {
+                Left = currentWindow.Left,
+                Top = currentWindow.Top,
+                Width = currentWindow.Width,
+                Height = currentWindow.Height,
+            };
         }
     }
 }
