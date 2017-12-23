@@ -34,42 +34,36 @@ namespace Augustine.VietnameseCalendar.UI
         private void InitializeNotifyIcon()
         {
             notifyIcon = new System.Windows.Forms.NotifyIcon();
-            notifyIcon.Click += new EventHandler(NotifyIcon_Click);
-            notifyIcon.DoubleClick += new EventHandler(NotifyIcon_DoubleClick);
+            notifyIcon.Click += new EventHandler((s, e) =>
+            {
+                if (e is System.Windows.Forms.MouseEventArgs)
+                    if (((System.Windows.Forms.MouseEventArgs)e).Button == System.Windows.Forms.MouseButtons.Right)
+                        return;
+                if (currentWindow != null && currentWindow.IsLoaded)
+                {
+                    if (currentWindow.Visibility == Visibility.Hidden | currentWindow.WindowState == WindowState.Minimized)
+                    {
+                        currentWindow.WindowState = WindowState.Normal;
+                        currentWindow.Show();
+                        currentWindow.Activate();
+                    }
+                    else
+                    {
+                        currentWindow.Hide();
+                    }
+                }
+            });
+            //notifyIcon.DoubleClick += new EventHandler(NotifyIcon_DoubleClick);
             notifyIcon.Icon = System.Drawing.SystemIcons.Application;
             notifyIcon.Visible = true;
             notifyIcon.Text = "Lịch Việt Nam - Vietnamese Luni Solar Calendar";
 
             System.Windows.Forms.ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
-            contextMenu.MenuItems.Add("Thông tin chương trình", (s, a) => { (new About()).Show(); });
+            contextMenu.MenuItems.Add("Thông tin chương trình", (s, e) => { (new About()).Show(); });
             contextMenu.MenuItems.Add("-");
-            contextMenu.MenuItems.Add("Thoát", (s, a) => { Shutdown(); });
+            contextMenu.MenuItems.Add("Thoát", (s, e) => { Shutdown(); });
             notifyIcon.ContextMenu = contextMenu;
             //notifyIcon.ShowBalloonTip(0, "Lịch Việt Nam", "Chào bạn! Lịch Việt Nam đã khởi động.", System.Windows.Forms.ToolTipIcon.Info);
-        }
-
-        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
-        {
-            Console.WriteLine("DC");
-            notifyIcon.ShowBalloonTip(0, "You", "double clicked on me!", System.Windows.Forms.ToolTipIcon.Info);
-        }
-
-        private void NotifyIcon_Click(object sender, EventArgs e)
-        {
-            if (e is System.Windows.Forms.MouseEventArgs)
-                if (((System.Windows.Forms.MouseEventArgs)e).Button == System.Windows.Forms.MouseButtons.Right)
-                    return;
-            if (currentWindow != null && currentWindow.IsLoaded)
-            {
-                if (currentWindow.Visibility == Visibility.Hidden)
-                {
-                    currentWindow.Show();
-                    currentWindow.Activate();
-                } else
-                {
-                    currentWindow.Hide();
-                }
-            }
         }
 
         public Assembly AssemblyResolver(object sender, ResolveEventArgs args)
