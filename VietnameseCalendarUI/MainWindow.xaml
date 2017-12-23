@@ -28,10 +28,11 @@
         <Style x:Key="BaseButton" TargetType="{x:Type Button}">
             <Setter Property="BorderBrush" Value="{x:Null}"/>
             <Setter Property="Background" Value="#FF2D2D30"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Width" Value="15"/>
-            <Setter Property="Height" Value="15"/>
+            <Setter Property="Foreground" Value="#FF686868"/>
+            <Setter Property="Width" Value="17"/>
+            <Setter Property="Height" Value="17"/>
             <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
             <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
             <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -50,11 +51,10 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#FF413F3F"/>
-                    <!--<Setter Property="BorderBrush" Value="Black"/>-->
+                    <Setter Property="Foreground" Value="White"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#FFCC7A00"/>
-                    <!--<Setter Property="BorderBrush" Value="Black"/>-->
+                    <Setter Property="Background" Value="#FF007ACC"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -65,7 +65,7 @@
                     <Setter Property="Background" Value="LightCoral"/>
                 </Trigger>
             </Style.Triggers>
-            <Setter Property="Content" Value="✖"/>
+            <Setter Property="Content" Value="&#xE0A4;"/> <!--✖-->
         </Style>
 
         <Style x:Key="MaximizeButton" BasedOn="{StaticResource BaseButton}" TargetType="Button">
@@ -119,30 +119,37 @@
                 <StackPanel>
                     <!--<StackPanel Visibility="{Binding WindowStyle, ElementName=window, Converter={StaticResource IsNotWidget}}">-->
                     <StackPanel Style="{StaticResource CollapseWhenNotInWidgetMode}">
-                        <Button x:Name="buttonClose" Style="{StaticResource CloseButton}"  Click="ButtonClose_MouseDown" />
-                        <Button x:Name="buttonMaximize" Style="{StaticResource MaximizeButton}" Click="ButtonMaximize_MouseDown" />
-                        <Button x:Name="buttonMove" Content="⋮⋮⋮" 
+                        <Button x:Name="buttonClose" Style="{StaticResource CloseButton}"  
+                                Click="ButtonClose_MouseDown" />
+                        <Button x:Name="buttonMaximize" Style="{StaticResource MaximizeButton}" 
+                                Click="ButtonMaximize_MouseDown" />
+                        <Button x:Name="buttonMove" Content="&#xE123;" 
                            Style="{StaticResource DisableWhenMaximized}"
                            ToolTip="Di chuyển" 
                            PreviewMouseDown="ButtonMove_MouseDown" 
                            MouseUp="ButtonMove_MouseUp"
-                           Cursor="UpArrow"/>
-                        <Separator></Separator>
+                           Cursor="Hand" RenderTransformOrigin="0.5,0.5"/>
+                        <Separator/>
                     </StackPanel>
-                    <Button x:Name="buttonConverterTool" Content="🔀" 
+                    <Button x:Name="buttonConverterTool" Content="&#xE1CA;" 
                             Style="{StaticResource BaseButton}"
-                            ToolTip="Công cụ chuyển đổi âm/dương lịch..." Click="ConverterToolButton_Click" 
-                            FontFamily="Segoe UI Symbol"/>
-                    <Button x:Name="buttonWidget" Content="⛶" 
+                            ToolTip="Công cụ chuyển đổi âm/dương lịch..." 
+                            Click="ConverterToolButton_Click"/>
+                    <Button x:Name="buttonWidget" Content="&#xE158;" 
                             Style="{StaticResource BaseButton}"
-                            ToolTip="Chế độ widget..." Click="ButtonWidget_Click" />
-                    <Button x:Name="buttonSettings" Content="🔧" 
+                            ToolTip="Chế độ widget/cửa sổ" 
+                            Click="ButtonWidget_Click" />
+                    <Button x:Name="buttonSettings" Content="&#xE15E;" 
+                            FontFamily="Segoe UI Symbol"
                             Style="{StaticResource BaseButton}"
-                            ToolTip="Tùy chỉnh giao diện..." Click="ButtonSettings_Click"/>
+                            ToolTip="Tùy chỉnh giao diện..." 
+                            Click="ButtonSettings_Click"/>
                     <Separator></Separator>
                     <Button x:Name="buttonAbout" Content="&#xE2C0;" 
                             Style="{StaticResource BaseButton}"
-                            ToolTip="Thông tin chương trình..." Click="AboutButton_Click" Cursor="Help" FontFamily="Segoe UI Symbol"/>
+                            ToolTip="Thông tin chương trình..." 
+                            Click="AboutButton_Click" 
+                            Cursor="Help"/>
                 </StackPanel>
             </Border>
         </Popup>
