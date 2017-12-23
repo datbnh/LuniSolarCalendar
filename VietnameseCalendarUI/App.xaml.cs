@@ -38,6 +38,7 @@ namespace Augustine.VietnameseCalendar.UI
             notifyIcon.DoubleClick += new EventHandler(NotifyIcon_DoubleClick);
             notifyIcon.Icon = System.Drawing.SystemIcons.Application;
             notifyIcon.Visible = true;
+            notifyIcon.Text = "Lịch Việt Nam - Vietnamese Luni Solar Calendar";
 
             System.Windows.Forms.ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
             contextMenu.MenuItems.Add("Thông tin chương trình", (s, a) => { (new About()).Show(); });
@@ -55,6 +56,9 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void NotifyIcon_Click(object sender, EventArgs e)
         {
+            if (e is System.Windows.Forms.MouseEventArgs)
+                if (((System.Windows.Forms.MouseEventArgs)e).Button == System.Windows.Forms.MouseButtons.Right)
+                    return;
             if (currentWindow != null && currentWindow.IsLoaded)
             {
                 if (currentWindow.Visibility == Visibility.Hidden)
