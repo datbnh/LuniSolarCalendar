@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*************************************************************
+ * ===// The Vietnamese Calendar Project | 2014 - 2017 //=== *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *  // Copyright (C) Augustine Bùi Nhã Đạt 2017      //      *
+ * // Melbourne, December 2017                      //       *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
+ *              https://github.com/datbnh/SolarLunarCalendar *
+ *************************************************************/
+
+using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace Augustine.VietnameseCalendar.UI
 {
