@@ -80,7 +80,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void Window_StateChanged(object sender, System.EventArgs e)
         {
-            if (WindowState == WindowState.Minimized)
+            if (WindowStyle == WindowStyle.None && WindowState == WindowState.Minimized)
             {
                 WindowState = WindowState.Normal;
                 Show();
