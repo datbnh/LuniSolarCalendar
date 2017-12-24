@@ -12,26 +12,26 @@ namespace Augustine.VietnameseCalendar.UI
     public static class Themes
     {
         public static Theme Light {
-            get => new Theme(ThemeColors.Light, null, new TextAndShadow() {
+            get => new Theme(ThemeColors.Light, TextSize.DefaultTextSize(), new TextAndShadow() {
                 IsDropShadow = false,
-                TextFormattingMode = System.Windows.Media.TextFormattingMode.Display, }); }
+                TextFormattingMode = System.Windows.Media.TextFormattingMode.Ideal, }); }
         public static Theme Dark {
-            get => new Theme(ThemeColors.Dark, null, new TextAndShadow() {
+            get => new Theme(ThemeColors.Dark, TextSize.DefaultTextSize(), new TextAndShadow() {
                 IsDropShadow = false,
                 TextFormattingMode = System.Windows.Media.TextFormattingMode.Display, }); }
         public static Theme LightSemiTransparent {
-            get => new Theme(ThemeColors.LightSemiTransparent, null, new TextAndShadow() {
-                IsDropShadow = true,
-                ShadowDepth = 2,
-                ShadowRadius = 3,
-                ShadowColor = System.Windows.Media.Colors.White,
-                TextFormattingMode = System.Windows.Media.TextFormattingMode.Ideal, }); }
-        public static Theme DarkSemiTransparent {
-            get => new Theme(ThemeColors.DarkSemiTransparent, null, new TextAndShadow() {
+            get => new Theme(ThemeColors.LightSemiTransparent, TextSize.DefaultTextSize(), new TextAndShadow() {
                 IsDropShadow = true,
                 ShadowDepth = 2,
                 ShadowRadius = 3,
                 ShadowColor = System.Windows.Media.Colors.Black,
-                TextFormattingMode = System.Windows.Media.TextFormattingMode.Ideal, }); }
+                TextFormattingMode = System.Windows.Media.TextFormattingMode.Display, }); }
+        public static Theme DarkSemiTransparent {
+            get => new Theme(ThemeColors.DarkSemiTransparent, TextSize.DefaultTextSize(), new TextAndShadow() {
+                IsDropShadow = true,
+                ShadowDepth = 2,
+                ShadowRadius = 3,
+                ShadowColor = System.Windows.Media.Colors.Gray,
+                TextFormattingMode = System.Windows.Media.TextFormattingMode.Display, }); }
     }
 }
