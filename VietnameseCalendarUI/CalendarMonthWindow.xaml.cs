@@ -8,9 +8,7 @@
  *************************************************************/
 
 using System;
-using System.Globalization;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Augustine.VietnameseCalendar.UI
@@ -21,6 +19,7 @@ namespace Augustine.VietnameseCalendar.UI
         public RequestChangeViewMode OnRequestChangeViewMode;
 
         private bool IsRequestedClosing = false;
+
 
         public CalendarMonthWindow(Configuration configuration)
         {
@@ -35,8 +34,6 @@ namespace Augustine.VietnameseCalendar.UI
                 Left = configuration.Location.Left;
             }
 
-            AugustineCalendarMonth.Theme = configuration.Theme;
-
             if (configuration.ViewMode == ViewMode.Widget)
             {
                 AllowsTransparency = true;
@@ -49,36 +46,17 @@ namespace Augustine.VietnameseCalendar.UI
                 WindowStyle = WindowStyle.SingleBorderWindow;
                 ShowInTaskbar = true;
             }
+
+            AugustineCalendarMonth.Theme = configuration.Theme;
         }
 
-        private void AboutButton_Click(object sender, RoutedEventArgs e)
-        {
-            (new About()).Show();
-        }
-
-        private void ConverterToolButton_Click(object sender, RoutedEventArgs e)
-        {
-            Converter converter = new Converter(AugustineCalendarMonth.SelectedDate);
-            converter.ShowDialog();
-            if (converter.DialogResult.HasValue && converter.DialogResult.Value)
-            {
-                AugustineCalendarMonth.SelectDate(converter.SelectedDate);
-            }
-        }
-
-        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed
-            && e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
-                DragMove();
-        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //augustineCalendarMonth.Theme = Themes.DarkSemiTransparent;
         }
 
-        private void Window_StateChanged(object sender, System.EventArgs e)
+        private void Window_StateChanged(object sender, EventArgs e)
         {
             if (WindowStyle == WindowStyle.None && WindowState == WindowState.Minimized)
             {
@@ -98,44 +76,6 @@ namespace Augustine.VietnameseCalendar.UI
                 
         }
 
-        private void ButtonSettings_Click(object sender, RoutedEventArgs e)
-        {
-            ThemeEditor te = new ThemeEditor();
-            te.SetTarget(AugustineCalendarMonth);
-            te.Show();
-        }
-
-        private void ButtonWidget_Click(object sender, RoutedEventArgs e)
-        {
-            OnRequestChangeViewMode();
-        }
-
-        private void Border_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            PopupToolBar.IsOpen = true;
-        }
-
-        private void Popup_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            PopupToolBar.IsOpen = false;
-        }
-
-        private void ButtonClose_MouseDown(object sender, RoutedEventArgs e)
-        {
-            PopupToolBar.IsOpen = false;
-            this.Close();
-        }
-
-        private void ButtonMove_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            PopupToolBar.IsOpen = false;
-        }
-
-        private void ButtonMove_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-        }
-
         private void Window_LocationChanged(object sender, EventArgs e)
         {
             var offset = PopupToolBar.HorizontalOffset;
@@ -150,6 +90,40 @@ namespace Augustine.VietnameseCalendar.UI
             PopupToolBar.HorizontalOffset = offset;
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!IsRequestedClosing)
+            {
+                Hide();
+                e.Cancel = true;
+            }
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed
+            && e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
+                DragMove();
+        }
+
+
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            PopupToolBar.IsOpen = true;
+        }
+
+        private void Popup_MouseLeave(object sender, MouseEventArgs e)
+        {
+            PopupToolBar.IsOpen = false;
+        }
+
+
+        private void ButtonClose_MouseDown(object sender, RoutedEventArgs e)
+        {
+            PopupToolBar.IsOpen = false;
+            this.Close();
+        }
+
         private void ButtonMaximize_MouseDown(object sender, RoutedEventArgs e)
         {
             if (WindowState == WindowState.Normal)
@@ -162,14 +136,43 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void ButtonMove_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!IsRequestedClosing)
+            PopupToolBar.IsOpen = false;
+        }
+
+        private void ButtonMove_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        private void ButtonConverterTool_Click(object sender, RoutedEventArgs e)
+        {
+            Converter converter = new Converter(AugustineCalendarMonth.SelectedDate);
+            converter.ShowDialog();
+            if (converter.DialogResult.HasValue && converter.DialogResult.Value)
             {
-                Hide();
-                e.Cancel = true;
+                AugustineCalendarMonth.SelectDate(converter.SelectedDate);
             }
         }
+
+        private void ButtonWidget_Click(object sender, RoutedEventArgs e)
+        {
+            OnRequestChangeViewMode();
+        }
+
+        private void ButtonSettings_Click(object sender, RoutedEventArgs e)
+        {
+            ThemeEditor te = new ThemeEditor();
+            te.SetTarget(AugustineCalendarMonth);
+            te.Show();
+        }
+
+        private void ButtonAbout_Click(object sender, RoutedEventArgs e)
+        {
+            (new About()).Show();
+        }
+
 
         public void RequestClose()
         {

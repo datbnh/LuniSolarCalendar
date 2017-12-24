@@ -136,7 +136,7 @@
                     <Button x:Name="buttonConverterTool" Content="&#xE1CA;" 
                             Style="{StaticResource BaseButton}"
                             ToolTip="Công cụ chuyển đổi âm/dương lịch..." 
-                            Click="ConverterToolButton_Click"/>
+                            Click="ButtonConverterTool_Click"/>
                     <Button x:Name="buttonWidget" Content="&#xE158;" 
                             Style="{StaticResource BaseButton}"
                             ToolTip="Chế độ widget/cửa sổ" 
@@ -150,7 +150,7 @@
                     <Button x:Name="buttonAbout" Content="&#xE2C0;" 
                             Style="{StaticResource BaseButton}"
                             ToolTip="Thông tin chương trình..." 
-                            Click="AboutButton_Click" 
+                            Click="ButtonAbout_Click" 
                             Cursor="Help"/>
                 </StackPanel>
             </Border>
