@@ -27,35 +27,66 @@ namespace Augustine.VietnameseCalendar.UI
         private SizeSet large = null;
         public SizeSet Large { get => (large ?? Normal); set => large = value; }
         [DataMember]
-        public bool IsTileLableHiddenInSmallSize { get; set; } = true; 
+        public bool IsTileLableHiddenInSmallSize { get; set; } = true;
 
-        public SizeSet GetSizeSet(double clientWidth, double clientHeight)
+        public SizeSet GetSizeSet(SizeMode sizeMode)
         {
-            switch (GetSizeMode(clientWidth, clientHeight))
+            switch (sizeMode)
             {
-                case SizeModes.Small:
+                case SizeMode.Small:
                     return Small;
-                case SizeModes.Large:
+                case SizeMode.Large:
                     return Large;
                 default:
                     return Normal;
             }
         }
 
-        public SizeModes GetSizeMode(double clientWidth, double clientHeight)
+        public SizeSet GetSizeSet(double clientWidth, double clientHeight)
+        {
+            return GetSizeSet(GetSizeMode(clientWidth, clientHeight));
+        }
+
+        public SizeMode GetSizeMode(double clientWidth, double clientHeight)
         {
             if (clientWidth > Normal.ClientWidthMax 
                 && clientHeight > Normal.ClientHeightMax)
-                return SizeModes.Large;
+                return SizeMode.Large;
             else if (clientWidth < Small.ClientWidthMax
-                && clientHeight < Small.ClientHeightMax)
-                return SizeModes.Small;
+                || clientHeight < Small.ClientHeightMax)
+                return SizeMode.Small;
             else
-                return SizeModes.Normal;
+                return SizeMode.Normal;
+        }
+
+        public static TextSize DefaultTextSize()
+        {
+            TextSize textSize = new TextSize();
+            textSize.Small = new SizeSet()
+            {
+                ClientWidthMax = 480,
+                ClientHeightMax = 360,
+                DayTileSolarTextSize = 18,
+                DayTileLunarTextSize = 12,
+                DayTileLabelTextSize = 8,
+                MonthSolarLabelTextSize = 16,
+                MonthLunarLabelTextSize = 14,
+            };
+            textSize.Large = new SizeSet()
+            {
+                ClientWidthMax = 9999,
+                ClientHeightMax = 9999,
+                DayTileSolarTextSize = 36,
+                DayTileLunarTextSize = 24,
+                DayTileLabelTextSize = 12,
+                MonthSolarLabelTextSize = 24,
+                MonthLunarLabelTextSize = 20,
+            };
+            return textSize;
         }
 
         [DataContract]
-        public enum SizeModes
+        public enum SizeMode
         {
             [EnumMember]
             Small,
@@ -69,13 +100,13 @@ namespace Augustine.VietnameseCalendar.UI
         public class SizeSet
         {
             [DataMember]
-            public double ClientWidthMax = 800;
+            public double ClientWidthMax = 725;
             [DataMember]
-            public double ClientHeightMax = 600;
+            public double ClientHeightMax = 525;
             [DataMember]
             public double DayTileSolarTextSize = 24;
             [DataMember]
-            public double DayTileLunarTextSize = 26;
+            public double DayTileLunarTextSize = 16;
             [DataMember]
             public double DayTileLabelTextSize = 10;
             [DataMember]
