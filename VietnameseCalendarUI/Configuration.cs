@@ -31,9 +31,9 @@ namespace Augustine.VietnameseCalendar.UI
         {
             get => new Configuration()
             {
-                Theme = Themes.LightSemiTransparent,
+                Theme = Themes.Light,
                 CalendarType = CalendarType.Month,
-                ViewMode = ViewMode.Widget,
+                ViewMode = ViewMode.Normal,
             };
         }
     }
