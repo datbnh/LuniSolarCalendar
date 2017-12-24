@@ -65,9 +65,6 @@
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration.cs" />
-    <Compile Include="Host.xaml.cs">
-      <DependentUpon>Host.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Serializer.cs" />
     <Compile Include="TextSize.cs" />
     <Compile Include="TextAndShadow.cs" />
@@ -127,10 +124,6 @@
       <DependentUpon>CalendarMonthWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Host.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ThemeEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
