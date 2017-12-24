@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using static Augustine.VietnameseCalendar.UI.SpecialDayManager;
+using static Augustine.VietnameseCalendar.UI.TextSize;
 
 namespace Augustine.VietnameseCalendar.UI
 {
@@ -32,7 +33,7 @@ namespace Augustine.VietnameseCalendar.UI
             IsLunarMonthVisible = false;
             Label = "Label";
             Decorator.Text = "*";
-            DayType = DayTypes.Normal;
+            DayType = DayType.Normal;
         }
 
         private DateTime solarDate;
@@ -95,11 +96,11 @@ namespace Augustine.VietnameseCalendar.UI
                         }
 
                         if (solarDate.DayOfWeek == DayOfWeek.Saturday)
-                            DayType = DayTypes.Saturday;
+                            DayType = DayType.Saturday;
                         else if (solarDate.DayOfWeek == DayOfWeek.Sunday)
-                            DayType = DayTypes.Sunday;
+                            DayType = DayType.Sunday;
                         else
-                            DayType = DayTypes.Normal;
+                            DayType = DayType.Normal;
                     }
 
                     toolTipDecorator = Decorator.Text;
@@ -145,7 +146,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void UpdateDayLabel()
         {
-            if (label == null || label.Length == 0)
+            if (label == null || label.Length == 0 || SizeMode == SizeMode.Small)
             {
                 textLabel.Visibility = Visibility.Collapsed;
                 textLabel.Text = "";
@@ -157,25 +158,48 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        public DayTypes DayType { get => (DayTypes)GetValue(DayTypeProperty); set => SetValue(DayTypeProperty, value); }
+        public Theme Theme { get => (Theme)GetValue(ThemeProperty); set => SetValue(ThemeProperty, value); }
+
+        public SizeMode SizeMode { get => (SizeMode)GetValue(SizeModeProperty); set => SetValue(SizeModeProperty, value); }
+
+        public DayType DayType { get => (DayType)GetValue(DayTypeProperty); set => SetValue(DayTypeProperty, value); }
 
         public bool IsSelected { get  => (bool)GetValue(IsSelectedProperty); set => SetValue(IsSelectedProperty, value); }
 
-        public Theme Theme { get => (Theme)GetValue(ThemeProperty); set
-            {
-                SetValue(ThemeProperty, value);
-                Style = value.DayTileStyle;
-            }
-        }
-
         public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
-            "Theme", typeof(Theme), typeof(DayTile), new PropertyMetadata(Themes.Light));
+            "Theme", typeof(Theme), typeof(DayTile), new PropertyMetadata(Themes.Light, OnThemeChanged, null));
+
+        public static readonly DependencyProperty SizeModeProperty = DependencyProperty.Register(
+            "SizeMode", typeof(SizeMode), typeof(DayTile), 
+            new PropertyMetadata(SizeMode.Normal, OnSizeModeChanged, null));
 
         public static readonly DependencyProperty DayTypeProperty = DependencyProperty.Register(
-            "DayType", typeof(DayTypes), typeof(DayTile), new PropertyMetadata(DayTypes.Normal));
+            "DayType", typeof(DayType), typeof(DayTile), new PropertyMetadata(DayType.Normal));
 
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             "IsSelected", typeof(bool), typeof(DayTile), new PropertyMetadata(false));
 
+        private static void OnThemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((DayTile)d).ApplyTheme((Theme)e.NewValue);
+
+        private static void OnSizeModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((DayTile)d).ApplySizeMode((SizeMode)e.NewValue);
+
+        private void ApplySizeMode(SizeMode newValue)
+        {
+            SizeSet sizeSet = Theme.TextSize.GetSizeSet(newValue);
+            textSolar.FontSize = sizeSet.DayTileSolarTextSize;
+            textLunar.FontSize = sizeSet.DayTileLunarTextSize;
+            textLabel.FontSize = sizeSet.DayTileLabelTextSize;
+            if (newValue == SizeMode.Small || label == null || label.Length == 0)
+                textLabel.Visibility = Visibility.Collapsed;
+            else
+                textLabel.Visibility = Visibility.Visible;
+        }
+
+        private void ApplyTheme(Theme newTheme)
+        {
+            Style = newTheme.DayTileStyle;
+        }
     }
 }

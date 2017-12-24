@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using static Augustine.VietnameseCalendar.UI.TextSize;
 
 namespace Augustine.VietnameseCalendar.UI
 {
@@ -26,7 +27,7 @@ namespace Augustine.VietnameseCalendar.UI
         #region === Constant Fields ===
 
         public static readonly string[] DayOfWeekLabels =
-            {"Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"};
+            {"C.Nhật", "T.Hai", "T.Ba", "T.Tư", "T.Năm", "T.Sáu", "T.Bảy"};
         public static readonly int DAYS_PER_WEEK = 7;
         public static readonly int WEEKS = 6;
         public static readonly DateTime MINIMUM_SUPPORTED_DATE = new DateTime(1900, 1, 1);
@@ -105,17 +106,21 @@ namespace Augustine.VietnameseCalendar.UI
         public DateTime SelectedDate { get; private set; }
 
         private Theme theme;
-        //TODO reimplememnt dependency property or change back to normal property!
         public Theme Theme
         {
-            //get => (Theme)GetValue(ThemeProperty);
             get => theme;
             set
             {
+
                 if (value != theme)
                 {
-                    //SetValue(ThemeProperty, value);
                     theme = value;
+
+                    if (theme.TextAndShadow.IsDropShadow)
+                        Effect = theme.TextAndShadow.ShadowEffect;
+                    else
+                        Effect = null;
+                    TextOptions.SetTextFormattingMode(this, theme.TextAndShadow.TextFormattingMode);
 
                     Background = value.ThemeColor.Background;
                     Foreground = value.ThemeColor.Foreground;
@@ -131,8 +136,29 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        //public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
-        //    "Theme", typeof(Theme), typeof(AugustineCalendarMonth), new PropertyMetadata(Themes.Light));
+        public SizeMode SizeMode { get => (SizeMode)GetValue(SizeModeProperty); set => SetValue(SizeModeProperty, value); }
+
+        public static readonly DependencyProperty SizeModeProperty = DependencyProperty.Register(
+            "SizeMode", typeof(SizeMode), typeof(AugustineCalendarMonth),
+            new PropertyMetadata(SizeMode.Normal, OnSizeModeChanged, null));
+
+        private static void OnSizeModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((AugustineCalendarMonth)d).ApplySizeMode((SizeMode)e.NewValue);
+
+        private void ApplySizeMode(SizeMode newValue)
+        {
+            SizeSet sizeSet = Theme.TextSize.GetSizeSet(newValue);
+            monthLabelSolar.FontSize = sizeSet.MonthSolarLabelTextSize;
+            monthLabelLunar.FontSize = sizeSet.MonthLunarLabelTextSize;
+
+            if (days != null)
+            {
+                for (int i = 0; i < days.Length; i++)
+                {
+                    days[i].SizeMode = SizeMode;
+                }
+            }
+        }
 
         #endregion
 
@@ -430,6 +456,7 @@ namespace Augustine.VietnameseCalendar.UI
                 {
                     DayTile day = new DayTile
                     {
+                        //ActiveSizeMode = TextSize.SizeMode.Normal,
                         SolarDate = pageBegin.AddDays(i + j * 7),
                     };
                     days[i + j * 7] = day;
@@ -600,41 +627,16 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void StyleThisDay(DayTile day)
         {
-            // TODO check special days
-
-            //// reset Style
             day.IsSelected = false;
-            //day.FaceStyle = FaceStyles.Normal;
-            //day.BorderStyle = BorderStyles.Normal;
-
-
-            //// face style
-            //if (day.SolarDate.DayOfWeek == DayOfWeek.Sunday)
-            //{
-            //    day.FaceStyle = FaceStyles.Sunday;
-            //}
-            //else if (day.SolarDate.DayOfWeek == DayOfWeek.Saturday)
-            //{
-            //    day.FaceStyle = FaceStyles.Saturday;
-            //}
-
-            //if (day.SolarDate == today)
-            //{
-            //    day.FaceStyle = FaceStyles.Today;
-            //}
-
+            
             if (day.SolarDate.Month != thisMonth)
             {
-                //day.FaceStyle = FaceStyles.GrayedOut;
-                day.DayType = DayTypes.GrayedOut;
+                day.DayType = DayType.GrayedOut;
             }
 
-            // border style
             if (day.SolarDate == SelectedDate)
             {
-                //day.BorderStyle = BorderStyles.Selected;
                 day.IsSelected = true;
-
             }
         }
 
@@ -661,21 +663,19 @@ namespace Augustine.VietnameseCalendar.UI
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            // TODO set text formatting mode
-            //Style = new Style()
-            //{
-
+        {          
+            //Effect = new DropShadowEffect() {
+            //    BlurRadius = 3,
+            //    ShadowDepth = 1,
+            //    Color = Colors.Black,
+            //    Opacity = 1,
             //};
-            
-            Effect = new DropShadowEffect() {
-                BlurRadius = 3,
-                ShadowDepth = 1,
-                Color = Colors.Black,
-                Opacity = 1,
-            };
-            //TextOptions.SetTextRenderingMode(this, TextRenderingMode.Aliased);
-            TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
+            //TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
+        }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SizeMode = Theme.TextSize.GetSizeMode(this.ActualWidth, this.ActualHeight);
         }
     }
 }
