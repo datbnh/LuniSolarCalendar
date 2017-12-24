@@ -17,23 +17,23 @@ namespace Augustine.VietnameseCalendar.UI
     {
         public static readonly Dictionary<string, SpecialDateInfo> SpecialSolarDays = new Dictionary<string, SpecialDateInfo>()
         {
-            { "0101", new SpecialDateInfo("Tết Dương Lịch", "🎆", DayTypes.SpecialLevel1) },
-            { "1402", new SpecialDateInfo("Valentine", "♥", DayTypes.SpecialLevel2) },
-            { "2512", new SpecialDateInfo("Giáng Sinh", "🎄", DayTypes.SpecialLevel1) },
+            { "0101", new SpecialDateInfo("Tết Dương Lịch", "🎆", DayType.SpecialLevel1) },
+            { "1402", new SpecialDateInfo("Valentine", "♥", DayType.SpecialLevel2) },
+            { "2512", new SpecialDateInfo("Giáng Sinh", "🎄", DayType.SpecialLevel1) },
         };
 
         public static readonly Dictionary<string, SpecialDateInfo> SpecialLunarDays = new Dictionary<string, SpecialDateInfo>()
         {
-            { "0101", new SpecialDateInfo("Tết Nguyên Đán", "🎆", DayTypes.SpecialLevel1) },
-            { "0201", new SpecialDateInfo("Mồng Hai Tết", "②", DayTypes.SpecialLevel2) },
-            { "0301", new SpecialDateInfo("Mồng Ba Tết", "③", DayTypes.SpecialLevel3) },
-            { "1501", new SpecialDateInfo("Rằm tháng Giêng", "⓯", DayTypes.SpecialLevel2) },
-            { "1003", new SpecialDateInfo("Giỗ Tổ Hùng Vương", "", DayTypes.SpecialLevel2) },
-            { "1504", new SpecialDateInfo("Phật Đản", "", DayTypes.SpecialLevel2) },
-            { "0505", new SpecialDateInfo("Tết Đoan Ngọ", "", DayTypes.SpecialLevel2) },
-            { "1507", new SpecialDateInfo("Vu Lan", "🌹",DayTypes.SpecialLevel2) },
-            { "1508", new SpecialDateInfo("Tết Trung Thu", "🎑",DayTypes.SpecialLevel2) },
-            { "2312", new SpecialDateInfo("Ông Táo Chầu Trời", "🐟",DayTypes.SpecialLevel2) },
+            { "0101", new SpecialDateInfo("Tết Nguyên Đán", "🎆", DayType.SpecialLevel1) },
+            { "0201", new SpecialDateInfo("Mồng Hai Tết", "②", DayType.SpecialLevel2) },
+            { "0301", new SpecialDateInfo("Mồng Ba Tết", "③", DayType.SpecialLevel3) },
+            { "1501", new SpecialDateInfo("Rằm tháng Giêng", "⓯", DayType.SpecialLevel2) },
+            { "1003", new SpecialDateInfo("Giỗ Tổ Hùng Vương", "", DayType.SpecialLevel2) },
+            { "1504", new SpecialDateInfo("Phật Đản", "", DayType.SpecialLevel2) },
+            { "0505", new SpecialDateInfo("Tết Đoan Ngọ", "", DayType.SpecialLevel2) },
+            { "1507", new SpecialDateInfo("Vu Lan", "🌹",DayType.SpecialLevel2) },
+            { "1508", new SpecialDateInfo("Tết Trung Thu", "🎑",DayType.SpecialLevel2) },
+            { "2312", new SpecialDateInfo("Ông Táo Chầu Trời", "🐟",DayType.SpecialLevel2) },
         };
 
         /// <summary>
@@ -73,8 +73,8 @@ namespace Augustine.VietnameseCalendar.UI
         {
             public string Label { get; set; }
             public string Decorator { get; set; }
-            public DayTypes DayType { get; set; }
-            public SpecialDateInfo(string label, string decorator = "", DayTypes dayType = DayTypes.SpecialLevel1)
+            public DayType DayType { get; set; }
+            public SpecialDateInfo(string label, string decorator = "", DayType dayType = DayType.SpecialLevel1)
             {
                 Label = label;
                 Decorator = decorator;

@@ -7,6 +7,7 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
+using System;
 using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Media;
@@ -39,7 +40,7 @@ namespace Augustine.VietnameseCalendar.UI
         {
             ThemeColor = themeColor ?? ThemeColors.Light;
             TextSize = themeSize ?? new TextSize();
-            TextAndShadow = new TextAndShadow();
+            TextAndShadow = textAndShadow;
         }
 
         public static Style CreateDayTileStyle(ThemeColor themeColor)
@@ -56,18 +57,18 @@ namespace Augustine.VietnameseCalendar.UI
                     new Setter(DayTile.BorderBrushProperty, themeColor.SelectedBorder),
                 },
             });
-            style.Triggers.Add(CreateDayTypeTrigger(DayTypes.Saturday, themeColor.SaturdayBackground, themeColor.SaturdayForeground));
-            style.Triggers.Add(CreateDayTypeTrigger(DayTypes.Sunday, themeColor.SundayBackground, themeColor.SundayForeground));
-            style.Triggers.Add(CreateDayTypeTrigger(DayTypes.SpecialLevel3, themeColor.SpecialLevel3Background, themeColor.SpecialLevel3Foreground));
-            style.Triggers.Add(CreateDayTypeTrigger(DayTypes.SpecialLevel2, themeColor.SpecialLevel2Background, themeColor.SpecialLevel2Foreground));
-            style.Triggers.Add(CreateDayTypeTrigger(DayTypes.SpecialLevel1, themeColor.SpecialLevel1Background, themeColor.SpecialLevel1Foreground));
+            style.Triggers.Add(CreateDayTypeTrigger(DayType.Saturday, themeColor.SaturdayBackground, themeColor.SaturdayForeground));
+            style.Triggers.Add(CreateDayTypeTrigger(DayType.Sunday, themeColor.SundayBackground, themeColor.SundayForeground));
+            style.Triggers.Add(CreateDayTypeTrigger(DayType.SpecialLevel3, themeColor.SpecialLevel3Background, themeColor.SpecialLevel3Foreground));
+            style.Triggers.Add(CreateDayTypeTrigger(DayType.SpecialLevel2, themeColor.SpecialLevel2Background, themeColor.SpecialLevel2Foreground));
+            style.Triggers.Add(CreateDayTypeTrigger(DayType.SpecialLevel1, themeColor.SpecialLevel1Background, themeColor.SpecialLevel1Foreground));
             style.Triggers.Add(new Trigger
             {
                 Property = DayTile.IsMouseOverProperty,
                 Value = true,
                 Setters = { new Setter(DayTile.BackgroundProperty, themeColor.MouseOverBackground), },
             });
-            style.Triggers.Add(CreateDayTypeTrigger(DayTypes.GrayedOut, themeColor.GrayedOutBackground, themeColor.GrayedOutForeground));
+            style.Triggers.Add(CreateDayTypeTrigger(DayType.GrayedOut, themeColor.GrayedOutBackground, themeColor.GrayedOutForeground));
             // Setters
             style.Setters.Add(new Setter(DayTile.PaddingProperty, new Thickness(2, 2, 0, 0)));
             style.Setters.Add(new Setter(DayTile.MarginProperty, new Thickness(0)));
@@ -78,7 +79,7 @@ namespace Augustine.VietnameseCalendar.UI
             return style;
         }
 
-        private static Trigger CreateDayTypeTrigger(DayTypes dayType, Brush background, Brush foreground)
+        private static Trigger CreateDayTypeTrigger(DayType dayType, Brush background, Brush foreground)
         {
             return new Trigger()
             {
