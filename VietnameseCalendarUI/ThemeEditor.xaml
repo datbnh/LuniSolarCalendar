@@ -15,7 +15,7 @@
         xmlns:local="clr-namespace:Augustine.VietnameseCalendar.UI"
         mc:Ignorable="d"
         Title="Lịch Việt Nam: Tùy Biến Giao Diện"
-        d:DataContext="{d:DesignInstance local:ThemeEditor, IsDesignTimeCreatable=True}" Height="480" Width="520" SizeChanged="Window_SizeChanged" Loaded="window_Loaded">
+        d:DataContext="{d:DesignInstance local:ThemeEditor, IsDesignTimeCreatable=True}" Height="480" Width="520" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
     <Window.Resources>
         <LinearGradientBrush x:Key="CrossBrush" EndPoint="0,3" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="3,0">
             <LinearGradientBrush.RelativeTransform>
@@ -129,15 +129,15 @@
         </ScrollViewer>
         <StackPanel Grid.Row="3" Margin="0,10,0,0" VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button VerticalAlignment="Bottom" Width="100" Margin="5,0,0,0"
-                    x:Name="open" Content="📂 Mở Từ File" Click="open_Click"/>
+                    x:Name="open" Content="📂 Mở Từ File" Click="Open_Click"/>
             <Button VerticalAlignment="Bottom" Width="100" Margin="5,0,0,0"
-                    x:Name="save" Content="💾 Lưu Vào File" Click="save_Click"/>
+                    x:Name="save" Content="💾 Lưu Vào File" Click="Save_Click"/>
             <Button VerticalAlignment="Bottom" Width="75" Margin="10,0,0,0"
-                    x:Name="restore" Content="🔄 Khôi Phục" FontFamily="Segoe UI Symbol" Click="restore_Click" />
+                    x:Name="restore" Content="🔄 Khôi Phục" FontFamily="Segoe UI Symbol" Click="Restore_Click" />
             <Button VerticalAlignment="Bottom" Width="75" Margin="10,0,0,0"
-                    x:Name="cancel" Content="✘ Đóng" IsCancel="True" Click="cancel_Click" />
+                    x:Name="cancel" Content="✘ Đóng" IsCancel="True" Click="Cancel_Click" />
             <Button VerticalAlignment="Bottom" Width="75" Margin="5,0,0,0"
-                    x:Name="apply" Content="✔ Áp Dụng"  Click="apply_Click" IsDefault="True" />
+                    x:Name="apply" Content="✔ Áp Dụng"  Click="Apply_Click" IsDefault="True" />
         </StackPanel>
 
     </Grid>

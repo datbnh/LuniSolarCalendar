@@ -23,12 +23,10 @@ namespace Augustine.VietnameseCalendar.UI
     public partial class ThemeEditor : Window
     {
         private AugustineCalendarMonth target;
-        private Theme newTheme;
-
+        
         public ThemeEditor()
         {
             InitializeComponent();
-            //DataContext = this;
         }
 
         private void SynchronizeColorPickers()
@@ -65,7 +63,7 @@ namespace Augustine.VietnameseCalendar.UI
             if (backgroundPath != nameof(ThemeColor.Background)) {
                 var baseBackgroundBinding =
                     new Binding(nameof(ThemeColor.Background))
-                    { Mode = BindingMode.OneWay, Source = this.ThemeColor1, NotifyOnSourceUpdated = true, };
+                    { Mode = BindingMode.OneWay, Source = this.EditingTheme.ThemeColor, NotifyOnSourceUpdated = true, };
                 var sampleBaseBackground = new Border()
                 {
                     Background = Resources["CrossBrush"] as LinearGradientBrush,
@@ -110,9 +108,9 @@ namespace Augustine.VietnameseCalendar.UI
 
             // binding properties
             var backgroundBinding =
-                new Binding(backgroundPath) { Mode = BindingMode.OneWay, Source = this.ThemeColor1, NotifyOnSourceUpdated = true, };
+                new Binding(backgroundPath) { Mode = BindingMode.OneWay, Source = this.EditingTheme.ThemeColor, NotifyOnSourceUpdated = true, };
             var backgroundBindingTwoWay =
-                new Binding(backgroundPath) { Mode = BindingMode.TwoWay, Source = this.ThemeColor1, NotifyOnSourceUpdated = true, };
+                new Binding(backgroundPath) { Mode = BindingMode.TwoWay, Source = this.EditingTheme.ThemeColor, NotifyOnSourceUpdated = true, };
 
             sampleText.SetBinding(Label.BackgroundProperty, backgroundBinding);
             backgroundInfoString.SetBinding(TextBox.TextProperty, backgroundBindingTwoWay);
@@ -121,9 +119,9 @@ namespace Augustine.VietnameseCalendar.UI
             if (!string.IsNullOrEmpty(foregroundPath))
             {
                 var foregroundBinding =
-                    new Binding(foregroundPath) { Mode = BindingMode.OneWay, Source = this.ThemeColor1, NotifyOnSourceUpdated = true, };
+                    new Binding(foregroundPath) { Mode = BindingMode.OneWay, Source = this.EditingTheme.ThemeColor, NotifyOnSourceUpdated = true, };
                 var foregroundBindingTwoWay =
-                    new Binding(foregroundPath) { Mode = BindingMode.TwoWay, Source = this.ThemeColor1, NotifyOnSourceUpdated = true, };
+                    new Binding(foregroundPath) { Mode = BindingMode.TwoWay, Source = this.EditingTheme.ThemeColor, NotifyOnSourceUpdated = true, };
 
                 sampleText.SetBinding(Label.ForegroundProperty, foregroundBinding);
                 foregroundInfoString.SetBinding(TextBox.TextProperty, foregroundBindingTwoWay);
@@ -135,7 +133,7 @@ namespace Augustine.VietnameseCalendar.UI
             else
             {
                 var foregroundBinding =
-                    new Binding(nameof(ThemeColor.Foreground)) { Mode = BindingMode.OneWay, Source = this.ThemeColor1, NotifyOnSourceUpdated = true, };
+                    new Binding(nameof(ThemeColor.Foreground)) { Mode = BindingMode.OneWay, Source = this.EditingTheme.ThemeColor, NotifyOnSourceUpdated = true, };
 
                 sampleText.SetBinding(Label.ForegroundProperty, foregroundBinding);
                 foregroundInfoString.Text = "(Theo màu chữ chung)";
@@ -156,17 +154,25 @@ namespace Augustine.VietnameseCalendar.UI
         public void SetTarget(AugustineCalendarMonth calendar)
         {
             target = calendar;
-            newTheme = target.Theme.DataContractDeepClone() as Theme;
-            ThemeColor1 = newTheme.ThemeColor;
+            EditingTheme = target.Theme.DataContractDeepClone() as Theme; ;
+        }
 
+        public Theme EditingTheme { get => (Theme)GetValue(EditingThemeProperty); set => SetValue(EditingThemeProperty, value); }
+
+        public static readonly DependencyProperty EditingThemeProperty = DependencyProperty.Register(
+            "EditingTheme", typeof(Theme), typeof(ThemeEditor), 
+            new PropertyMetadata(Themes.LightSemiTransparent, OnEditingThemeChange, null));
+
+        private static void OnEditingThemeChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((ThemeEditor)d).ChangeEditingTheme(e.NewValue);
+        }
+
+        private void ChangeEditingTheme(object newValue)
+        {
             SynchronizeColorPickers();
             SynchronizeAdvancedSettings();
         }
-
-        public ThemeColor ThemeColor1 { get => (ThemeColor)GetValue(ThemeColor1Property); set => SetValue(ThemeColor1Property, value); }
-
-        public static readonly DependencyProperty ThemeColor1Property = DependencyProperty.Register(
-            "ThemeColor1", typeof(ThemeColor), typeof(ThemeEditor), new PropertyMetadata(ThemeColors.DarkSemiTransparent));
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -204,11 +210,13 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        private void apply_Click(object sender, RoutedEventArgs e)
+        private void Apply_Click(object sender, RoutedEventArgs e)
         {
-            //initialState = (ThemeColor)ThemeColor1.Clone();
-            target.Theme = newTheme.DataContractDeepClone() as Theme;
-            if ((bool)isDropShadow.IsChecked)
+            //initialState = (ThemeColor)EditingTheme.ThemeColor.Clone();
+
+            EditingTheme.TextAndShadow.IsDropShadow = (bool)isDropShadow.IsChecked;
+
+            //if ((bool)isDropShadow.IsChecked)
             {
                 double r = 3;
                 double d = 1;
@@ -223,38 +231,37 @@ namespace Augustine.VietnameseCalendar.UI
 
                 DropShadowColor.Text = c.ToString();
 
-                target.Effect = new DropShadowEffect { BlurRadius = r, Color = c, ShadowDepth = d };
+                EditingTheme.TextAndShadow.ShadowRadius = r;
+                EditingTheme.TextAndShadow.ShadowDepth = d;
+                EditingTheme.TextAndShadow.ShadowColor = c;
             } 
-            else
-            {
-                target.ClearValue(EffectProperty);
-            }
-
+            
             if (textFormattingMode.SelectedIndex == 0)
             {
-                TextOptions.SetTextFormattingMode(target, TextFormattingMode.Ideal);
+                EditingTheme.TextAndShadow.TextFormattingMode = TextFormattingMode.Ideal;
             }
             else if(textFormattingMode.SelectedIndex == 1)
             {
-                TextOptions.SetTextFormattingMode(target, TextFormattingMode.Display);
+                EditingTheme.TextAndShadow.TextFormattingMode = TextFormattingMode.Display;
             }
+
+            target.Theme = EditingTheme.DataContractDeepClone() as Theme;
         }
 
-        private void window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SynchronizeColorPickers();
-            SynchronizeAdvancedSettings();
+            //SynchronizeColorPickers();
+            //SynchronizeAdvancedSettings();
         }
 
-        private void cancel_Click(object sender, RoutedEventArgs e)
+        private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void restore_Click(object sender, RoutedEventArgs e)
+        private void Restore_Click(object sender, RoutedEventArgs e)
         {
-            newTheme = target.Theme.DataContractDeepClone() as Theme;
-            ThemeColor1 = newTheme.ThemeColor;
+            EditingTheme = target.Theme.DataContractDeepClone() as Theme;
             SynchronizeColorPickers();
             SynchronizeAdvancedSettings();
         }
@@ -279,7 +286,7 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        private void save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Vietnamese calendar configuration files (*.vccfg)|*.vccfg|All files (*.*)|*.*";
@@ -287,7 +294,7 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    newTheme.SaveToFile(saveFileDialog.FileName);
+                    EditingTheme.SaveToFile(saveFileDialog.FileName);
                     MessageBox.Show("Đã lưu file thành công!", "Lịch Việt Nam: Lưu Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
@@ -301,7 +308,7 @@ namespace Augustine.VietnameseCalendar.UI
             
         }
 
-        private void open_Click(object sender, RoutedEventArgs e)
+        private void Open_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Vietnamese calendar configuration files (*.vccfg)|*.vccfg|All files (*.*)|*.*";
@@ -309,11 +316,9 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    Serializer.LoadFromFile<ThemeColor>(openFileDialog.FileName, out ThemeColor loadedTheme);
-                    newTheme.ThemeColor = loadedTheme;
-                    ThemeColor1 = newTheme.ThemeColor;
+                    Serializer.LoadFromFile<Theme>(openFileDialog.FileName, out Theme newTheme);
+                    EditingTheme = newTheme;
                     MessageBox.Show("Đã đọc file thành công!", "Lịch Việt Nam: Đọc Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Information);
-                    SynchronizeColorPickers();
                 }
             }
             catch (Exception ex)
