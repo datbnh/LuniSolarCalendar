@@ -20,7 +20,6 @@
         MouseDown="Window_MouseDown" 
         Width="500" Height="400" 
         ResizeMode="CanResizeWithGrip" 
-        Loaded="Window_Loaded" 
         StateChanged="Window_StateChanged"
         LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing"

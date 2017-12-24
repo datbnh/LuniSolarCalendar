@@ -51,11 +51,6 @@ namespace Augustine.VietnameseCalendar.UI
         }
 
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //augustineCalendarMonth.Theme = Themes.DarkSemiTransparent;
-        }
-
         private void Window_StateChanged(object sender, EventArgs e)
         {
             if (WindowStyle == WindowStyle.None && WindowState == WindowState.Minimized)
@@ -107,15 +102,9 @@ namespace Augustine.VietnameseCalendar.UI
         }
 
 
-        private void Border_MouseEnter(object sender, MouseEventArgs e)
-        {
-            PopupToolBar.IsOpen = true;
-        }
+        private void Border_MouseEnter(object sender, MouseEventArgs e) => PopupToolBar.IsOpen = true;
 
-        private void Popup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            PopupToolBar.IsOpen = false;
-        }
+        private void Popup_MouseLeave(object sender, MouseEventArgs e) => PopupToolBar.IsOpen = false; 
 
 
         private void ButtonClose_MouseDown(object sender, RoutedEventArgs e)
@@ -136,15 +125,9 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        private void ButtonMove_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            PopupToolBar.IsOpen = false;
-        }
+        private void ButtonMove_MouseUp(object sender, MouseButtonEventArgs e) => PopupToolBar.IsOpen = false;
 
-        private void ButtonMove_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-        }
+        private void ButtonMove_MouseDown(object sender, MouseButtonEventArgs e) => DragMove();
 
         private void ButtonConverterTool_Click(object sender, RoutedEventArgs e)
         {
@@ -156,10 +139,7 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        private void ButtonWidget_Click(object sender, RoutedEventArgs e)
-        {
-            OnRequestChangeViewMode();
-        }
+        private void ButtonWidget_Click(object sender, RoutedEventArgs e) => OnRequestChangeViewMode();
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -168,10 +148,7 @@ namespace Augustine.VietnameseCalendar.UI
             te.Show();
         }
 
-        private void ButtonAbout_Click(object sender, RoutedEventArgs e)
-        {
-            (new About()).Show();
-        }
+        private void ButtonAbout_Click(object sender, RoutedEventArgs e) => (new About()).Show();
 
 
         public void RequestClose()
