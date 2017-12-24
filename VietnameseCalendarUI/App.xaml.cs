@@ -20,6 +20,8 @@ namespace Augustine.VietnameseCalendar.UI
     /// </summary>
     public partial class App : Application
     {
+        private const string confFile = "Configuration.bin";
+
         private System.Windows.Forms.NotifyIcon notifyIcon = null;
         private Configuration configuration;
         CalendarMonthWindow currentWindow;
@@ -78,7 +80,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (!Serializer.TryLoadFromBinaryFile<Configuration>("VietnameseCalendar.state", out configuration))
+            if (!Serializer.TryLoadFromBinaryFile<Configuration>(confFile, out configuration))
                 configuration = Configuration.DefaultConfiguration;
 
             CreateCalendarMonthWindow();
@@ -96,7 +98,7 @@ namespace Augustine.VietnameseCalendar.UI
         {
             notifyIcon.Visible = false;
             SyncCurrentStateToConfiguration();
-            Serializer.TrySaveToBinaryFile(configuration, "VietnameseCalendar.state");
+            Serializer.TrySaveToBinaryFile(configuration, confFile);
         }
 
         private void ChangeViewMode()
