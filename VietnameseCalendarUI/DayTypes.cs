@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Augustine.VietnameseCalendar.UI
 {
-    public enum DayTypes
+    public enum DayType
     {
         Normal,
         Saturday,
