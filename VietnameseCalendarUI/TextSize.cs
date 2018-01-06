@@ -76,8 +76,8 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 ClientWidthMax = 9999,
                 ClientHeightMax = 9999,
-                DayTileSolarTextSize = 36,
-                DayTileLunarTextSize = 24,
+                DayTileSolarTextSize = 44,
+                DayTileLunarTextSize = 28,
                 DayTileLabelTextSize = 12,
                 MonthSolarLabelTextSize = 24,
                 MonthLunarLabelTextSize = 20,

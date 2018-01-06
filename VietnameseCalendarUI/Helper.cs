@@ -74,6 +74,12 @@ namespace Augustine.VietnameseCalendar.UI
             value = max / 255d;
         }
 
+        public static int GetHue(SolidColorBrush brush)
+        {
+            return (int)
+                System.Drawing.Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B).GetHue();
+        }
+
         public static Color GetBackgroundFromHue(double h)
         {
             return ColorFromHSV(h, BACKGROUND_S, BACKGROUND_V);

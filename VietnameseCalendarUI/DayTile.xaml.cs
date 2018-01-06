@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using static Augustine.VietnameseCalendar.UI.SpecialDayManager;
 using static Augustine.VietnameseCalendar.UI.TextSize;
+using System.Windows.Media.Effects;
 
 namespace Augustine.VietnameseCalendar.UI
 {
@@ -25,7 +26,7 @@ namespace Augustine.VietnameseCalendar.UI
         public DayTile()
         {
             InitializeComponent();
-
+            UseLayoutRounding = true;
             HorizontalAlignment = HorizontalAlignment.Stretch;
             VerticalAlignment = VerticalAlignment.Stretch;
 
@@ -51,6 +52,7 @@ namespace Augustine.VietnameseCalendar.UI
 
                 var toolTipTitle = "";
                 var toolTipDecorator = "";
+                var hueIndex = -1;
 
                 // in case of invalid date - BUG!!!
                 if (lunarDate != null)
@@ -62,6 +64,22 @@ namespace Augustine.VietnameseCalendar.UI
                         Decorator.Text = specialDayInfo.Decorator;
                         toolTipTitle = Label;
                         DayType = specialDayInfo.DayType;
+                        //TODO decouple hue value!!!
+                        switch (DayType)
+                        {
+                            case DayType.SpecialLevel3:
+                                hueIndex = Helper.GetHue((SolidColorBrush)Theme.ThemeColor.SpecialLevel3Foreground);
+                                break;
+                            case DayType.SpecialLevel2:
+                                hueIndex = Helper.GetHue((SolidColorBrush)Theme.ThemeColor.SpecialLevel2Foreground);
+                                break;
+                            case DayType.SpecialLevel1:
+                                hueIndex = Helper.GetHue((SolidColorBrush)Theme.ThemeColor.SpecialLevel1Foreground);
+                                break;
+                            default:
+                                break;
+                        }
+
                     }
                     else
                     {
@@ -69,6 +87,7 @@ namespace Augustine.VietnameseCalendar.UI
                         {
                             Label = lunarDate.SolarTerm;
                             toolTipTitle = "Bắt đầu tiết " + Label;
+                            hueIndex = SolarTermBar.GetHueValue(lunarDate.SolarTermIndex);
                             switch (lunarDate.SolarTermIndex)
                             {
                                 case 0:
@@ -107,7 +126,7 @@ namespace Augustine.VietnameseCalendar.UI
                     if (string.IsNullOrEmpty(toolTipDecorator))
                         toolTipDecorator = lunarDate.SolarDate.Day.ToString();
 
-                    ToolTip = CalendarDayToolTip.CreateToolTip(toolTipTitle, lunarDate, toolTipDecorator, -1);    
+                    ToolTip = CalendarDayToolTip.CreateToolTip(toolTipTitle, lunarDate, toolTipDecorator, hueIndex);    
                 }
 
                 UpdateSolarDateLabel();
@@ -200,6 +219,13 @@ namespace Augustine.VietnameseCalendar.UI
         private void ApplyTheme(Theme newTheme)
         {
             Style = newTheme.DayTileStyle;
+        }
+
+        internal void ApplyShadowToTexts(DropShadowEffect e)
+        {
+            textLunar.Effect = e;
+            textSolar.Effect = e;
+            textLabel.Effect = e;
         }
     }
 }

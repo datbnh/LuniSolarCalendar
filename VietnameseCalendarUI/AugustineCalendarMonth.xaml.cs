@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Threading;
 using static Augustine.VietnameseCalendar.UI.TextSize;
 
 namespace Augustine.VietnameseCalendar.UI
@@ -26,8 +27,12 @@ namespace Augustine.VietnameseCalendar.UI
     {
         #region === Constant Fields ===
 
-        public static readonly string[] DayOfWeekLabels =
+        public static readonly string[] DayOfWeekShortLabels =
+            {"CN", "T2", "T3", "T4", "T5", "T6", "T7"};
+        public static readonly string[] DayOfWeekMediumLabels =
             {"C.Nhật", "T.Hai", "T.Ba", "T.Tư", "T.Năm", "T.Sáu", "T.Bảy"};
+        public static readonly string[] DayOfWeekFullLabels =
+            {"Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"};
         public static readonly int DAYS_PER_WEEK = 7;
         public static readonly int WEEKS = 6;
         public static readonly DateTime MINIMUM_SUPPORTED_DATE = new DateTime(1900, 1, 1);
@@ -42,11 +47,12 @@ namespace Augustine.VietnameseCalendar.UI
         private const int MAX_ROW_SPAN = 11;
 
         private const int COL_IDX_MONTH_LABEL = 0;
+        private const int COL_IDX_SOLAR_TERM_DECORATOR = 0;
         private const int COL_IDX_CW_LABELS = 0;
         private const int COL_IDX_DOW_LABELS = 1;
         private const int COL_IDX_DAYS = 1;
-        private const int COL_IDX_TODAY_LABEL = 0;
-        private const int COL_IDX_SELECTED_DATE_LABEL = 0;
+        private const int COL_IDX_TODAY_LABEL = 1;
+        private const int COL_IDX_SELECTED_DATE_LABEL = 1;
         private const int MAX_COL_SPAN = 8;
 
         #endregion
@@ -66,8 +72,8 @@ namespace Augustine.VietnameseCalendar.UI
         private StackPanel datePickerStackPanel;
         private DatePicker datePicker;
 
-        private int thisMonth;
-        private int thisYear;
+        //private int thisMonth;
+        //private int thisYear;
         private DateTime today;
         private DateTime pageBegin;
         private DateTime monthBegin;
@@ -85,6 +91,7 @@ namespace Augustine.VietnameseCalendar.UI
         public AugustineCalendarMonth()
         {
             InitializeComponent();
+            UseLayoutRounding = true;
 
             today = DateTime.Today;
             SelectedDate = today;
@@ -98,7 +105,7 @@ namespace Augustine.VietnameseCalendar.UI
             InitializeDayOfWeekLabels();
             InitializeCwLabels();
 
-            Theme = Themes.Light;
+            //Theme = Themes.Light;
         }
 
         #region === Properties ===
@@ -117,9 +124,10 @@ namespace Augustine.VietnameseCalendar.UI
                     theme = value;
 
                     if (theme.TextAndShadow.IsDropShadow)
-                        Effect = theme.TextAndShadow.ShadowEffect;
+                        ApplyShadowToTexts(theme.TextAndShadow.ShadowEffect);
                     else
-                        Effect = null;
+                        ApplyShadowToTexts(null);
+
                     TextOptions.SetTextFormattingMode(this, theme.TextAndShadow.TextFormattingMode);
 
                     Background = value.ThemeColor.Background;
@@ -130,6 +138,15 @@ namespace Augustine.VietnameseCalendar.UI
                         for (int i = 0; i < days.Length; i++)
                         {
                             days[i].Theme = value;
+                        }
+                    }
+
+                    // todo: update using data binding
+                    if (cwLabels != null)
+                    {
+                        for (int i = 0; i < cwLabels.Length; i++)
+                        {
+                            cwLabels[i].Foreground = value.ThemeColor.GrayedOutForeground;
                         }
                     }
                 }
@@ -151,6 +168,18 @@ namespace Augustine.VietnameseCalendar.UI
             monthLabelSolar.FontSize = sizeSet.MonthSolarLabelTextSize;
             monthLabelLunar.FontSize = sizeSet.MonthLunarLabelTextSize;
 
+            switch (newValue)
+            {
+                case SizeMode.Small:
+                    break;
+                case SizeMode.Normal:
+                    break;
+                case SizeMode.Large:
+                    break;
+                default:
+                    break;
+            }
+
             if (days != null)
             {
                 for (int i = 0; i < days.Length; i++)
@@ -158,6 +187,10 @@ namespace Augustine.VietnameseCalendar.UI
                     days[i].SizeMode = SizeMode;
                 }
             }
+
+            UpdateTodayInfoLabel();
+            UpdateSelectedDateInfoLabel();
+            UpdateDayOfWeekLabels();
         }
 
         #endregion
@@ -181,45 +214,20 @@ namespace Augustine.VietnameseCalendar.UI
             UpdateEverything();
         }
 
-        //private void Day_MouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    ((AugustineCalendarDay)sender).BorderStyle = BorderStyles.HotTrack;
-        //}
-
-        //private void Day_MouseLeave(object sender, MouseEventArgs e)
-        //{
-        //    var day = ((AugustineCalendarDay)sender);
-        //    if (day.SolarDate == SelectedDate)
-        //    {
-        //        day.BorderStyle = BorderStyles.Selected;
-        //    }
-        //    else
-        //    {
-        //        day.BorderStyle = BorderStyles.Normal;
-        //    }
-
-        //}
-
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+            => SizeMode = Theme.TextSize.GetSizeMode(this.ActualWidth, this.ActualHeight);
+        
         private void Day_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var day = ((DayTile)sender);
             day.IsSelected = true;
             SelectedDate = day.SolarDate;
-
-            // TODO: only update the border of selected day when page is not changed
-            //if (selectedDate < monthBegin || selectedDate > monthEnd)
-            //{
-            //    //
-            //}
-
             UpdateEverything();
         }
 
         private void TodayInfoLabel_MouseUp(object sender, MouseButtonEventArgs e)
         {
             SelectedDate = today;
-            thisMonth = today.Month;
-            thisYear = today.Year;
             UpdateEverything();
         }
 
@@ -305,11 +313,13 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void InitializeSolarTermBar()
         {
-            solarTermBar = new UserControl();
-            solarTermBar.Content = SolarTermBar.CreateSolarTermBar(today.Year, 7);
+            solarTermBar = new UserControl
+            {
+                Content = SolarTermBar.CreateSolarTermBar(today.Year, 7)
+            };
             Grid.SetRow(solarTermBar, ROW_IDX_SOLAR_TERM_DECORATOR);
-            Grid.SetColumn(solarTermBar, 0);
-            Grid.SetColumnSpan(solarTermBar, MAX_COL_SPAN);
+            Grid.SetColumn(solarTermBar, COL_IDX_SOLAR_TERM_DECORATOR);
+            Grid.SetColumnSpan(solarTermBar, MAX_COL_SPAN - COL_IDX_SOLAR_TERM_DECORATOR);
             MainGrid.Children.Add(solarTermBar);
 
         }
@@ -406,21 +416,32 @@ namespace Augustine.VietnameseCalendar.UI
                     currentDayOfWeek -= 7;
                 Label label = new Label
                 {
-                    Content = DayOfWeekLabels[currentDayOfWeek],
-                    BorderThickness = new Thickness(i == 0 ? 1 : 0, 1, 1, 1),
+                    //Content = DayOfWeekShortLabels[currentDayOfWeek],
+                    //BorderThickness = new Thickness(0, 1, 1, 1),
                     FontSize = 14f,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     HorizontalContentAlignment = HorizontalAlignment.Center,
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(0),
                 };
                 dayOfWeekLabels[i] = label;
                 BindingOperations.SetBinding(label, ForegroundProperty, foregroundBinding);
-                BindingOperations.SetBinding(label, BorderBrushProperty, borderBinding);
 
-                Grid.SetColumn(label, COL_IDX_DOW_LABELS + i);
-                Grid.SetRow(label, ROW_IDX_DOW_LABELS);
-                MainGrid.Children.Add(label);
+                //BindingOperations.SetBinding(label, BorderBrushProperty, borderBinding);
+                Border b = new Border()
+                {
+                    BorderThickness = new Thickness(0, 1, 1, 1),
+                };
 
+                b.Child = label;
+
+                BindingOperations.SetBinding(b, BorderBrushProperty, borderBinding);
+
+                Grid.SetColumn(b, COL_IDX_DOW_LABELS + i);
+                Grid.SetRow(b, ROW_IDX_DOW_LABELS);
+                MainGrid.Children.Add(b);
             }
+            UpdateDayOfWeekLabels();
         }
 
         private void InitializeCwLabels()
@@ -430,19 +451,43 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 Label label = new Label
                 {
-                    Content = null,
                     BorderThickness = new Thickness(0, 0, 1, 0),
                     Margin = new Thickness(0),
-                    Padding = new Thickness(0),
+                    Padding = new Thickness(1),
+                    FontStyle = FontStyles.Italic,
                 };
-                //cwLabels[i] = label;
-                BindingOperations.SetBinding(label, ForegroundProperty, foregroundBinding);
-                BindingOperations.SetBinding(label, BorderBrushProperty, borderBinding);
+                cwLabels[i] = label;
 
-                Grid.SetColumn(label, COL_IDX_CW_LABELS);
-                Grid.SetRow(label, ROW_IDX_CW_LABELS + i);
-                MainGrid.Children.Add(label);
+                Border b = new Border()
+                {
+                    BorderThickness = new Thickness(0, 0, 1, 0),
+                };
+
+                b.Child = label;
+
+                BindingOperations.SetBinding(b, BorderBrushProperty, borderBinding);
+
+                Grid.SetColumn(b, COL_IDX_CW_LABELS);
+                Grid.SetRow(b, ROW_IDX_CW_LABELS + i);
+                MainGrid.Children.Add(b);
             }
+
+            // dummy cell to draw a left border of the first day of week label
+            Label dummy = new Label
+            {
+                BorderThickness = new Thickness(0, 0, 1, 0),
+                Margin = new Thickness(0),
+                Padding = new Thickness(0),
+                Content = null,
+            };
+
+            BindingOperations.SetBinding(dummy, BorderBrushProperty, borderBinding);
+
+            Grid.SetColumn(dummy, COL_IDX_CW_LABELS);
+            Grid.SetRow(dummy, ROW_IDX_CW_LABELS - 1);
+            MainGrid.Children.Add(dummy);
+
+            UpdateCwLabels();
         }
 
         private void InitializeDays()
@@ -508,8 +553,8 @@ namespace Augustine.VietnameseCalendar.UI
                 SelectedDate = MINIMUM_SUPPORTED_DATE;
             }
 
-            thisMonth = SelectedDate.Month;
-            thisYear = SelectedDate.Year;
+            var thisMonth = SelectedDate.Month;
+            var thisYear = SelectedDate.Year;
             monthBegin = new DateTime(thisYear, thisMonth, 1);
             monthEnd = new DateTime(thisYear, thisMonth, DateTime.DaysInMonth(thisYear, thisMonth));
 
@@ -526,7 +571,6 @@ namespace Augustine.VietnameseCalendar.UI
                 pageBegin = pageBegin.AddDays(-7);
             }
         }
-
 
         private void UpdateMonthLabels()
         {
@@ -559,7 +603,7 @@ namespace Augustine.VietnameseCalendar.UI
                     monthEndLunarDate.YearName);
             }
 
-            String solarInfo = String.Format("Tháng {0} năm {1}", thisMonth, thisYear);
+            String solarInfo = String.Format("Tháng {0} năm {1}", SelectedDate.Month, SelectedDate.Year);
 
             monthLabelSolar.Content = solarInfo;
             monthLabelLunar.Content = lunarInfo;
@@ -568,6 +612,30 @@ namespace Augustine.VietnameseCalendar.UI
         private void UpdateSolarTermBar()
         {
             solarTermBar.Content = SolarTermBar.CreateSolarTermBar(SelectedDate.Year, 7);
+        }
+
+        private void UpdateDayOfWeekLabels()
+        {
+            if (dayOfWeekLabels == null)
+                return;
+            for (int i = 0; i < dayOfWeekLabels.Length; i++)
+            {
+                switch (SizeMode)
+                {
+                    case SizeMode.Small:
+                        dayOfWeekLabels[i].Content = DayOfWeekShortLabels[i];
+                        break;
+                    case SizeMode.Normal:
+                        dayOfWeekLabels[i].Content = DayOfWeekMediumLabels[i];
+                        break;
+                    case SizeMode.Large:
+                        dayOfWeekLabels[i].Content = DayOfWeekFullLabels[i];
+                        break;
+                    default:
+                        dayOfWeekLabels[i].Content = DayOfWeekMediumLabels[i];
+                        break;
+                }
+            }
         }
 
         private void UpdateDays()
@@ -594,7 +662,7 @@ namespace Augustine.VietnameseCalendar.UI
         private void UpdateTodayInfoLabel()
         {
             todayInfoLabel.Content
-                = "Hôm nay: " + GetFullDayInfo(today);
+                    = "Hôm nay: " + GetFullDayInfo(today);
         }
 
         private void UpdateSelectedDateInfoLabel()
@@ -611,10 +679,23 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
+        private void UpdateCwLabels()
+        {
+            var week0 = (pageBegin.AddDays(-(int)firstDayOfWeek)).DayOfYear / 7 + 1;
+            for (int i = 0; i < cwLabels.Length; i++)
+            {
+                if ((week0 + i) >= 53)
+                    cwLabels[i].Content = i + week0 - 52;
+                else
+                    cwLabels[i].Content = i + week0;
+            }
+        }
+
 
         private void UpdateEverything()
         {
             UpdateReferenceDates();
+            UpdateCwLabels();
             UpdateDays();
             UpdateMonthLabels();
             UpdateSolarTermBar();
@@ -629,7 +710,7 @@ namespace Augustine.VietnameseCalendar.UI
         {
             day.IsSelected = false;
             
-            if (day.SolarDate.Month != thisMonth)
+            if (day.SolarDate.Month != SelectedDate.Month)
             {
                 day.DayType = DayType.GrayedOut;
             }
@@ -640,11 +721,20 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        internal static String GetFullDayInfo(DateTime date)
-        { 
-            return String.Format("{0} {1:dd/MM/yyyy} - {2}",
-                DayOfWeekLabels[(int)date.DayOfWeek], date,
-                LuniSolarDate.LuniSolarDateFromSolarDate(date.Year, date.Month, date.Day, 7));
+        internal String GetFullDayInfo(DateTime date)
+        {
+            switch (SizeMode)
+            {
+                case SizeMode.Small:
+                    return String.Format("{0} {1:dd/MM/yyyy}",
+                        DayOfWeekFullLabels[(int)date.DayOfWeek], date);
+                case SizeMode.Normal:
+                case SizeMode.Large:
+                default:
+                    return String.Format("{0} {1:dd/MM/yyyy} - {2}",
+                        DayOfWeekFullLabels[(int)date.DayOfWeek], date,
+                        LuniSolarDate.LuniSolarDateFromSolarDate(date.Year, date.Month, date.Day, 7));
+            }
         }
 
         public void SelectDate(DateTime date)
@@ -657,25 +747,52 @@ namespace Augustine.VietnameseCalendar.UI
 
         #endregion
 
-        private void UserControl_Initialized(object sender, EventArgs e)
+        internal void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-
+            switch (e.Key)
+            {
+                case Key.Home:
+                    SelectedDate = SelectedDate.AddDays(-SelectedDate.Day + 1);
+                    break;
+                case Key.End:
+                    SelectedDate = SelectedDate.AddDays(-SelectedDate.Day + 1).AddMonths(1).AddDays(-1);
+                    break;
+                case Key.PageUp:
+                    SelectedDate = SelectedDate.AddMonths(-1);
+                    break;
+                case Key.PageDown:
+                    SelectedDate = SelectedDate.AddMonths(1);
+                    break;
+                case Key.Left:
+                    SelectedDate = SelectedDate.AddDays(-1);
+                    break;
+                case Key.Up:
+                    SelectedDate = SelectedDate.AddDays(-7);
+                    break;
+                case Key.Right:
+                    SelectedDate = SelectedDate.AddDays(1);
+                    break;
+                case Key.Down:
+                    SelectedDate = SelectedDate.AddDays(7);
+                    break;
+                default:
+                    break;
+            }
+            UpdateEverything();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {          
-            //Effect = new DropShadowEffect() {
-            //    BlurRadius = 3,
-            //    ShadowDepth = 1,
-            //    Color = Colors.Black,
-            //    Opacity = 1,
-            //};
-            //TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
-        }
-
-        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        public void ApplyShadowToTexts(DropShadowEffect e)
         {
-            SizeMode = Theme.TextSize.GetSizeMode(this.ActualWidth, this.ActualHeight);
+            monthLabelSolar.Effect = e;
+            monthLabelLunar.Effect = e;
+            foreach (var item in dayOfWeekLabels)
+            {
+                item.Effect = e;
+            }
+            foreach (var item in days)
+            {
+                item.ApplyShadowToTexts(e);
+            }            //Effect = e;
         }
     }
 }

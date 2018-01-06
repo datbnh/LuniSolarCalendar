@@ -18,7 +18,7 @@ namespace Augustine.VietnameseCalendar.UI
                 ThemeColor themeColor = new ThemeColor
                 {
                     SBackground              = "#FFFFFFFF",
-                    SBorder                  = "#00FFFFFF",
+                    SBorder                  = "#FF000000",
                     SForeground              = "#FF000000",
                     SGrayedOutBackground     = "#00000000",
                     SGrayedOutForeground     = "#40808080",
