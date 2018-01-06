@@ -53,7 +53,7 @@ namespace Augustine.VietnameseCalendar.UI
         private const int COL_IDX_DAYS = 1;
         private const int COL_IDX_TODAY_LABEL = 1;
         private const int COL_IDX_SELECTED_DATE_LABEL = 1;
-        private const int MAX_COL_SPAN = 8;
+        private const int MAX_COL_SPAN = 9;
 
         #endregion
 
@@ -85,6 +85,8 @@ namespace Augustine.VietnameseCalendar.UI
         //private Binding backgroundBinding;
         private Binding foregroundBinding;
         private Binding borderBinding;
+
+        private int cellSpacing = 1;
 
         #endregion
 
@@ -503,6 +505,7 @@ namespace Augustine.VietnameseCalendar.UI
                     {
                         //ActiveSizeMode = TextSize.SizeMode.Normal,
                         SolarDate = pageBegin.AddDays(i + j * 7),
+                        Margin = new Thickness(cellSpacing),
                     };
                     days[i + j * 7] = day;
                     //day.ToolTip = day.LunarDate;
@@ -689,6 +692,8 @@ namespace Augustine.VietnameseCalendar.UI
                 else
                     cwLabels[i].Content = i + week0;
             }
+
+            
         }
 
 
@@ -713,6 +718,15 @@ namespace Augustine.VietnameseCalendar.UI
             if (day.SolarDate.Month != SelectedDate.Month)
             {
                 day.DayType = DayType.GrayedOut;
+            }
+
+            if (day.SolarDate == today)
+            {
+                day.Effect = MaterialDesign.Shadows.zDepth3;
+            }
+            else
+            {
+                day.Effect = MaterialDesign.Shadows.zDepth1;
             }
 
             if (day.SolarDate == SelectedDate)

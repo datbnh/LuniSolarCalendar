@@ -10,6 +10,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 
 namespace Augustine.VietnameseCalendar.UI
@@ -49,11 +50,6 @@ namespace Augustine.VietnameseCalendar.UI
             }
 
             AugustineCalendarMonth.Theme = configuration.Theme;
-
-            var margin = SystemParameters.WindowResizeBorderThickness;
-            var border = SystemParameters.BorderWidth + 3;
-            AugustineCalendarMonth.Margin = new Thickness(margin.Left + border, margin.Top + border, 
-                margin.Right + border, margin.Bottom + border);
         }
 
 
@@ -123,10 +119,15 @@ namespace Augustine.VietnameseCalendar.UI
         {
             if (WindowState == WindowState.Normal)
             {
+                var margin = SystemParameters.WindowResizeBorderThickness;
+                var border = SystemParameters.BorderWidth + 3;
+                AugustineCalendarMonth.Margin = new Thickness(margin.Left + border, margin.Top + border,
+                    margin.Right + border, margin.Bottom + border);
                 WindowState = WindowState.Maximized;
             }
             else if (WindowState == WindowState.Maximized)
             {
+                AugustineCalendarMonth.Margin = new Thickness(0);
                 WindowState = WindowState.Normal;
             }
         }

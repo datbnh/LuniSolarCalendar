@@ -23,7 +23,7 @@
         StateChanged="Window_StateChanged"
         LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing"
-        WindowStyle="None" AllowsTransparency="True" MinWidth="300" MinHeight="250" KeyDown="window_KeyUp"
+        MinWidth="300" MinHeight="250" KeyDown="window_KeyUp"
         >
     <Window.Resources>
         <Style x:Key="BaseButton" TargetType="{x:Type Button}">
@@ -66,7 +66,8 @@
                     <Setter Property="Background" Value="LightCoral"/>
                 </Trigger>
             </Style.Triggers>
-            <Setter Property="Content" Value="&#xE0A4;"/> <!--✖-->
+            <Setter Property="Content" Value="&#xE0A4;"/>
+            <!--✖-->
         </Style>
 
         <Style x:Key="MaximizeButton" BasedOn="{StaticResource BaseButton}" TargetType="Button">
@@ -91,7 +92,7 @@
             </Style.Triggers>
             <Setter Property="IsEnabled" Value="True"/>
         </Style>
-                
+
         <Style x:Key="CollapseWhenNotInWidgetMode" TargetType="StackPanel">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
@@ -121,6 +122,7 @@
                     <!--<StackPanel Visibility="{Binding WindowStyle, ElementName=window, Converter={StaticResource IsNotWidget}}">-->
                     <StackPanel Style="{StaticResource CollapseWhenNotInWidgetMode}">
                         <Button x:Name="buttonClose" Style="{StaticResource CloseButton}"  
+                                ToolTip="Đóng"
                                 Click="ButtonClose_MouseDown" />
                         <Button x:Name="buttonMaximize" Style="{StaticResource MaximizeButton}" 
                                 Click="ButtonMaximize_MouseDown" />
@@ -129,7 +131,8 @@
                            ToolTip="Di chuyển" 
                            PreviewMouseDown="ButtonMove_MouseDown" 
                            MouseUp="ButtonMove_MouseUp"
-                           Cursor="Hand" RenderTransformOrigin="0.5,0.5"/>
+                           Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                        </Button>
                         <Separator/>
                     </StackPanel>
                     <Button x:Name="buttonConverterTool" Content="&#xE1CA;" 
@@ -144,7 +147,9 @@
                             FontFamily="Segoe UI Symbol"
                             Style="{StaticResource BaseButton}"
                             ToolTip="Tùy chỉnh giao diện..." 
-                            Click="ButtonSettings_Click"/>
+                            Click="ButtonSettings_Click">
+
+                    </Button>
                     <Separator></Separator>
                     <Button x:Name="buttonAbout" Content="&#xE2C0;" 
                             Style="{StaticResource BaseButton}"
