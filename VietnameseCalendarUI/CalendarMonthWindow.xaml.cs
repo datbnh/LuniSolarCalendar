@@ -65,12 +65,13 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 PopupToolBar.VerticalOffset = 10;
                 PopupToolBar.HorizontalOffset = -((FrameworkElement)PopupToolBar.Child).ActualWidth - 10;
-            } else
+            }
+            else
             {
                 PopupToolBar.VerticalOffset = 0;
                 PopupToolBar.HorizontalOffset = 5;
             }
-                
+
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
@@ -121,13 +122,13 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 var margin = SystemParameters.WindowResizeBorderThickness;
                 var border = SystemParameters.BorderWidth + 3;
-                AugustineCalendarMonth.Margin = new Thickness(margin.Left + border, margin.Top + border,
+                AugustineCalendarMonth.Padding = new Thickness(margin.Left + border, margin.Top + border,
                     margin.Right + border, margin.Bottom + border);
                 WindowState = WindowState.Maximized;
             }
             else if (WindowState == WindowState.Maximized)
             {
-                AugustineCalendarMonth.Margin = new Thickness(0);
+                AugustineCalendarMonth.Padding = new Thickness(0);
                 WindowState = WindowState.Normal;
             }
         }

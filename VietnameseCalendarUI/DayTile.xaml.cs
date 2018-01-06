@@ -185,6 +185,8 @@ namespace Augustine.VietnameseCalendar.UI
 
         public bool IsSelected { get  => (bool)GetValue(IsSelectedProperty); set => SetValue(IsSelectedProperty, value); }
 
+        public bool IsToday { get => (bool)GetValue(IsTodayProperty); set => SetValue(IsTodayProperty, value); }
+
         public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
             "Theme", typeof(Theme), typeof(DayTile), new PropertyMetadata(Themes.Light, OnThemeChanged, null));
 
@@ -197,6 +199,9 @@ namespace Augustine.VietnameseCalendar.UI
 
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             "IsSelected", typeof(bool), typeof(DayTile), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty IsTodayProperty = DependencyProperty.Register(
+            "IsToday", typeof(bool), typeof(DayTile), new PropertyMetadata(false));
 
         private static void OnThemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             => ((DayTile)d).ApplyTheme((Theme)e.NewValue);
