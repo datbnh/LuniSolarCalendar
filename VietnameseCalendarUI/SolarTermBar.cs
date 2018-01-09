@@ -128,7 +128,7 @@ namespace Augustine.VietnameseCalendar.UI
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 ToolTip = ToolTipWithHeader.CreateToolTip(
                     SolarTermsVietnamese[solarTermIndex], 
-                    "Từ ngày " + date.ToString("dd /MM/yyyy HH:mm ± 15\\'"), 
+                    "Từ ngày " + date.ToString("dd/MM/yyyy HH:mm ± 15\\'"), 
                     null, null, GetHueValue(solarTermIndex), true, 200, 3, 12),
             };
             rectangle.Style = new Style()
