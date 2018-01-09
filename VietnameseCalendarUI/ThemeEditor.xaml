@@ -50,6 +50,39 @@
         </Grid.ColumnDefinitions>
         <ScrollViewer Name="MasterScrollViewer" HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto">
             <StackPanel Name="MasterStackPanel" Grid.Row="0">
+                <Expander Name="ExpanderThemes" IsExpanded="True" DockPanel.Dock="Top" Padding="3,3,3,3" Expanded="Expander_Expanded" BorderBrush="#FFC4C4C4">
+                    <Expander.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFC4C4C4" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Expander.Background>
+                    <Expander.Header>
+                        <TextBlock FontWeight="Bold" ScrollViewer.CanContentScroll="True">CHỦ ĐỀ ĐỊNH SẴN</TextBlock>
+                    </Expander.Header>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" Background="White" VerticalScrollBarVisibility="Auto" Padding="5" >
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <Button VerticalAlignment="Bottom" Width="120" Margin="3"
+                                    x:Name="theme1" Content="Sáng" Click="ThemeSelector_Click"/>
+                                <Button VerticalAlignment="Bottom" Width="120" Margin="3"
+                                    x:Name="theme2" Content="Tối" Click="ThemeSelector_Click"/>
+                                <CheckBox x:Name="checkBoxBorder" Content="Viền" Margin="3" 
+                                          Checked="CheckBoxBorder_CheckedChanged"
+                                          Unchecked="CheckBoxBorder_CheckedChanged"/>
+                            </StackPanel>
+                            <StackPanel>
+                                <Button VerticalAlignment="Bottom" Width="120" Margin="3"
+                                    x:Name="theme3" Content="Sáng - Trong Suốt" Click="ThemeSelector_Click"/>
+                                <Button VerticalAlignment="Bottom" Width="120" Margin="3"
+                                    x:Name="theme4" Content="Tối - Trong Suốt" Click="ThemeSelector_Click"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Expander>
+                
                 <Expander Name="ExpanderColors" IsExpanded="True" DockPanel.Dock="Top" Padding="3,3,3,3" MaxHeight="230" Expanded="Expander_Expanded" BorderBrush="#FFC4C4C4">
                     <Expander.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -127,17 +160,34 @@
                 </Expander>
             </StackPanel>
         </ScrollViewer>
-        <StackPanel Grid.Row="3" Margin="0,10,0,0" VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button VerticalAlignment="Bottom" Width="100" Margin="5,0,0,0"
-                    x:Name="open" Content="📂 Mở Từ File" Click="Open_Click"/>
-            <Button VerticalAlignment="Bottom" Width="100" Margin="5,0,0,0"
-                    x:Name="save" Content="💾 Lưu Vào File" Click="Save_Click"/>
-            <Button VerticalAlignment="Bottom" Width="75" Margin="10,0,0,0"
-                    x:Name="restore" Content="🔄 Khôi Phục" FontFamily="Segoe UI Symbol" Click="Restore_Click" />
-            <Button VerticalAlignment="Bottom" Width="75" Margin="10,0,0,0"
-                    x:Name="cancel" Content="✘ Đóng" IsCancel="True" Click="Cancel_Click" />
-            <Button VerticalAlignment="Bottom" Width="75" Margin="5,0,0,0"
-                    x:Name="apply" Content="✔ Áp Dụng"  Click="Apply_Click" IsDefault="True" />
+        <StackPanel Grid.Row="3" Margin="0,10,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="3">
+                <Button VerticalAlignment="Bottom" Width="90" Margin="5,0,0,0"
+                        x:Name="open" Content="📂 Mở Từ File" 
+                        ToolTip="Mở tùy biến từ file."
+                        Click="Open_Click"/>
+                <Button VerticalAlignment="Bottom" Width="90" Margin="5,0,0,0"
+                        x:Name="save" Content="💾 Lưu Vào File" 
+                        ToolTip="Lưu tùy biến vào file."
+                        Click="Save_Click"/>
+                <Button VerticalAlignment="Bottom" Width="80" Margin="10,0,0,0"
+                        x:Name="restore" Content="🔄 Khôi Phục" FontFamily="Segoe UI Symbol" 
+                        ToolTip="Khôi phục trạng thái trước."
+                        Click="Restore_Click" />
+                <Button VerticalAlignment="Bottom" Width="80" Margin="5,0,0,0"
+                        x:Name="preview" Content="🔎 Xem Trước" FontFamily="Segoe UI Symbol" 
+                        ToolTip="Xem trước tùy biến trên giao diện lịch."
+                        Click="Preview_Click" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="3">
+                <Button VerticalAlignment="Bottom" Width="80" Margin="10,0,0,0"
+                        x:Name="cancel" Content="✘ Hủy Bỏ" ToolTip="Hủy bỏ các thay đổi và đóng cửa sổ tùy biến."
+                        IsCancel="True" Click="Cancel_Click" />
+                <Button VerticalAlignment="Bottom" Width="80" Margin="5,0,0,0"
+                        x:Name="apply" Content="✔ Áp Dụng" ToolTip="Áp dụng các thay đổi và đóng cửa sổ tùy biến."
+                        Click="Apply_Click" IsDefault="True" />
+            </StackPanel>
         </StackPanel>
 
     </Grid>

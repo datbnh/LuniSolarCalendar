@@ -17,12 +17,10 @@ using System.Windows.Media.Effects;
 
 namespace Augustine.VietnameseCalendar.UI
 {
-    /// <summary>
-    /// Interaction logic for ThemeEditor.xaml
-    /// </summary>
     public partial class ThemeEditor : Window
     {
         private AugustineCalendarMonth target;
+        private Theme initialState;
         
         public ThemeEditor()
         {
@@ -154,7 +152,8 @@ namespace Augustine.VietnameseCalendar.UI
         public void SetTarget(AugustineCalendarMonth calendar)
         {
             target = calendar;
-            EditingTheme = target.Theme.DataContractDeepClone() as Theme; ;
+            EditingTheme = target.Theme;
+            initialState = EditingTheme.DataContractDeepClone() as Theme;
         }
 
         public Theme EditingTheme { get => (Theme)GetValue(EditingThemeProperty); set => SetValue(EditingThemeProperty, value); }
@@ -212,40 +211,8 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void Apply_Click(object sender, RoutedEventArgs e)
         {
-            //initialState = (ThemeColor)EditingTheme.ThemeColor.Clone();
-
-            EditingTheme.TextAndShadow.IsDropShadow = (bool)isDropShadow.IsChecked;
-
-            //if ((bool)isDropShadow.IsChecked)
-            {
-                double r = 3;
-                double d = 1;
-                Color c = Colors.DimGray;
-
-                if (!double.TryParse(DropShadowRadius.Text, out r))
-                    DropShadowRadius.Text = r.ToString();
-                if (!double.TryParse(DropShadowDepth.Text, out d))
-                    DropShadowDepth.Text = d.ToString();
-                try { c = (Color)ColorConverter.ConvertFromString(DropShadowColor.Text); }
-                catch (Exception) { }
-
-                DropShadowColor.Text = c.ToString();
-
-                EditingTheme.TextAndShadow.ShadowRadius = r;
-                EditingTheme.TextAndShadow.ShadowDepth = d;
-                EditingTheme.TextAndShadow.ShadowColor = c;
-            } 
-            
-            if (textFormattingMode.SelectedIndex == 0)
-            {
-                EditingTheme.TextAndShadow.TextFormattingMode = TextFormattingMode.Ideal;
-            }
-            else if(textFormattingMode.SelectedIndex == 1)
-            {
-                EditingTheme.TextAndShadow.TextFormattingMode = TextFormattingMode.Display;
-            }
-
-            target.Theme = EditingTheme.DataContractDeepClone() as Theme;
+            Preview_Click(null, null);
+            Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -256,14 +223,14 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            Restore_Click(null, null);
             Close();
         }
 
         private void Restore_Click(object sender, RoutedEventArgs e)
         {
-            EditingTheme = target.Theme.DataContractDeepClone() as Theme;
-            SynchronizeColorPickers();
-            SynchronizeAdvancedSettings();
+            EditingTheme = initialState.DataContractDeepClone() as Theme;
+            Preview_Click(null, null);
         }
 
         private void SynchronizeAdvancedSettings()
@@ -328,6 +295,82 @@ namespace Augustine.VietnameseCalendar.UI
                     + Environment.NewLine + ex.Message + Environment.NewLine + ex.InnerException.Message,
                     "Lịch Việt Nam: Đọc Cấu Hình", MessageBoxButton.OK, MessageBoxImage.Error);
             }         
+        }
+
+        private void Preview_Click(object sender, RoutedEventArgs e)
+        {
+            EditingTheme.TextAndShadow.IsDropShadow = (bool)isDropShadow.IsChecked;
+
+            //if ((bool)isDropShadow.IsChecked)
+            {
+                double r = 3;
+                double d = 1;
+                Color c = Colors.DimGray;
+
+                if (!double.TryParse(DropShadowRadius.Text, out r))
+                    DropShadowRadius.Text = r.ToString();
+                if (!double.TryParse(DropShadowDepth.Text, out d))
+                    DropShadowDepth.Text = d.ToString();
+                try { c = (Color)ColorConverter.ConvertFromString(DropShadowColor.Text); }
+                catch (Exception) { }
+
+                DropShadowColor.Text = c.ToString();
+
+                EditingTheme.TextAndShadow.ShadowRadius = r;
+                EditingTheme.TextAndShadow.ShadowDepth = d;
+                EditingTheme.TextAndShadow.ShadowColor = c;
+            }
+
+            if (textFormattingMode.SelectedIndex == 0)
+            {
+                EditingTheme.TextAndShadow.TextFormattingMode = TextFormattingMode.Ideal;
+            }
+            else if (textFormattingMode.SelectedIndex == 1)
+            {
+                EditingTheme.TextAndShadow.TextFormattingMode = TextFormattingMode.Display;
+            }
+
+            target.Theme = EditingTheme.DataContractDeepClone() as Theme;
+        }
+
+        private void ThemeSelector_Click(object sender, RoutedEventArgs e)
+        {
+            if ((Button)sender == theme1)
+            {
+                EditingTheme = Themes.Light;
+                
+            } else if ((Button) sender == theme2)
+            {
+                EditingTheme = Themes.Dark;
+            } else if ((Button)sender == theme3)
+            {
+                EditingTheme = Themes.LightSemiTransparent;
+            }
+            else if ((Button)sender == theme4)
+            {
+                EditingTheme = Themes.DarkSemiTransparent;
+            }
+            UpdateBorderColor();
+            Preview_Click(null, null);
+        }
+
+        private void CheckBoxBorder_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            UpdateBorderColor();
+            Preview_Click(null, null);
+        }
+
+        private void UpdateBorderColor()
+        {
+            var c = (EditingTheme.ThemeColor.Border as SolidColorBrush).Color;
+            if (checkBoxBorder.IsChecked == true)
+            {
+                EditingTheme.ThemeColor.Border = new SolidColorBrush(Color.FromArgb(255, c.R, c.G, c.B));
+            }
+            else
+            {
+                EditingTheme.ThemeColor.Border = new SolidColorBrush(Color.FromArgb(0, c.R, c.G, c.B));
+            }
         }
     }
 }
