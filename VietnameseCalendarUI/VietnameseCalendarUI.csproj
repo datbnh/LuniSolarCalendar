@@ -165,9 +165,11 @@
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="..\VietnameseCalendar\bin\Release\Augustine.VietnameseCalendar.Core.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Calendar_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

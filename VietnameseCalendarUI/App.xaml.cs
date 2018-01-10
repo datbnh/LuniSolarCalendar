@@ -9,6 +9,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -21,6 +22,8 @@ namespace Augustine.VietnameseCalendar.UI
     public partial class App : Application
     {
         private const string confFile = "Configuration.bin";
+
+        private static readonly Bitmap icon = UI.Properties.Resources.Calendar_16x;
 
         private System.Windows.Forms.NotifyIcon notifyIcon = null;
         private Configuration configuration;
@@ -43,7 +46,7 @@ namespace Augustine.VietnameseCalendar.UI
                         return;
                 if (currentWindow != null && currentWindow.IsLoaded)
                 {
-                    if (currentWindow.Visibility == Visibility.Hidden | currentWindow.WindowState == WindowState.Minimized)
+                    if (!currentWindow.IsVisible)
                     {
                         currentWindow.WindowState = WindowState.Normal;
                         currentWindow.Show();
@@ -56,7 +59,7 @@ namespace Augustine.VietnameseCalendar.UI
                 }
             });
             //notifyIcon.DoubleClick += new EventHandler(NotifyIcon_DoubleClick);
-            notifyIcon.Icon = System.Drawing.SystemIcons.Application;
+            notifyIcon.Icon = Icon.FromHandle(icon.GetHicon()); ;
             notifyIcon.Visible = true;
             notifyIcon.Text = "Lịch Việt Nam - Vietnamese Luni Solar Calendar";
 

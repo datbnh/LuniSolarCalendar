@@ -23,7 +23,7 @@
         StateChanged="Window_StateChanged"
         LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" 
         Closing="Window_Closing"
-        MinWidth="300" MinHeight="250" KeyDown="window_KeyUp"
+        MinWidth="300" MinHeight="250" KeyDown="window_KeyUp" MouseEnter="window_MouseEnter"
         >
     <Window.Resources>
         <Style x:Key="BaseButton" TargetType="{x:Type Button}">

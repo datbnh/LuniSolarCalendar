@@ -52,5 +52,21 @@ namespace Augustine.VietnameseCalendar.UI
                 Color = (Color)ColorConverter.ConvertFromString("#BBBBBB"),
             };
         }
+
+        public static class Colors
+        {
+            public static string Grey    = "#9E9E9E";
+            public static string Grey50  = "#FAFAFA";
+            public static string Grey100 = "#F5F5F5";
+            public static string Grey200 = "#EEEEEE";
+            public static string Grey300 = "#E0E0E0";
+            public static string Grey400 = "#BDBDBD";
+            public static string Grey500 = "#9E9E9E";
+            public static string Grey600 = "#757575";
+            public static string Grey700 = "#616161";
+            public static string Grey800 = "#424242";
+            public static string Grey900 = "#212121";
+
+        }
     }
 }

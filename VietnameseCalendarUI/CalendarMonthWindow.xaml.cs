@@ -169,5 +169,10 @@ namespace Augustine.VietnameseCalendar.UI
         {
             AugustineCalendarMonth.UserControl_KeyDown(sender, e);
         }
+
+        private void window_MouseEnter(object sender, MouseEventArgs e)
+        {
+            AugustineCalendarMonth.RefreshToday();
+        }
     }
 }

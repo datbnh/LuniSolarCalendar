@@ -69,5 +69,15 @@ namespace Augustine.VietnameseCalendar.UI.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Calendar_16x {
+            get {
+                object obj = ResourceManager.GetObject("Calendar_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

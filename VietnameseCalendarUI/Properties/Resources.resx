@@ -121,4 +121,7 @@
   <data name="Augustine_VietnameseCalendar_Core" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\..\VietnameseCalendar\bin\Release\Augustine.VietnameseCalendar.Core.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Calendar_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Calendar_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
