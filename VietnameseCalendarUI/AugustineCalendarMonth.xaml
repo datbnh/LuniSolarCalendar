@@ -17,17 +17,17 @@
              SizeChanged="UserControl_SizeChanged">
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="3"/>
+            <RowDefinition Height="Auto"/> <!-- 0 Month label -->
+            <RowDefinition Height="Auto"/> <!-- 1 Solar Term Decorator -->
+            <RowDefinition Height="Auto"/> <!-- 2 DOW labels -->
+            <RowDefinition Height="1*"/> <!-- 3 Days -->
+            <RowDefinition Height="1*"/> <!-- 4 Days -->
+            <RowDefinition Height="1*"/> <!-- 5 Days -->
+            <RowDefinition Height="1*"/> <!-- 6 Days -->
+            <RowDefinition Height="1*"/> <!-- 7 Days -->
+            <RowDefinition Height="1*"/> <!-- 8 Days -->
+            <RowDefinition Height="Auto"/> <!-- 9 Today -->
+            <RowDefinition Height="Auto"/> <!-- 10 Selected Day -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -39,6 +39,7 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="3"/>
         </Grid.ColumnDefinitions>
     </Grid>
 </UserControl>

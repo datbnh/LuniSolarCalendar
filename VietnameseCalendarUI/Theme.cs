@@ -57,6 +57,18 @@ namespace Augustine.VietnameseCalendar.UI
                     new Setter(DayTile.BorderBrushProperty, themeColor.SelectedBorder),
                 },
             });
+            style.Triggers.Add(new Trigger
+            {
+                Property = DayTile.IsTodayProperty,
+                Value = true,
+                Setters = {
+                    //new Setter(DayTile.PaddingProperty, new Thickness(1, 1, 0, 0)),
+                    //new Setter(DayTile.BorderThicknessProperty, new Thickness(1, 1, 1, 1)),
+                    //new Setter(DayTile.BorderBrushProperty, themeColor.SelectedBorder),
+                    new Setter(DayTile.FontWeightProperty, FontWeights.Bold),
+                    new Setter(DayTile.EffectProperty, MaterialDesign.Shadows.zDepth1),
+        },
+            });
             style.Triggers.Add(CreateDayTypeTrigger(DayType.Saturday, themeColor.SaturdayBackground, themeColor.SaturdayForeground));
             style.Triggers.Add(CreateDayTypeTrigger(DayType.Sunday, themeColor.SundayBackground, themeColor.SundayForeground));
             style.Triggers.Add(CreateDayTypeTrigger(DayType.SpecialLevel3, themeColor.SpecialLevel3Background, themeColor.SpecialLevel3Foreground));

@@ -53,7 +53,7 @@ namespace Augustine.VietnameseCalendar.UI
         private const int COL_IDX_DAYS = 1;
         private const int COL_IDX_TODAY_LABEL = 1;
         private const int COL_IDX_SELECTED_DATE_LABEL = 1;
-        private const int MAX_COL_SPAN = 9;
+        private const int MAX_COL_SPAN = 10;
 
         #endregion
 
@@ -86,7 +86,7 @@ namespace Augustine.VietnameseCalendar.UI
         private Binding foregroundBinding;
         private Binding borderBinding;
 
-        private int cellSpacing = 1;
+        private int cellSpacing = 0;
 
         #endregion
 
@@ -193,6 +193,15 @@ namespace Augustine.VietnameseCalendar.UI
             UpdateTodayInfoLabel();
             UpdateSelectedDateInfoLabel();
             UpdateDayOfWeekLabels();
+        }
+
+        internal void RefreshToday()
+        {
+            if (today != DateTime.Today)
+            {
+                today = DateTime.Today;
+                UpdateEverything();
+            }
         }
 
         #endregion
@@ -364,7 +373,7 @@ namespace Augustine.VietnameseCalendar.UI
             //BindingOperations.SetBinding(selectedDateInfoLabel, BackgroundProperty, backgroundBinding);
             BindingOperations.SetBinding(selectedDateInfoLabel, ForegroundProperty, foregroundBinding);
             Grid.SetColumn(selectedDateInfoLabel, COL_IDX_SELECTED_DATE_LABEL);
-            Grid.SetColumnSpan(selectedDateInfoLabel, MainGrid.ColumnDefinitions.Count - COL_IDX_MONTH_LABEL);
+            Grid.SetColumnSpan(selectedDateInfoLabel, MAX_COL_SPAN - COL_IDX_SELECTED_DATE_LABEL);
             Grid.SetRow(selectedDateInfoLabel, ROW_IDX_SELECTED_DATE_LABEL);
             MainGrid.Children.Add(selectedDateInfoLabel);
 
@@ -399,7 +408,7 @@ namespace Augustine.VietnameseCalendar.UI
             datePickerStackPanel.Visibility = Visibility.Collapsed;
 
             Grid.SetColumn(datePickerStackPanel, COL_IDX_SELECTED_DATE_LABEL);
-            Grid.SetColumnSpan(datePickerStackPanel, MainGrid.ColumnDefinitions.Count - COL_IDX_MONTH_LABEL);
+            Grid.SetColumnSpan(datePickerStackPanel, MAX_COL_SPAN - COL_IDX_MONTH_LABEL);
             Grid.SetRow(datePickerStackPanel, ROW_IDX_SELECTED_DATE_LABEL - 1);
             Grid.SetRowSpan(datePickerStackPanel, 2);
 
@@ -714,7 +723,8 @@ namespace Augustine.VietnameseCalendar.UI
         private void StyleThisDay(DayTile day)
         {
             day.IsSelected = false;
-            
+            day.IsToday = false;
+
             if (day.SolarDate.Month != SelectedDate.Month)
             {
                 day.DayType = DayType.GrayedOut;
@@ -722,11 +732,7 @@ namespace Augustine.VietnameseCalendar.UI
 
             if (day.SolarDate == today)
             {
-                day.Effect = MaterialDesign.Shadows.zDepth3;
-            }
-            else
-            {
-                day.Effect = MaterialDesign.Shadows.zDepth1;
+                day.IsToday = true;
             }
 
             if (day.SolarDate == SelectedDate)
