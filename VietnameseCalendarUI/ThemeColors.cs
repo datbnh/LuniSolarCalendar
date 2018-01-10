@@ -18,7 +18,7 @@ namespace Augustine.VietnameseCalendar.UI
                 ThemeColor themeColor = new ThemeColor
                 {
                     SBackground              = "#FFFFFFFF",
-                    SBorder                  = "#FF000000",
+                    SBorder                  = MaterialDesign.Colors.Grey500,
                     SForeground              = "#FF000000",
                     SGrayedOutBackground     = "#00000000",
                     SGrayedOutForeground     = "#40808080",
@@ -27,7 +27,7 @@ namespace Augustine.VietnameseCalendar.UI
                     SNormalBackground        = "#0A000000",
                     SSaturdayBackground      = "#0A000000",
                     SSaturdayForeground      = "#FF2196F3",
-                    SSelectedBorder          = "#69696969",
+                    SSelectedBorder          = MaterialDesign.Colors.Grey700,
                     SSpecialLevel1Background = "#FFFCE4EC",
                     SSpecialLevel1Foreground = "#FFE91E63",
                     SSpecialLevel2Background = "#FFFCE4EC",
@@ -48,7 +48,7 @@ namespace Augustine.VietnameseCalendar.UI
                 ThemeColor themeColor = new ThemeColor
                 {
                     SBackground              = "#60000000",
-                    SBorder                  = "#00FFFFFF",
+                    SBorder                  = MaterialDesign.Colors.Grey500,
                     SForeground              = "#FFFFFFFF",
                     SGrayedOutBackground     = "#00000000",
                     SGrayedOutForeground     = "#40808080",
@@ -57,7 +57,7 @@ namespace Augustine.VietnameseCalendar.UI
                     SNormalBackground        = "#0AFFFFFF",
                     SSaturdayBackground      = "#0AFFFFFF",
                     SSaturdayForeground      = "#FF2196F3",
-                    SSelectedBorder          = "#69696969",
+                    SSelectedBorder          = MaterialDesign.Colors.Grey300,
                     SSpecialLevel1Background = "#10F57F17",
                     SSpecialLevel1Foreground = "#FFFFEB3B",
                     SSpecialLevel2Background = "#10F57F17",
@@ -78,7 +78,7 @@ namespace Augustine.VietnameseCalendar.UI
                 ThemeColor themeColor = new ThemeColor()
                 {
                     SBackground              = "#FF000000",
-                    SBorder                  = "#00FFFFFF",
+                    SBorder                  = MaterialDesign.Colors.Grey500,
                     SForeground              = "#FFFFFFFF",
                     SGrayedOutBackground     = "#00000000",
                     SGrayedOutForeground     = "#40808080",
@@ -87,7 +87,7 @@ namespace Augustine.VietnameseCalendar.UI
                     SNormalBackground        = "#0AFFFFFF",
                     SSaturdayBackground      = "#0AFFFFFF",
                     SSaturdayForeground      = "#FF2196F3",
-                    SSelectedBorder          = "#69696969",
+                    SSelectedBorder          = MaterialDesign.Colors.Grey300,
                     SSpecialLevel1Background = "#10F57F17",
                     SSpecialLevel1Foreground = "#FFFFEB3B",
                     SSpecialLevel2Background = "#10F57F17",
@@ -108,7 +108,7 @@ namespace Augustine.VietnameseCalendar.UI
                 ThemeColor themeColor = new ThemeColor()
                 {
                     SBackground              = "#10FFFFFF",
-                    SBorder                  = "#00FFFFFF",
+                    SBorder                  = MaterialDesign.Colors.Grey500,
                     SForeground              = "#FF000000",
                     SGrayedOutBackground     = "#00000000",
                     SGrayedOutForeground     = "#40808080",
@@ -117,7 +117,7 @@ namespace Augustine.VietnameseCalendar.UI
                     SNormalBackground        = "#0A000000",
                     SSaturdayBackground      = "#0A000000",
                     SSaturdayForeground      = "#FF1A237E",
-                    SSelectedBorder          = "#69696969",
+                    SSelectedBorder          = MaterialDesign.Colors.Grey700,
                     SSpecialLevel1Background = "#10FFECB3",
                     SSpecialLevel1Foreground = "#FFFF6F00",
                     SSpecialLevel2Background = "#10FFECB3",
