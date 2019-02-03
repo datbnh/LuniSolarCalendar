@@ -7,7 +7,8 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
-using Augustine.VietnameseCalendar.Core;
+using Augustine.VietnameseCalendar.Core.Astronomy;
+using Augustine.VietnameseCalendar.Core.LuniSolarCalendar;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -73,7 +74,7 @@ namespace Augustine.VietnameseCalendar.UI
             for (int i = 0; i < 24; i++)
             {
                 var idx = (24 + i - 5) % 24;
-                dateTime = Astronomy1.GetDateTimeOfSolarTerm(idx, year).AddHours(timeZone);
+                dateTime = Sun.GetDateTimeOfSolarTerm(idx, year).AddHours(timeZone);
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 var rec = CreateRectangle(idx, dateTime, "", fontFamily);
                 if (DateTime.Today.Year == year && todaySolarTermIdx == idx)
@@ -127,8 +128,8 @@ namespace Augustine.VietnameseCalendar.UI
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 ToolTip = ToolTipWithHeader.CreateToolTip(
-                    SolarTermsVietnamese[solarTermIndex], 
-                    "Từ ngày " + date.ToString("dd/MM/yyyy HH:mm ± 15\\'"), 
+                    SolarTermsVietnamese[solarTermIndex],
+                    "Từ ngày " + date.ToString("dd/MM/yyyy HH:mm ± 15\\'"),
                     null, null, false, GetHueValue(solarTermIndex), true, 200, 3, 12),
             };
             rectangle.Style = new Style()

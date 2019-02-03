@@ -7,10 +7,9 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
-using Augustine.VietnameseCalendar.Core;
+using Augustine.VietnameseCalendar.Core.LuniSolarCalendar;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 
 namespace Augustine.VietnameseCalendar.UI
@@ -18,15 +17,15 @@ namespace Augustine.VietnameseCalendar.UI
     public static class CalendarDayToolTip
     {
         public static ToolTip CreateToolTip(string header, LuniSolarDate date,
-            string decorator, bool isSymbolicDecorator, double hueValue = -1, 
-            bool overideContentForeground = false, 
+            string decorator, bool isSymbolicDecorator, double hueValue = -1,
+            bool overideContentForeground = false,
             int maxWidth = 400, int padding = 3)
         {
             Grid contentGrid = new Grid();
             contentGrid.ColumnDefinitions.Add(new ColumnDefinition());
             contentGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
-            string[] columnHeader = {"Dương lịch: ", "Âm lịch: ", "Năm ", "Tháng ", "Ngày ", "Tiết " };
+            string[] columnHeader = { "Dương lịch: ", "Âm lịch: ", "Năm ", "Tháng ", "Ngày ", "Tiết " };
             string[] columnContent = {
                 string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:d} ({0:dddd})",date.SolarDate),
                 string.Format("Ngày {0} tháng {1} năm {2}", date.Day, date.MonthShortName, date.Year),
@@ -103,8 +102,9 @@ namespace Augustine.VietnameseCalendar.UI
                 stackPanel.Children.Add(subHeaderTextBlock);
             }
 
-            if (!(string.IsNullOrEmpty(header) && string.IsNullOrEmpty(subHeader)) 
-                && content != null) {
+            if (!(string.IsNullOrEmpty(header) && string.IsNullOrEmpty(subHeader))
+                && content != null)
+            {
                 stackPanel.Children.Add(new Separator());
             }
 

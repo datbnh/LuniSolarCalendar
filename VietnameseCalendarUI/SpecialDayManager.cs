@@ -7,7 +7,7 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
-using Augustine.VietnameseCalendar.Core;
+using Augustine.VietnameseCalendar.Core.LuniSolarCalendar;
 using System;
 using System.Collections.Generic;
 
@@ -42,7 +42,8 @@ namespace Augustine.VietnameseCalendar.UI
         /// </summary>
         /// <param name="luniSolarDate"></param>
         /// <returns></returns>
-        public static bool GetSpecialDateInfo(this LuniSolarDate luniSolarDate, out SpecialDateInfo specialDateInfo) {
+        public static bool GetSpecialDateInfo(this LuniSolarDate luniSolarDate, out SpecialDateInfo specialDateInfo)
+        {
             SpecialDateInfo spInfo = null;
             var key = GetSolarKey(luniSolarDate);
             if (SpecialSolarDays.ContainsKey(key))
@@ -83,7 +84,7 @@ namespace Augustine.VietnameseCalendar.UI
 
             public object Clone()
             {
-                return this.MemberwiseClone();
+                return MemberwiseClone();
             }
         }
 

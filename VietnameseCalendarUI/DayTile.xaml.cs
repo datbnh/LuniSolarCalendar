@@ -7,14 +7,14 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
-using Augustine.VietnameseCalendar.Core;
+using Augustine.VietnameseCalendar.Core.LuniSolarCalendar;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using static Augustine.VietnameseCalendar.UI.SpecialDayManager;
 using static Augustine.VietnameseCalendar.UI.TextSize;
-using System.Windows.Media.Effects;
 
 namespace Augustine.VietnameseCalendar.UI
 {
@@ -189,7 +189,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         public DayType DayType { get => (DayType)GetValue(DayTypeProperty); set => SetValue(DayTypeProperty, value); }
 
-        public bool IsSelected { get  => (bool)GetValue(IsSelectedProperty); set => SetValue(IsSelectedProperty, value); }
+        public bool IsSelected { get => (bool)GetValue(IsSelectedProperty); set => SetValue(IsSelectedProperty, value); }
 
         public bool IsToday { get => (bool)GetValue(IsTodayProperty); set => SetValue(IsTodayProperty, value); }
 
@@ -197,7 +197,7 @@ namespace Augustine.VietnameseCalendar.UI
             "Theme", typeof(Theme), typeof(DayTile), new PropertyMetadata(Themes.Light, OnThemeChanged, null));
 
         public static readonly DependencyProperty SizeModeProperty = DependencyProperty.Register(
-            "SizeMode", typeof(SizeMode), typeof(DayTile), 
+            "SizeMode", typeof(SizeMode), typeof(DayTile),
             new PropertyMetadata(SizeMode.Normal, OnSizeModeChanged, null));
 
         public static readonly DependencyProperty DayTypeProperty = DependencyProperty.Register(

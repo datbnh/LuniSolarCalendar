@@ -8,6 +8,7 @@
  *************************************************************/
 
 using Augustine.VietnameseCalendar.Core;
+using Augustine.VietnameseCalendar.Core.LuniSolarCalendar;
 using System;
 using System.Windows;
 using System.Windows.Controls;

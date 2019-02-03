@@ -22,7 +22,7 @@ namespace Augustine.VietnameseCalendar.UI
         public About()
         {
             InitializeComponent();
-            var core = Assembly.GetAssembly(typeof(Augustine.VietnameseCalendar.Core.Astronomy));
+            var core = Assembly.GetAssembly(typeof(Augustine.VietnameseCalendar.Core.LuniSolarCalendar.LunarYear));
             var ui = Assembly.GetAssembly(typeof(Augustine.VietnameseCalendar.UI.AugustineCalendarMonth));
 
             Version coreVersion = core.GetName().Version;

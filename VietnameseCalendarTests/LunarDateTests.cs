@@ -1,5 +1,4 @@
-﻿using Augustine.VietnameseCalendar.Core;
-/*************************************************************
+﻿/*************************************************************
 * ===// The Vietnamese Calendar Project | 2014 - 2017 //=== *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
 *  // Copyright (C) Augustine Bùi Nhã Đạt 2017      //      *
@@ -8,11 +7,12 @@
 *              https://github.com/datbnh/SolarLunarCalendar *
 *************************************************************/
 
+using Augustine.VietnameseCalendar.Core.LuniSolarCalendar;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Text;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace Augustine.VietnameseCalendar.Core.Tests
 {
@@ -81,7 +81,7 @@ namespace Augustine.VietnameseCalendar.Core.Tests
                 try
                 {
                     LuniSolarDate lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(date, 7);
-                    DateTime solarDate = LuniSolarDate.LuniSolarDateFromLunarInfo(lunarDate.Year, lunarDate.Month, lunarDate.IsLeapMonth,lunarDate.Day, lunarDate.TimeZone).SolarDate;
+                    DateTime solarDate = LuniSolarDate.LuniSolarDateFromLunarInfo(lunarDate.Year, lunarDate.Month, lunarDate.IsLeapMonth, lunarDate.Day, lunarDate.TimeZone).SolarDate;
                     Trace.WriteLine(String.Format("{0:dd/MM/yyyy} = {1}", date, lunarDate.FullDayInfo));
                     if ((date != solarDate))
                     {

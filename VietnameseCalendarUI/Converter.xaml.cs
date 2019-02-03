@@ -7,10 +7,10 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
+using Augustine.VietnameseCalendar.Core.LuniSolarCalendar;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using Augustine.VietnameseCalendar.Core;
 
 namespace Augustine.VietnameseCalendar.UI
 {
@@ -102,7 +102,7 @@ namespace Augustine.VietnameseCalendar.UI
                 comboBoxLunarYear.Items.Add(item);
             }
         }
-        
+
         // never changes
         private void PopulateComboBoxSolarMonthItems()
         {
@@ -181,7 +181,7 @@ namespace Augustine.VietnameseCalendar.UI
             else
                 comboBoxLunarDay.SelectedIndex = comboBoxLunarDay.Items.Count - 1;
         }
-        
+
         private void PopulateDetails()
         {
             solarPlaceHolder.Text = String.Format("Dương lịch: {0} {1:dd/MM/yyyy}",
@@ -248,7 +248,7 @@ namespace Augustine.VietnameseCalendar.UI
             lastTrackedIndex = comboBoxLunarYear.SelectedIndex;
 
             isUpdatingComboBoxes = true;
-                                   
+
             PopulateComboBoxLunarMonthItems();
             PopulateComboBoxLunarDayItems();
             SyncLunarComboBoxesToSolar();
@@ -292,7 +292,7 @@ namespace Augustine.VietnameseCalendar.UI
 
             public override bool Equals(object obj)
             {
-                return this.Equals(obj as ComboLunarYearItem);
+                return Equals(obj as ComboLunarYearItem);
             }
 
             public override string ToString() { return Year + " (" + LuniSolarDate.GetYearName(Year) + ")"; }
@@ -404,7 +404,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         public void Show(DateTime date)
         {
-            selectedLunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(date,7);
+            selectedLunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(date, 7);
             Show();
         }
 
