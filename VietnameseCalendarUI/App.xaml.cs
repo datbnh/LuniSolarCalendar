@@ -19,7 +19,7 @@ namespace Augustine.VietnameseCalendar.UI
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, IDisposable
     {
         private const string confFile = "Configuration.bin";
 
@@ -131,6 +131,11 @@ namespace Augustine.VietnameseCalendar.UI
                 Width = currentWindow.Width,
                 Height = currentWindow.Height,
             };
+        }
+
+        public void Dispose()
+        {
+            notifyIcon.Dispose();
         }
     }
 }
