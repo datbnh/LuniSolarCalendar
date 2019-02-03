@@ -16,8 +16,8 @@ so với bản Technical Preview?
 ## Một vài hình ảnh
 ### Các cỡ lịch
 ![Size](https://raw.githubusercontent.com/datbnh/LuniSolarCalendar/master/Screenshots/Size_Small.png "Cỡ lịch - nhỏ")
-![Size](https://raw.githubusercontent.com/datbnh/LuniSolarCalendar/master/Screenshots/Size_Medium.png "Cỡ lịch - nhỏ")
-![Size](https://raw.githubusercontent.com/datbnh/LuniSolarCalendar/master/Screenshots/Size_Large.png "Cỡ lịch - nhỏ")
+![Size](https://raw.githubusercontent.com/datbnh/LuniSolarCalendar/master/Screenshots/Size_Medium.png "Cỡ lịch - trung bình")
+![Size](https://raw.githubusercontent.com/datbnh/LuniSolarCalendar/master/Screenshots/Size_Large.png "Cỡ lịch - lớn")
 
 ### Các chủ đề (theme)
 ![Theme](https://raw.githubusercontent.com/datbnh/LuniSolarCalendar/master/Screenshots/Theme_Light.png "Chủ đề - sáng")
