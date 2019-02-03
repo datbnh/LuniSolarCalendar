@@ -7,12 +7,13 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
+using Augustine.VietnameseCalendar.Core.Astronomy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Augustine.VietnameseCalendar.Core
+namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
 {
     public class LunarYear
     {
@@ -85,8 +86,8 @@ namespace Augustine.VietnameseCalendar.Core
             TimeZone = timeZone;
 
             // at 00:00:00 local
-            month11LastYear = Astronomy.GetNewMoon11(Year - 1, TimeZone).Date;
-            month11ThisYear = Astronomy.GetNewMoon11(Year, TimeZone).Date;
+            month11LastYear = Moon.GetNewMoon11(Year - 1, TimeZone).Date;
+            month11ThisYear = Moon.GetNewMoon11(Year, TimeZone).Date;
 
             // Convert the local date to UTC date time by adding AddHours(-TimeZone).
             double jdMonth11LastYear = month11LastYear.AddHours(-TimeZone).UniversalDateTimeToJulianDate();
@@ -135,7 +136,7 @@ namespace Augustine.VietnameseCalendar.Core
             for (int i = 1; i < numberOfMonths - 1; i++)
             {
                 var newMoon =
-                    Astronomy.JulianDateToUniversalDateTime(Astronomy.GetNewMoon(k + i)).AddHours(TimeZone).Date;
+                    JulianDateConverter.JulianDateToUniversalDateTime(Moon.GetNewMoon(k + i)).AddHours(TimeZone).Date;
                 Months[i] = new Tuple<DateTime, int, bool>(newMoon, (i + 11) % 12, false);
             }
 
@@ -158,7 +159,7 @@ namespace Augustine.VietnameseCalendar.Core
             for (int i = 1; i < numberOfMonths - 1; i++)
             {
                 newMoons[i] =
-                    Astronomy.JulianDateToUniversalDateTime(Astronomy.GetNewMoon(k + i)).AddHours(TimeZone).Date;
+                    JulianDateConverter.JulianDateToUniversalDateTime(Moon.GetNewMoon(k + i)).AddHours(TimeZone).Date;
             }
 
             // determine leap month
@@ -167,7 +168,7 @@ namespace Augustine.VietnameseCalendar.Core
             //sunLongitudeAtMonthBeginnings[0] = Astronomy.GetSunLongitudeAtJulianDate(
             //    newMoons[0].AddHours(-TimeZone).UniversalDateTimeToJulianDate()); // debug
 
-            majorTermAtMonthBeginnings[0] = (int)(Astronomy.GetSunLongitudeAtJulianDate(
+            majorTermAtMonthBeginnings[0] = (int)(Sun.GetSunLongitudeAtJulianDate(
                 newMoons[0].AddHours(-TimeZone).UniversalDateTimeToJulianDate()) * 6 / Math.PI);
             for (int i = 0; i < numberOfMonths - 1; i++)
             {
@@ -189,7 +190,7 @@ namespace Augustine.VietnameseCalendar.Core
                 //sunLongitudeAtMonthBeginnings[i + 1] = Astronomy.
                 //    GetSunLongitudeAtJulianDate(julianDateAtNextMonthBeginning); // debug
 
-                majorTermAtMonthBeginnings[i + 1] = (int)(Astronomy.
+                majorTermAtMonthBeginnings[i + 1] = (int)(Sun.
                     GetSunLongitudeAtJulianDate(julianDateAtNextMonthBeginning) * 6 / Math.PI);
 
                 // In this algorithm, comparisons will happen with updated element only.

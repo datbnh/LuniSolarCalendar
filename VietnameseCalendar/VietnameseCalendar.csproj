@@ -48,10 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Astronomy.cs" />
+    <Compile Include="Astronomy\Constants.cs" />
+    <Compile Include="Astronomy\JulianDateConverter.cs" />
+    <Compile Include="Astronomy\Moon.cs" />
+    <Compile Include="Astronomy\Sun.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="LuniSolarDate.cs" />
-    <Compile Include="LunarYear.cs" />
+    <Compile Include="LuniSolarCalendar\LuniSolarDate.cs" />
+    <Compile Include="LuniSolarCalendar\LunarYear.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -76,5 +79,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

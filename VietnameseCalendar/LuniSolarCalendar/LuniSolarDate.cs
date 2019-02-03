@@ -7,10 +7,11 @@
  *              https://github.com/datbnh/SolarLunarCalendar *
  *************************************************************/
 
+using Augustine.VietnameseCalendar.Core.Astronomy;
 using System;
 using System.Collections.Generic;
 
-namespace Augustine.VietnameseCalendar.Core
+namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
 {
     public class LuniSolarDate
     {
@@ -158,26 +159,26 @@ namespace Augustine.VietnameseCalendar.Core
 
             var thisDay = new DateTime(year, month, day);
 
-            var k = (int)((thisDay.AddHours(-timeZone).UniversalDateTimeToJulianDate() - 2415021.076998695)/ Astronomy.SynodicMonth + 0.5);
+            var k = (int)((thisDay.AddHours(-timeZone).UniversalDateTimeToJulianDate() - 2415021.076998695)/ Constants.SynodicMonth + 0.5);
 
             var previousNewMoon =
-                    Astronomy.JulianDateToUniversalDateTime(Astronomy.GetNewMoon(k)).AddHours(timeZone).Date;
+                    JulianDateConverter.JulianDateToUniversalDateTime(Moon.GetNewMoon(k)).AddHours(timeZone).Date;
             while (previousNewMoon > thisDay)
             {
                 previousNewMoon =
-                    Astronomy.JulianDateToUniversalDateTime(Astronomy.GetNewMoon(--k)).AddHours(timeZone).Date;
+                    JulianDateConverter.JulianDateToUniversalDateTime(Moon.GetNewMoon(--k)).AddHours(timeZone).Date;
                 //Console.WriteLine("."); // debug
             }
 
             // "previous, this/current" and "next" are not used to avoid ambiguity.
-            var newMoon11Before = Astronomy.GetNewMoon11(previousNewMoon.Year - 1, timeZone).Date;
-            var newMoon11After = Astronomy.GetNewMoon11(previousNewMoon.Year, timeZone).Date;
+            var newMoon11Before = Moon.GetNewMoon11(previousNewMoon.Year - 1, timeZone).Date;
+            var newMoon11After = Moon.GetNewMoon11(previousNewMoon.Year, timeZone).Date;
 
             // correcting for such cases as case 3
             if (newMoon11After < previousNewMoon)
             {
                 newMoon11Before = newMoon11After;
-                newMoon11After = Astronomy.GetNewMoon11(previousNewMoon.Year + 1, timeZone).Date;
+                newMoon11After = Moon.GetNewMoon11(previousNewMoon.Year + 1, timeZone).Date;
             }
 
             var isLeapYear = (newMoon11After - newMoon11Before).TotalDays > 365.0;
@@ -423,13 +424,13 @@ namespace Augustine.VietnameseCalendar.Core
         #region Day
         public static int GetDayCelestialStemIndex(int solarYear, int solarMonth, int solarDay)
         {
-            var julianDateNumber = Astronomy.UniversalDateToJulianDayNumber(solarYear, solarMonth, solarDay);
+            var julianDateNumber = JulianDateConverter.UniversalDateToJulianDayNumber(solarYear, solarMonth, solarDay);
             return (julianDateNumber + 9) % 10;
         }
 
         public static int GetDayTerrestrialIndex(int solarYear, int solarMonth, int solarDay)
         {
-            var julianDateNumber = Astronomy.UniversalDateToJulianDayNumber(solarYear, solarMonth, solarDay);
+            var julianDateNumber = JulianDateConverter.UniversalDateToJulianDayNumber(solarYear, solarMonth, solarDay);
             return (julianDateNumber + 1) % 12;
         }
 
@@ -451,7 +452,7 @@ namespace Augustine.VietnameseCalendar.Core
 
         public static int GetSolarTermIndex(DateTime date, double timeZone)
         {
-            return Astronomy.GetSolarTermIndex(date.AddHours(-timeZone).AddHours(24));
+            return Sun.GetSolarTermIndex(date.AddHours(-timeZone).AddHours(24));
         }
 
         public static string GetSolarTermName(DateTime date, double timeZone)

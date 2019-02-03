@@ -73,7 +73,7 @@ namespace Augustine.VietnameseCalendar.UI
             for (int i = 0; i < 24; i++)
             {
                 var idx = (24 + i - 5) % 24;
-                dateTime = Astronomy.GetDateTimeOfSolarTerm(idx, year).AddHours(timeZone);
+                dateTime = Astronomy1.GetDateTimeOfSolarTerm(idx, year).AddHours(timeZone);
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
                 var rec = CreateRectangle(idx, dateTime, "", fontFamily);
                 if (DateTime.Today.Year == year && todaySolarTermIdx == idx)
