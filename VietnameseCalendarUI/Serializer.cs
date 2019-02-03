@@ -22,12 +22,16 @@ namespace Augustine.VietnameseCalendar.UI
             if (serializableObject == null) { return; }
             XmlDocument xmlDocument = new XmlDocument();
             DataContractSerializer serializer = new DataContractSerializer(serializableObject.GetType());
-            using (MemoryStream stream = new MemoryStream())
+            MemoryStream stream = new MemoryStream();
+            try
             {
                 serializer.WriteObject(stream, serializableObject);
                 stream.Position = 0;
                 xmlDocument.Load(stream);
                 xmlDocument.Save(fileName);
+            }
+            finally
+            {
                 stream.Close();
             }
         }
@@ -39,16 +43,21 @@ namespace Augustine.VietnameseCalendar.UI
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(fileName);
             string xmlString = xmlDocument.OuterXml;
-            using (StringReader read = new StringReader(xmlString))
+            StringReader read = null;
+            XmlReader reader = null;
+            try 
             {
+                read = new StringReader(xmlString);
                 DataContractSerializer serializer = new DataContractSerializer(typeof(T));
-                using (XmlReader reader = new XmlTextReader(read))
-                {
-                    objectOut = (T)serializer.ReadObject(reader);
+                reader = new XmlTextReader(read);
+                objectOut = (T)serializer.ReadObject(reader);
+            }
+            finally
+            {
+                if (read != null)
+                    read.Close();
+                if (reader != null)
                     reader.Close();
-                }
-
-                read.Close();
             }
             return objectOut;
         }
