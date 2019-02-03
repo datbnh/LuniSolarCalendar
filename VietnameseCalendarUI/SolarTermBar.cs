@@ -62,7 +62,7 @@ namespace Augustine.VietnameseCalendar.UI
         /// <returns></returns>
         public static int GetHueValue(int solarTermIndex) { return Hues[(solarTermIndex + HueOffset) % 24]; }
 
-        public static UserControl CreateSolarTermBar(int year, double timeZone)
+        public static UserControl CreateSolarTermBar(int year, double timeZone, FontFamily fontFamily)
         {
             UserControl uc = new UserControl();
             Grid grid = new Grid();
@@ -75,7 +75,7 @@ namespace Augustine.VietnameseCalendar.UI
                 var idx = (24 + i - 5) % 24;
                 dateTime = Astronomy.GetDateTimeOfSolarTerm(idx, year).AddHours(timeZone);
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
-                var rec = CreateRectangle(idx, dateTime, "");
+                var rec = CreateRectangle(idx, dateTime, "", fontFamily);
                 if (DateTime.Today.Year == year && todaySolarTermIdx == idx)
                     rec.Name = CURRENT_TERM_LABEL;
                 Grid.SetColumn(rec, i);
@@ -87,7 +87,7 @@ namespace Augustine.VietnameseCalendar.UI
             return uc;
         }
 
-        private static Rectangle CreateRectangle(int solarTermIndex, DateTime date, string description)
+        private static Rectangle CreateRectangle(int solarTermIndex, DateTime date, string description, FontFamily fontFamily)
         {
             if (solarTermIndex >= 24)
                 solarTermIndex = solarTermIndex % 24;
@@ -129,7 +129,7 @@ namespace Augustine.VietnameseCalendar.UI
                 ToolTip = ToolTipWithHeader.CreateToolTip(
                     SolarTermsVietnamese[solarTermIndex], 
                     "Từ ngày " + date.ToString("dd/MM/yyyy HH:mm ± 15\\'"), 
-                    null, null, GetHueValue(solarTermIndex), true, 200, 3, 12),
+                    null, null, false, GetHueValue(solarTermIndex), true, 200, 3, 12),
             };
             rectangle.Style = new Style()
             {

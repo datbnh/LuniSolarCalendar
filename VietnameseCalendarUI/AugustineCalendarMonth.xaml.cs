@@ -93,6 +93,8 @@ namespace Augustine.VietnameseCalendar.UI
         public AugustineCalendarMonth()
         {
             InitializeComponent();
+            FontFamily = FontManager.Body;
+
             UseLayoutRounding = true;
 
             today = DateTime.Today;
@@ -106,6 +108,7 @@ namespace Augustine.VietnameseCalendar.UI
             InitializeSelectedDateLabel();
             InitializeDayOfWeekLabels();
             InitializeCwLabels();
+
 
             //Theme = Themes.Light;
         }
@@ -200,6 +203,7 @@ namespace Augustine.VietnameseCalendar.UI
             if (today != DateTime.Today)
             {
                 today = DateTime.Today;
+                SelectedDate = today;
                 UpdateEverything();
             }
         }
@@ -326,7 +330,7 @@ namespace Augustine.VietnameseCalendar.UI
         {
             solarTermBar = new UserControl
             {
-                Content = SolarTermBar.CreateSolarTermBar(today.Year, 7)
+                Content = SolarTermBar.CreateSolarTermBar(today.Year, 7, this.FontFamily)
             };
             Grid.SetRow(solarTermBar, ROW_IDX_SOLAR_TERM_DECORATOR);
             Grid.SetColumn(solarTermBar, COL_IDX_SOLAR_TERM_DECORATOR);
@@ -623,7 +627,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         private void UpdateSolarTermBar()
         {
-            solarTermBar.Content = SolarTermBar.CreateSolarTermBar(SelectedDate.Year, 7);
+            solarTermBar.Content = SolarTermBar.CreateSolarTermBar(SelectedDate.Year, 7, FontFamily);
         }
 
         private void UpdateDayOfWeekLabels()
@@ -713,6 +717,7 @@ namespace Augustine.VietnameseCalendar.UI
             UpdateDays();
             UpdateMonthLabels();
             UpdateSolarTermBar();
+            UpdateTodayInfoLabel();
             UpdateSelectedDateInfoLabel();
         }
 

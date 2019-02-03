@@ -10,6 +10,7 @@
 using Augustine.VietnameseCalendar.Core;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace Augustine.VietnameseCalendar.UI
@@ -17,7 +18,7 @@ namespace Augustine.VietnameseCalendar.UI
     public static class CalendarDayToolTip
     {
         public static ToolTip CreateToolTip(string header, LuniSolarDate date,
-            string decorator, double hueValue = -1, 
+            string decorator, bool isSymbolicDecorator, double hueValue = -1, 
             bool overideContentForeground = false, 
             int maxWidth = 400, int padding = 3)
         {
@@ -59,20 +60,21 @@ namespace Augustine.VietnameseCalendar.UI
             };
 
             return ToolTipWithHeader.CreateToolTip(header, null, cc,
-            decorator, hueValue, overideContentForeground, maxWidth, padding);
+            decorator, isSymbolicDecorator, hueValue, overideContentForeground, maxWidth, padding);
         }
     }
 
     public static class ToolTipWithHeader
     {
         public static ToolTip CreateToolTip(string header, string subHeader, Control content,
-            string decorator, double hueValue = -1, bool overrideContentForeground = false, 
-            int maxWidth=200, int padding=3, double headerFontSize = 14)
+            string decorator, bool isSymbolicDecorator = true, double hueValue = -1, bool overrideContentForeground = false,
+            int maxWidth = 200, int padding = 3, double headerFontSize = 14)
         {
             ToolTip toolTip = new ToolTip
             {
                 MaxWidth = maxWidth,
                 Padding = new Thickness(padding),
+                FontFamily = FontManager.Body,
             };
 
             StackPanel stackPanel = new StackPanel();
@@ -84,6 +86,7 @@ namespace Augustine.VietnameseCalendar.UI
                     Text = header,
                     TextAlignment = TextAlignment.Center,
                     TextWrapping = TextWrapping.Wrap,
+                    FontFamily = FontManager.Heading,
                     FontWeight = FontWeights.SemiBold,
                     FontSize = headerFontSize,
                 };
@@ -127,7 +130,8 @@ namespace Augustine.VietnameseCalendar.UI
                 TextBlock decoratorTextBlock = new TextBlock
                 {
                     Opacity = 0.2,
-                    Text = decorator
+                    Text = decorator,
+                    FontFamily = isSymbolicDecorator ? FontManager.Symbol : FontManager.Body,
                 };
 
                 VisualBrush decoratorVisualBrush = new VisualBrush

@@ -18,7 +18,7 @@ namespace Augustine.VietnameseCalendar.UI
         public static readonly Dictionary<string, SpecialDateInfo> SpecialSolarDays = new Dictionary<string, SpecialDateInfo>()
         {
             { "0101", new SpecialDateInfo("Tết Dương Lịch", "🎆", DayType.SpecialLevel1) },
-            { "1402", new SpecialDateInfo("Valentine", "♥", DayType.SpecialLevel2) },
+            { "1402", new SpecialDateInfo("Valentine", "❤", DayType.SpecialLevel2) },
             { "2512", new SpecialDateInfo("Giáng Sinh", "🎄", DayType.SpecialLevel1) },
         };
 
@@ -99,7 +99,7 @@ namespace Augustine.VietnameseCalendar.UI
 
         public static class SolarTermDecorator
         {
-            public static readonly string VernalEquinox = "❀";
+            public static readonly string VernalEquinox = "🌿";
             public static readonly string AutumnalEquinox = "🍃";
             public static readonly string SummerSolstice = "☀";
             public static readonly string WinterSolstice = "❄";

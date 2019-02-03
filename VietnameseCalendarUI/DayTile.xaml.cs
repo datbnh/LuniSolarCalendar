@@ -34,6 +34,7 @@ namespace Augustine.VietnameseCalendar.UI
             IsLunarMonthVisible = false;
             Label = "Label";
             Decorator.Text = "*";
+            Decorator.FontFamily = FontManager.Symbol;
             DayType = DayType.Normal;
         }
 
@@ -124,9 +125,14 @@ namespace Augustine.VietnameseCalendar.UI
 
                     toolTipDecorator = Decorator.Text;
                     if (string.IsNullOrEmpty(toolTipDecorator))
+                    {
                         toolTipDecorator = lunarDate.SolarDate.Day.ToString();
-
-                    ToolTip = CalendarDayToolTip.CreateToolTip(toolTipTitle, lunarDate, toolTipDecorator, hueIndex);    
+                        ToolTip = CalendarDayToolTip.CreateToolTip(toolTipTitle, lunarDate, toolTipDecorator, false, hueIndex);
+                    }
+                    else
+                    {
+                        ToolTip = CalendarDayToolTip.CreateToolTip(toolTipTitle, lunarDate, toolTipDecorator, true, hueIndex);
+                    }
                 }
 
                 UpdateSolarDateLabel();
