@@ -1,6 +1,4 @@
-﻿using Augustine.VietnameseCalendar.Core;
-using Augustine.VietnameseCalendar.Core.Astronomy;
-/*************************************************************
+﻿/*************************************************************
 * ===// The Vietnamese Calendar Project | 2014 - 2017 //=== *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ *
 *  // Copyright (C) Augustine Bùi Nhã Đạt 2017      //      *
@@ -9,6 +7,7 @@ using Augustine.VietnameseCalendar.Core.Astronomy;
 *              https://github.com/datbnh/SolarLunarCalendar *
 *************************************************************/
 
+using Augustine.VietnameseCalendar.Core.Astronomy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -87,9 +86,9 @@ namespace Augustine.VietnameseCalendar.Core.Tests
             //    Astronomy.GetSunLongitudeAtJulianDate(
             //        Astronomy.UniversalDateTimeToJulianDate(new DateTime(2000, 12, 21).AddHours(-7))).ToDegrees(),
             //    1E-10);
-            Assert.AreEqual(268.5546509479341, 
+            Assert.AreEqual(268.5546509479341,
                 Sun.GetSunLongitudeAtJulianDate(
-                    JulianDateConverter.UniversalDateTimeToJulianDate(new DateTime(1990,12,21).AddHours(-7))).ToDegrees(), 
+                    JulianDateConverter.UniversalDateTimeToJulianDate(new DateTime(1990, 12, 21).AddHours(-7))).ToDegrees(),
                 1E-10);
         }
     }
