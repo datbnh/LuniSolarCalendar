@@ -26,7 +26,7 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
         /// Information (month starting day, month index, is leap month) of months 
         /// from "tháng Một (11)" last lunar year to this lunar year.
         /// </summary>
-        public Tuple<DateTime, int, bool>[] Months { get; private set; }
+        public Tuple<int, DateTime, bool>[] Months { get; private set; }
 
         public bool IsLeapYear { get; private set; }
 
@@ -34,15 +34,15 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
 
         public int LeapMonthIndex { get; private set; }
 
+        public static int CacheSize { get; set; } = 5;
+
         private DateTime month11LastYear;
         private DateTime month11ThisYear;
-
-        private static int cacheSize = 5;
         private static Dictionary<int, LunarYear> yearCache;
 
         public static LunarYear GetLunarYear(int year, double timeZone)
         {
-            if (cacheSize > 0)
+            if (CacheSize > 0)
             {
                 // init dictionary for the first time
                 if (yearCache == null)
@@ -62,7 +62,7 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
                 else
                 {
                     // if dictionary is already full, remove the oldest pair.
-                    if (yearCache.Count == cacheSize)
+                    if (yearCache.Count == CacheSize)
                     {
                         yearCache.Remove(yearCache.Keys.First());
                     }
@@ -116,11 +116,20 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
         /// <returns></returns>
         private static int GetYearAndTimeZoneHash(int year, double timeZone)
         {
-            // 2015 UTC-12:45
-            int year0000 = year * 10000;              //  20150000
-            int uintTimeZone = (int)(timeZone * 100); //      1275
-            int sign = Math.Sign(timeZone);           // -1
-            return sign*(year0000 + uintTimeZone);    // -20151275
+            /* Example: year 2015 UTC-12:45
+             * IN:
+             *             year = 2015, 
+             *         timeZone = UTC-12:45 (negative 12:45)
+             * OUT:
+             *         year0000 = 20150000
+             *     uintTimeZone = 1275
+             *             sign = -1
+             *             hash = -20151275
+             */
+            int year0000 = year * 10000;
+            int uintTimeZone = (int)(timeZone * 100);
+            int sign = Math.Sign(timeZone);
+            return sign * (year0000 + uintTimeZone);
         }
 
         private void InitNonLeapYear(int k)
@@ -130,14 +139,14 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
             //majorTermAtMonthBeginnings = new int[numberOfMonths]; // debug
             //sunLongitudeAtMonthBeginnings = new double[numberOfMonths]; // debug
 
-            Months = new Tuple<DateTime, int, bool>[numberOfMonths];
-            Months[0] = new Tuple<DateTime, int, bool>(month11LastYear, 11, false);
-            Months[numberOfMonths - 1] = new Tuple<DateTime, int, bool>(month11ThisYear, 11, false);
+            Months = new Tuple<int, DateTime, bool>[numberOfMonths];
+            Months[0] = new Tuple<int, DateTime, bool>(11, month11LastYear, false);
+            Months[numberOfMonths - 1] = new Tuple<int, DateTime, bool>(11, month11ThisYear, false);
             for (int i = 1; i < numberOfMonths - 1; i++)
             {
                 var newMoon =
                     JulianDateConverter.JulianDateToUniversalDateTime(Moon.GetNewMoon(k + i)).AddHours(TimeZone).Date;
-                Months[i] = new Tuple<DateTime, int, bool>(newMoon, (i + 11) % 12, false);
+                Months[i] = new Tuple<int, DateTime, bool>((i + 11) % 12, newMoon, false);
             }
 
             LeapMonthIndex = -1;
@@ -146,7 +155,7 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
         private void InitLeapYear(int k)
         {
             int numberOfMonths = 14;
-            Months = new Tuple<DateTime, int, bool>[numberOfMonths];
+            Months = new Tuple<int, DateTime, bool>[numberOfMonths];
             DateTime[] newMoons = new DateTime[numberOfMonths];
             int[] majorTermAtMonthBeginnings = new int[numberOfMonths];
 
@@ -165,9 +174,6 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
             // determine leap month
             bool found = false;
 
-            //sunLongitudeAtMonthBeginnings[0] = Astronomy.GetSunLongitudeAtJulianDate(
-            //    newMoons[0].AddHours(-TimeZone).UniversalDateTimeToJulianDate()); // debug
-
             majorTermAtMonthBeginnings[0] = (int)(Sun.GetSunLongitudeAtJulianDate(
                 newMoons[0].AddHours(-TimeZone).UniversalDateTimeToJulianDate()) * 6 / Math.PI);
             for (int i = 0; i < numberOfMonths - 1; i++)
@@ -180,15 +186,12 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
                 // is leap month (as a Lunar year has maximum one leap month).
                 if (found)
                 {
-                    Months[i] = new Tuple<DateTime, int, bool>(newMoons[i], (i - 1 + 11) % 12, false);
+                    Months[i] = new Tuple<int, DateTime, bool>((i - 1 + 11) % 12, newMoons[i], false);
                     continue;
                 }
 
                 double julianDateAtNextMonthBeginning = 
                     newMoons[i + 1].AddHours(-TimeZone).UniversalDateTimeToJulianDate();
-
-                //sunLongitudeAtMonthBeginnings[i + 1] = Astronomy.
-                //    GetSunLongitudeAtJulianDate(julianDateAtNextMonthBeginning); // debug
 
                 majorTermAtMonthBeginnings[i + 1] = (int)(Sun.
                     GetSunLongitudeAtJulianDate(julianDateAtNextMonthBeginning) * 6 / Math.PI);
@@ -200,30 +203,26 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
                 {
                     found = true;
                     LeapMonthIndex = i;
-                    Months[i] = new Tuple<DateTime, int, bool>(newMoons[i], (i - 1 + 11) % 12, true);
+                    Months[i] = new Tuple<int, DateTime, bool>((i - 1 + 11) % 12, newMoons[i], true);
                 } else
                 {
-                    Months[i] = new Tuple<DateTime, int, bool>(newMoons[i], (i + 11) % 12, false);
+                    Months[i] = new Tuple<int, DateTime, bool>((i + 11) % 12, newMoons[i], false);
                 }
             }
             Months[numberOfMonths - 1] =
-                new Tuple<DateTime, int, bool>(newMoons[13], 11, false);
+                new Tuple<int, DateTime, bool>(11, newMoons[13], false);
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(String.Format("Lunar year: {0} {1} {2}", Year, IsLeapYear ? "(Leap year)" : "", IsLeapYear ? LeapMonthIndex.ToString() : ""));
+            sb.AppendLine(string.Format("Lunar year: {0} {1} {2}", Year, IsLeapYear ? "(Leap year)" : "", IsLeapYear ? LeapMonthIndex.ToString() : ""));
             for (int i = 0; i < Months.Length; i++)
             {
-                sb.AppendLine(String.Format("Month {0,2}{1}: {2}",
-                    Months[i].Item2 == 0 ? 12 : Months[i].Item2,
+                sb.AppendLine(string.Format("Month {0,2}{1}: {2}",
+                    Months[i].Item1 == 0 ? 12 : Months[i].Item1,
                     Months[i].Item3 ? "*" : " ",
-                    Months[i].Item1//,
-                    //majorTermAtMonthBeginnings[i],
-                    //sunLongitudeAtMonthBeginnings[i].ToDegrees(),
-                    //majorTermAtMonthBeginnings[i] * 30
-                    ));
+                    Months[i].Item2));
 
             }
             return sb.ToString();

@@ -142,9 +142,9 @@ namespace Augustine.VietnameseCalendar.UI
             comboBoxLunarMonth.Items.Clear();
             for (int i = 0; i < thisYear.Months.Length; i++)
             {
-                var month = LuniSolarDate.GetMonth(thisYear.Months[i].Item2);
-                var nextMonthBeginDate = i == thisYear.Months.Length - 1 ? nextYear.Months[0].Item1 : thisYear.Months[i + 1].Item1;
-                var monthLength = (nextMonthBeginDate - thisYear.Months[i].Item1).TotalDays;
+                var month = LuniSolarDate.GetMonth(thisYear.Months[i].Item1);
+                var nextMonthBeginDate = i == thisYear.Months.Length - 1 ? nextYear.Months[0].Item2 : thisYear.Months[i + 1].Item2;
+                var monthLength = (nextMonthBeginDate - thisYear.Months[i].Item2).TotalDays;
                 if (month == 11 || month == 12)
                     continue; // ignore #11 & #12 of thisYear
                 var monthItem = new ComboLunarMonthItem(month, thisYear.Months[i].Item3, (int)monthLength);
@@ -152,10 +152,10 @@ namespace Augustine.VietnameseCalendar.UI
             }
             for (int i = 0; i < nextYear.Months.Length; i++)
             {
-                var month = LuniSolarDate.GetMonth(nextYear.Months[i].Item2);
+                var month = LuniSolarDate.GetMonth(nextYear.Months[i].Item1);
                 if (month == 1)
                     break; // only take #11 and #12 of nextYear
-                var monthLength = (nextYear.Months[i + 1].Item1 - nextYear.Months[i].Item1).TotalDays;
+                var monthLength = (nextYear.Months[i + 1].Item2 - nextYear.Months[i].Item2).TotalDays;
                 var monthItem = new ComboLunarMonthItem(month, nextYear.Months[i].Item3, (int)monthLength);
                 comboBoxLunarMonth.Items.Add(monthItem);
             }
