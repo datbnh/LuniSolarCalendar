@@ -22,8 +22,8 @@ namespace Augustine.VietnameseCalendar.UI
         public About()
         {
             InitializeComponent();
-            var core = Assembly.GetAssembly(typeof(Augustine.VietnameseCalendar.Core.LuniSolarCalendar.LunarYear));
-            var ui = Assembly.GetAssembly(typeof(Augustine.VietnameseCalendar.UI.AugustineCalendarMonth));
+            var core = Assembly.GetAssembly(typeof(Core.Astronomy.JulianDateConverter));
+            var ui = Assembly.GetAssembly(typeof(AugustineCalendarMonth));
 
             Version coreVersion = core.GetName().Version;
             DateTime coreBuildDate = new DateTime(2000, 1, 1)
@@ -33,7 +33,7 @@ namespace Augustine.VietnameseCalendar.UI
             DateTime uiBuildDate = new DateTime(2000, 1, 1)
                         .AddDays(uiVersion.Build).AddSeconds(uiVersion.Revision * 2);
 
-            this.Title = String.Format("About {0}", AssemblyProduct);
+            Title = String.Format("About {0}", AssemblyProduct);
             textBlock1.Text = core.GetName().Name;
             textBlock2.Text = String.Format("Version {0} (Built {1})", coreVersion, coreBuildDate);
             textBlock3.Text = ui.GetName().Name;

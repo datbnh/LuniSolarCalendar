@@ -79,8 +79,8 @@ namespace Augustine.VietnameseCalendar.UI
         private DateTime pageBegin;
         private DateTime monthBegin;
         private DateTime monthEnd;
-        private LuniSolarDate monthBeginLunarDate;
-        private LuniSolarDate monthEndLunarDate;
+        private LuniSolarDate<VietnameseLocalInfoProvider> monthBeginLunarDate;
+        private LuniSolarDate<VietnameseLocalInfoProvider> monthEndLunarDate;
 
 
         //private Binding backgroundBinding;
@@ -752,14 +752,14 @@ namespace Augustine.VietnameseCalendar.UI
             switch (SizeMode)
             {
                 case SizeMode.Small:
-                    return String.Format("{0} {1:dd/MM/yyyy}",
+                    return string.Format("{0} {1:dd/MM/yyyy}",
                         DayOfWeekFullLabels[(int)date.DayOfWeek], date);
                 case SizeMode.Normal:
                 case SizeMode.Large:
                 default:
-                    return String.Format("{0} {1:dd/MM/yyyy} - {2}",
+                    return string.Format("{0} {1:dd/MM/yyyy} - {2}",
                         DayOfWeekFullLabels[(int)date.DayOfWeek], date,
-                        LuniSolarDate.LuniSolarDateFromSolarDate(date.Year, date.Month, date.Day, 7));
+                        LuniSolarCalendar<VietnameseLocalInfoProvider>.LuniSolarDateFromSolarDate(date.Year, date.Month, date.Day));
             }
         }
 

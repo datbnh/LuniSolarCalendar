@@ -42,7 +42,7 @@ namespace Augustine.VietnameseCalendar.UI
         /// </summary>
         /// <param name="luniSolarDate"></param>
         /// <returns></returns>
-        public static bool GetSpecialDateInfo(this LuniSolarDate luniSolarDate, out SpecialDateInfo specialDateInfo)
+        public static bool GetSpecialDateInfo(this LuniSolarDate<VietnameseLocalInfoProvider> luniSolarDate, out SpecialDateInfo specialDateInfo)
         {
             SpecialDateInfo spInfo = null;
             var key = GetSolarKey(luniSolarDate);
@@ -88,12 +88,12 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        public static string GetSolarKey(LuniSolarDate lsDate)
+        public static string GetSolarKey(LuniSolarDate<VietnameseLocalInfoProvider> lsDate)
         {
             return string.Format("{0:ddMM}", lsDate.SolarDate);
         }
 
-        public static string GetLunarKey(LuniSolarDate lsDate)
+        public static string GetLunarKey(LuniSolarDate<VietnameseLocalInfoProvider> lsDate)
         {
             return string.Format("{0:00}{1:00}{2}", lsDate.Day, lsDate.Month, lsDate.IsLeapMonth ? "n" : "");
         }

@@ -69,7 +69,7 @@ namespace Augustine.VietnameseCalendar.UI
             Grid grid = new Grid();
             grid.SnapsToDevicePixels = true;
             DateTime dateTime = new DateTime(year, 1, 1);
-            var todaySolarTermIdx = LuniSolarDate.GetSolarTermIndex(DateTime.Today, 7);
+            var todaySolarTermIdx = LuniSolarDate<VietnameseLocalInfoProvider>.GetSolarTermIndex(DateTime.Today);
 
             for (int i = 0; i < 24; i++)
             {

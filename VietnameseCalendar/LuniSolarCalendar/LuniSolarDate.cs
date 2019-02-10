@@ -13,59 +13,57 @@ using System.Collections.Generic;
 
 namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
 {
-    public class LuniSolarDate
+    public class LuniSolarDate<T> where T:ILocalInfoProvider
     {
-        public static readonly string[] MonthNames =
-            { "Giêng", "Hai", "Ba", "Tư", "Năm", "Sáu",
-              "Bảy", "Tám", "Chín", "Mười", "Mười Một", "Chạp"};
-        public static readonly string[] Stems =
-            {"Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"};
-        public static readonly string[] Branches =
-            {"Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ",
-             "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"};
-        public static readonly string[] SolarTermsVietnamese = {"Xuân Phân", "Thanh Minh",
-                                                 "Cốc Vũ", "Lập Hạ",
-                                                 "Tiểu Mãn", "Mang Chủng",
-                                                 "Hạ Chí", "Tiểu Thử",
-                                                 "Đại Thử", "Lập Thu",
-                                                 "Xử Thử", "Bạch Lộ",
-                                                 "Thu Phân", "Hàn Lộ",
-                                                 "Sương Giáng", "Lập Đông",
-                                                 "Tiểu Tuyết", "Đại Tuyết",
-                                                 "Đông Chí", "Tiểu Hàn",
-                                                 "Đại Hàn", "Lập Xuân",
-                                                 "Vũ Thủy", "Kinh Trập",
-                                             };
+        //public new static string[] MonthNames
+        //    = new string[]{"Giêng", "Hai", "Ba", "Tư", "Năm", "Sáu",
+        //        "Bảy", "Tám", "Chín", "Mười", "Một", "Chạp"};
+        //public new static string[] Stems
+        //    = new string[]{"Giáp", "Ất", "Bính", "Đinh", "Mậu",
+        //        "Kỷ", "Canh", "Tân", "Nhâm", "Quý"};
+        //public new static string[] Branches
+        //    = new string[]{"Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ",
+        //     "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"};
+        //public new static string[] SolarTermsVietnamese
+        //    = new string[]{"Xuân Phân", "Thanh Minh",
+        //        "Cốc Vũ", "Lập Hạ",
+        //        "Tiểu Mãn", "Mang Chủng",
+        //        "Hạ Chí", "Tiểu Thử",
+        //        "Đại Thử", "Lập Thu",
+        //        "Xử Thử", "Bạch Lộ",
+        //        "Thu Phân", "Hàn Lộ",
+        //        "Sương Giáng", "Lập Đông",
+        //        "Tiểu Tuyết", "Đại Tuyết",
+        //        "Đông Chí", "Tiểu Hàn",
+        //        "Đại Hàn", "Lập Xuân",
+        //        "Vũ Thủy", "Kinh Trập",
+        //    };
+
 
         public int Year { get; private set; }
         public int Month { get; private set; }
         public bool IsLeapMonth { get; private set; }
         public int Day { get; private set; }
-        public double TimeZone { get; private set; }
         public DateTime SolarDate { get; private set;}
-        public bool IsTermBeginThisDay { get => GetSolarTermIndex(SolarDate.AddDays(-1), TimeZone) != GetSolarTermIndex(SolarDate, TimeZone); }
-        public int SolarTermIndex { get => GetSolarTermIndex(SolarDate, TimeZone); }
-
-        private static int cacheSize = 400;
-        private static Dictionary<string, LuniSolarDate> cache;
-        private static Queue<string> cacheKeys;
+        public bool IsTermBeginThisDay => GetSolarTermIndex(SolarDate.AddDays(-1)) != GetSolarTermIndex(SolarDate);
+        public int SolarTermIndex => GetSolarTermIndex(SolarDate);
 
         #region String properties
 
-        public string YearName { get => GetYearName(Year); }
+        public string YearName => LuniSolarYear<T>.GetYearName(Year);
 
         /// <summary>
         /// Returns "Giêng, Hai, Ba..."
         /// </summary>
         /// <returns></returns>
-        public string MonthName { get => GetMonthName(Month); }
-        
+        public string MonthName => GetMonthName(Month);
+
         /// <summary>
         /// Returns "Giêng, Hai, Ba..." or "Giêng nhuận, Hai nhuận, Ba nhuận..." (if applicable)
         /// </summary>
         /// <returns></returns>
-        public string MonthShortName { get => GetMonthShortName(Month, IsLeapMonth); }
-        
+        public string MonthShortName => GetMonthShortName(Month, IsLeapMonth);
+
         /// <summary>
         /// Returns "Can Chi" or "Can Chi nhuận"
         /// </summary>
@@ -73,22 +71,20 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
         /// <param name="isLeapMonth"></param>
         /// <param name="year"></param>
         /// <returns></returns>
-        public string MonthLongName { get => GetMonthLongName(Year, Month, IsLeapMonth); }
-        
+        public string MonthLongName => GetMonthLongName(Year, Month, IsLeapMonth);
+
         /// <summary>
         /// Returns "Name (Can Chi)" or "Name (Can Chi) nhuận".
         /// E.g. "Bảy (Bính Ngọ)", "Năm (Nhâm Ngọ) nhuận".
         /// </summary>
         /// <returns></returns>
-        public string MonthFullName { get => GetMonthFullName(Year, Month, IsLeapMonth); }
+        public string MonthFullName => GetMonthFullName(Year, Month, IsLeapMonth);
 
-        public string DayName { get => GetDayName(SolarDate.Year, SolarDate.Month, SolarDate.Day); }
+        public string DayName => GetDayName(SolarDate.Year, SolarDate.Month, SolarDate.Day);
 
-        public string SolarTerm { get => GetSolarTermName(SolarDate, TimeZone); }
+        public string SolarTerm => GetSolarTermName(SolarDate);
 
-        public string FullDayInfo
-        {
-            get => String.Format("Ngày {0} tháng {1} năm {2}" + Environment.NewLine +
+        public string FullDayInfo => string.Format("Ngày {0} tháng {1} năm {2}" + Environment.NewLine +
                 " Tháng {3}" + Environment.NewLine +
                 " Ngày {4}" + Environment.NewLine +
                 " Tiết {5}",
@@ -96,38 +92,33 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
                 MonthLongName,
                 DayName,
                 SolarTerm);
-        }
 
-        internal int CelestialStemIndex { get => GetYearCelestialStemIndex(Year); }
-        internal int TerrestrialBranchIndex { get => GetYearTerrestrialBranchIndex(Year); }
-        internal string CelestialStemName { get => GetYearCelestialStemName(Year); }
-        internal string TerrestrialBranchName { get => GetYearTerrestrialBranchName(Year); }
+        //internal int CelestialStemIndex { get => GetYearCelestialStemIndex(Year); }
+        //internal int TerrestrialBranchIndex { get => GetYearTerrestrialBranchIndex(Year); }
+        //internal string CelestialStemName { get => GetYearCelestialStemName(Year); }
+        //internal string TerrestrialBranchName { get => GetYearTerrestrialBranchName(Year); }
 
-        internal int MonthCelestialStemIndex { get => GetMonthCelestialStemIndex(Year, Month); }
-        internal int MonthTerrestrialBranchIndex { get => GetMonthTerrestrialIndex(Month); }
-        internal string MonthCelestialStemName { get => GetMonthCelestialStemName(Year, Month); }
-        internal string MonthTerrestrialBranchName { get => GetMonthTerrestrialBranchName(Month); }
-        
+        //internal int MonthCelestialStemIndex { get => GetMonthCelestialStemIndex(Year, Month); }
+        //internal int MonthTerrestrialBranchIndex { get => GetMonthTerrestrialIndex(Month); }
+        //internal string MonthCelestialStemName { get => GetMonthCelestialStemName(Year, Month); }
+        //internal string MonthTerrestrialBranchName { get => GetMonthTerrestrialBranchName(Month); }
+
         #endregion
 
-        internal LuniSolarDate(int year, int month, bool isLeapMonth, int day, DateTime solarDate, double timeZone)
+        internal LuniSolarDate(int year, int month, bool isLeapMonth, int day, DateTime solarDate)
         {
             Year = year;
             Month = month;
             IsLeapMonth = isLeapMonth;
             Day = day;
-            TimeZone = timeZone;
             SolarDate = solarDate;
         }
 
-        public override string ToString()
-		{
-            return String.Format("Ngày {0} tháng {1} năm {2}", Day, MonthFullName, YearName);
-		}
+        public override string ToString() => string.Format("Ngày {0} tháng {1} năm {2}", Day, MonthFullName, YearName);
 
         #region === Static methods ===
-        
-        private static LuniSolarDate CalculateLuniSolarDateFromSolarDate(int year, int month, int day, double timeZone)
+
+        internal static LuniSolarDate<T> CalculateLuniSolarDateFromSolarDate(int year, int month, int day)
         {
             // Sample case 1: Solar date 24/05/2000 --- Lunar date 21/04/2000
             //                  previousNewMoon = 04/05/2000
@@ -152,6 +143,8 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
             //                  newMoon11Before = 03/12/2032 
             //                   newMoon11After = 22/11/2033
 
+            var timeZone = ILocalInfoProvider.GetLocalInfoProvider<T>().TimeZone;
+
             int lunarYear;
             int lunarMonth;
             int lunarDay;
@@ -167,7 +160,6 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
             {
                 previousNewMoon =
                     JulianDateConverter.JulianDateToUniversalDateTime(Moon.GetNewMoon(--k)).AddHours(timeZone).Date;
-                //Console.WriteLine("."); // debug
             }
 
             // "previous, this/current" and "next" are not used to avoid ambiguity.
@@ -208,7 +200,7 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
             // correcting month number if this lunar year is leap year
             if (isLeapYear)
             {
-                var leapMonthIndex = LunarYear.GetLunarYear(newMoon11After.Year, 7).LeapMonthIndex;
+                var leapMonthIndex = LuniSolarCalendar<VietnameseLocalInfoProvider>.GetLunarYear(newMoon11After.Year).LeapMonthIndex;
                 if (monthsFromNewMoon11Before >= leapMonthIndex)
                 {
                     lunarMonth--;
@@ -221,145 +213,29 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
             
             lunarDay = (int)(thisDay - previousNewMoon).TotalDays + 1;
 
-            return new LuniSolarDate(lunarYear, lunarMonth, isLeapMonth, lunarDay, thisDay, timeZone);
+            return new LuniSolarDate<T>(lunarYear, lunarMonth, isLeapMonth, lunarDay, thisDay);
         }
 
-        public static LuniSolarDate LuniSolarDateFromSolarDate(int year, int month, int day, double timeZone)
-        {
-            if (cacheSize > 0)
-            {
-                // init dictionary for the first time
-                if (cache == null)
-                {
-                    cache = new Dictionary<string, LuniSolarDate>(cacheSize);
-                    cacheKeys = new Queue<string>(cacheSize);
-                }
-
-                // hash the year and time zone
-                string key = string.Format("{0}.{1}.{2}+{3:0.00}", year, month, day, timeZone);
-
-                // if year is already cached, just take it out
-                if (cache.ContainsKey(key))
-                {
-                    return cache[key];
-                }
-                // else, calculate the year and add cache to dictionay
-                else
-                {
-                    // if dictionary is already full, remove the oldest pair.
-                    if (cache.Count == cacheSize)
-                    {
-                        var oldestKey = cacheKeys.Dequeue();
-                        cache.Remove(oldestKey);
-                    }
-                    // calculate the year
-                    var luniSolarDate = CalculateLuniSolarDateFromSolarDate(year, month, day, timeZone);
-                    // do not forget to add new year to dictionay :))
-                    cache.Add(key, luniSolarDate);
-                    cacheKeys.Enqueue(key);
-                    return luniSolarDate;
-                }
-            }
-            // no caching, just calculate the year directly
-            else
-            {
-                return CalculateLuniSolarDateFromSolarDate(year, month, day, timeZone);
-            }
-        }
-
-        public static LuniSolarDate LuniSolarDateFromSolarDate(DateTime solarDate, double timeZone)
-        {
-            return LuniSolarDateFromSolarDate(solarDate.Year, solarDate.Month, solarDate.Day, timeZone);
-        }
-
-        public static LuniSolarDate LuniSolarDateFromLunarInfo(int lunarYear, int lunarMonth, bool isLeapMonth, int lunarDay, double timeZone)
-        {
-            LunarYear thisLunarYear;
-            if (lunarMonth >= 11) {
-                thisLunarYear = LunarYear.GetLunarYear(lunarYear + 1, 7);
-            } else
-            {
-                thisLunarYear = LunarYear.GetLunarYear(lunarYear, 7);
-            }
-
-            var monthIndex = lunarMonth - 11;
-            if (monthIndex < 0)
-            {
-                monthIndex += 12;
-            }
-
-            //              year | 2000    2001
-            //             month | 11  12  1   2   3   4   4*  5   6   7   8   9   10  11
-            //               idx | 0   1   2   3   4   5  [6]  7   8   9   10  11  12  13
-            //                   |                         ^
-            //                   |       LeapMonthIndex ---+
-            // month - 11 (+ 12) | 0   1   2   3   4   5  [5] [6   7   8   9   10  11  12]
-            //                   |                         A  \----------- B-------------/
-            // ------------------+--------------------------------------------------------
-            //              year | 2223    2224
-            //             month | 11  11* 12  1   2   3   4   5   6   7   8   9   10  11
-            //               idx | 0  [1  ]2   3   4   5   6   7   8   9   10  11  12  13
-            //                   |     ^
-            //                   |     +--- LeapMonthIndex
-            // month - 11 (+ 12) |[0] [0   1   2   3   4   5   5   6   7   8   9   10  11]
-            //                   | A  \----------------------- B ------------------------/
-
-            if (thisLunarYear.IsLeapYear)
-            {
-                if (((monthIndex == thisLunarYear.LeapMonthIndex - 1) && (isLeapMonth)) // case A
-                    || (monthIndex > thisLunarYear.LeapMonthIndex - 1)) // case B
-                {
-                    monthIndex++;
-                }
-            }
-
-            DateTime monthBeginningDate = thisLunarYear.Months[monthIndex].Item1;
-            var solarDate = monthBeginningDate.AddDays(lunarDay - 1);
-            return new LuniSolarDate(lunarYear, lunarMonth, isLeapMonth, lunarDay, solarDate, timeZone);
-
-            // TODO: validate input/output
-        }
-
-        #region Year
-
-        /// <summary>
-        /// Get zero-based stem index (0: Giáp, 1: Ất...) of the current year.
-        /// </summary>
-        /// <returns></returns>
-        public static int GetYearCelestialStemIndex(int year) { return (year + 6) % 10; }
-        
-        /// <summary>
-		/// Get zero-based branch index (0: Tý, 1: Sửu...) of the current year.
-		/// </summary>
-		/// <returns></returns>
-		public static int GetYearTerrestrialBranchIndex(int year) { return (year + 8) % 12; }
-
-        public static string GetYearCelestialStemName(int year) { return Stems[GetYearCelestialStemIndex(year)]; }
-
-        public static string GetYearTerrestrialBranchName(int year) { return Branches[GetYearTerrestrialBranchIndex(year)]; }
-
-        public static string GetYearName(int year) { return GetYearCelestialStemName(year) + " " + GetYearTerrestrialBranchName(year); }
-        
-        #endregion
-        
         #region Month
-        public static int GetMonthCelestialStemIndex(int year, int month) { return (year * 12 + month + 3) % 10; }
+        public static int GetMonthCelestialStemIndex(int year, int month)
+            => (year * 12 + month + 3) % 10;
 
-        public static int GetMonthTerrestrialIndex(int month) { return month > 10 ? month - 11 : month + 1; }
+        public static int GetMonthTerrestrialIndex(int month)
+            => month > 10 ? month - 11 : month + 1;
 
         public static string GetMonthCelestialStemName(int year, int month)
-		{
-            if (month < 1 || month > MonthNames.Length)
+        {
+            if (month < 1 || month > ILocalInfoProvider.GetLocalInfoProvider<T>().MonthNames.Length)
                 return "undefined";
-            return Stems[GetMonthCelestialStemIndex(year, month)];
-		}
+            return ILocalInfoProvider.GetLocalInfoProvider<T>().StemNames[GetMonthCelestialStemIndex(year, month)];
+        }
 
         public static string GetMonthTerrestrialBranchName(int month)
-		{
-            if (month < 1 || month > MonthNames.Length)
+        {
+            if (month < 1 || month > ILocalInfoProvider.GetLocalInfoProvider<T>().MonthNames.Length)
                 return "undefined";
-            return Branches[GetMonthTerrestrialIndex(month)];
-		}
+            return ILocalInfoProvider.GetLocalInfoProvider<T>().BranchNames[GetMonthTerrestrialIndex(month)];
+        }
 
         /// <summary>
         /// Returns "Name (Can Chi)" or "Name (Can Chi) nhuận".
@@ -367,22 +243,22 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
         /// </summary>
         /// <returns></returns>
 		public static string GetMonthFullName(int year, int month, bool isLeapMonth = false)
-		{
-            if (month < 1 || month > MonthNames.Length)
+        {
+            if (month < 1 || month > ILocalInfoProvider.GetLocalInfoProvider<T>().MonthNames.Length)
                 return "undefined";
             return String.Format("{0} ({1} {2}){3}", GetMonthName(month), GetMonthCelestialStemName(year, month), GetMonthTerrestrialBranchName(month), (isLeapMonth ? " nhuận" : "").ToString());
-		}
+        }
 
         /// <summary>
         /// Returns "Giêng, Hai, Ba..."
         /// </summary>
         /// <returns></returns>
 		public static string GetMonthName(int month)
-		{
-            if (month < 1 || month > MonthNames.Length)
+        {
+            if (month < 1 || month > ILocalInfoProvider.GetLocalInfoProvider<T>().MonthNames.Length)
                 return "undefined";
-			return MonthNames[month - 1];
-		}
+            return ILocalInfoProvider.GetLocalInfoProvider<T>().MonthNames[month - 1];
+        }
 
         /// <summary>
         /// Returns "Giêng, Hai, Ba..." or "Giêng nhuận, Hai nhuận, Ba nhuận..." (if applicable)
@@ -390,9 +266,9 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
         /// <returns></returns>
 		public static string GetMonthShortName(int month, bool isLeapMonth)
         {
-            if (month < 1 || month > MonthNames.Length)
+            if (month < 1 || month > ILocalInfoProvider.GetLocalInfoProvider<T>().MonthNames.Length)
                 return "undefined";
-            return MonthNames[month - 1] + (isLeapMonth ? " nhuận" : "");
+            return ILocalInfoProvider.GetLocalInfoProvider<T>().MonthNames[month - 1] + (isLeapMonth ? " nhuận" : "");
         }
 
         /// <summary>
@@ -404,62 +280,56 @@ namespace Augustine.VietnameseCalendar.Core.LuniSolarCalendar
         /// <returns></returns>
         public static string GetMonthLongName(int year, int month, bool isLeapMonth)
         {
-            if (month < 1 || month > MonthNames.Length)
+            if (month < 1 || month > ILocalInfoProvider.GetLocalInfoProvider<T>().MonthNames.Length)
                 return "undefined";
-            return String.Format("{0} {1}{2}", 
-                GetMonthCelestialStemName(year, month), 
-                GetMonthTerrestrialBranchName(month), 
+            return string.Format("{0} {1}{2}",
+                GetMonthCelestialStemName(year, month),
+                GetMonthTerrestrialBranchName(month),
                 (isLeapMonth ? " nhuận" : "").ToString());
         }
-        
-        /// <summary>
-        /// 0 -> 12, 1 -> 1, 2 -> 2, 3 -> 3... 11 -> 11
-        /// </summary>
-        /// <param name="monthIndex"></param>
-        /// <returns></returns>
-        public static int GetMonth(int monthIndex) { return monthIndex == 0 ? 12 : monthIndex; }
+
+
+        ///// <summary>
+        ///// 0 -> 12, 1 -> 1, 2 -> 2, 3 -> 3... 11 -> 11
+        ///// </summary>
+        ///// <param name="monthIndex"></param>
+        ///// <returns></returns>
+        //public static int GetMonth(int monthIndex) { return monthIndex == 0 ? 12 : monthIndex; }
 
         #endregion
 
         #region Day
+        
+        public static string GetSolarTermName(DateTime date)
+        {
+            return ILocalInfoProvider.GetLocalInfoProvider<T>().SolarTerms[GetSolarTermIndex(date)];
+        }
+
+        public static string GetDayCelestialStemName(int solarYear, int solarMonth, int solarDay)
+            => ILocalInfoProvider.GetLocalInfoProvider<T>().StemNames[GetDayCelestialStemIndex(solarYear, solarMonth, solarDay)];
+
+        public static string GetDayTerrestrialBranchName(int solarYear, int solarMonth, int solarDay)
+            => ILocalInfoProvider.GetLocalInfoProvider<T>().BranchNames[GetDayTerrestrialIndex(solarYear, solarMonth, solarDay)];
+
+        public static string GetDayName(int solarYear, int solarMonth, int solarDay)
+            => GetDayCelestialStemName(solarYear, solarMonth, solarDay) + " " + GetDayTerrestrialBranchName(solarYear, solarMonth, solarDay);
+
+        public static int GetSolarTermIndex(DateTime date)
+            => Sun.GetSolarTermIndex(date.AddHours(-ILocalInfoProvider.GetLocalInfoProvider<T>().TimeZone).AddHours(24));
+
         public static int GetDayCelestialStemIndex(int solarYear, int solarMonth, int solarDay)
         {
-            var julianDateNumber = JulianDateConverter.UniversalDateToJulianDayNumber(solarYear, solarMonth, solarDay);
+            var julianDateNumber
+                = JulianDateConverter.UniversalDateToJulianDayNumber(solarYear, solarMonth, solarDay);
             return (julianDateNumber + 9) % 10;
         }
 
         public static int GetDayTerrestrialIndex(int solarYear, int solarMonth, int solarDay)
         {
-            var julianDateNumber = JulianDateConverter.UniversalDateToJulianDayNumber(solarYear, solarMonth, solarDay);
+            var julianDateNumber
+                = JulianDateConverter.UniversalDateToJulianDayNumber(solarYear, solarMonth, solarDay);
             return (julianDateNumber + 1) % 12;
         }
-
-        public static string GetDayCelestialStemName(int solarYear, int solarMonth, int solarDay)
-        {
-            return Stems[GetDayCelestialStemIndex(solarYear, solarMonth, solarDay)];
-        }
-
-        public static string GetDayTerrestrialBranchName(int solarYear, int solarMonth, int solarDay)
-        {
-            return Branches[GetDayTerrestrialIndex(solarYear, solarMonth, solarDay)];
-        }
-
-        public static string GetDayName(int solarYear, int solarMonth, int solarDay)
-        {
-            return GetDayCelestialStemName(solarYear, solarMonth, solarDay) + " " +
-                GetDayTerrestrialBranchName(solarYear, solarMonth, solarDay);
-        }
-
-        public static int GetSolarTermIndex(DateTime date, double timeZone)
-        {
-            return Sun.GetSolarTermIndex(date.AddHours(-timeZone).AddHours(24));
-        }
-
-        public static string GetSolarTermName(DateTime date, double timeZone)
-        {
-            return SolarTermsVietnamese[GetSolarTermIndex(date, timeZone)];
-        }
-
 
         #endregion
 

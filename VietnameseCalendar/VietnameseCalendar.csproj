@@ -53,8 +53,11 @@
     <Compile Include="Astronomy\Moon.cs" />
     <Compile Include="Astronomy\Sun.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="LuniSolarCalendar\ILocalInfoProvider.cs" />
+    <Compile Include="LuniSolarCalendar\LuniSolarCalendar.cs" />
     <Compile Include="LuniSolarCalendar\LuniSolarDate.cs" />
-    <Compile Include="LuniSolarCalendar\LunarYear.cs" />
+    <Compile Include="LuniSolarCalendar\LuniSolarYear.cs" />
+    <Compile Include="LuniSolarCalendar\VietnameseLocalInfoProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

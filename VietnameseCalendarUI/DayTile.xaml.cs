@@ -46,7 +46,7 @@ namespace Augustine.VietnameseCalendar.UI
             {
                 solarDate = value;
 
-                try { lunarDate = LuniSolarDate.LuniSolarDateFromSolarDate(solarDate, 7); }
+                try { lunarDate = LuniSolarCalendar<VietnameseLocalInfoProvider>.LuniSolarDateFromSolarDate(solarDate); }
                 catch { lunarDate = null; }
 
                 //isSolarMonthVisible = solarDate.Day == 1;
@@ -140,8 +140,8 @@ namespace Augustine.VietnameseCalendar.UI
             }
         }
 
-        private LuniSolarDate lunarDate;
-        public LuniSolarDate LunarDate { get => lunarDate; private set => lunarDate = value; }
+        private LuniSolarDate<VietnameseLocalInfoProvider> lunarDate;
+        public LuniSolarDate<VietnameseLocalInfoProvider> LunarDate { get => lunarDate; private set => lunarDate = value; }
 
         private bool isSolarMonthVisible;
         public bool IsSolarMonthVisible { get => isSolarMonthVisible; set { isSolarMonthVisible = value; UpdateSolarDateLabel(); } }
