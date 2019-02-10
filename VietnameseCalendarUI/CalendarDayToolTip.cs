@@ -16,7 +16,10 @@ namespace Augustine.VietnameseCalendar.UI
 {
     public static class CalendarDayToolTip
     {
-        public static ToolTip CreateToolTip(string header, LuniSolarDate date,
+        private static readonly string _cultureInfoTag = "vi-VN";
+        private static readonly string[] _columnHeader = { "Dương lịch: ", "Âm lịch: ", "Năm ", "Tháng ", "Ngày ", "Tiết " };
+
+        public static ToolTip CreateToolTip(string header, LuniSolarDate<VietnameseLocalInfoProvider> date,
             string decorator, bool isSymbolicDecorator, double hueValue = -1,
             bool overideContentForeground = false,
             int maxWidth = 400, int padding = 3)
@@ -25,18 +28,18 @@ namespace Augustine.VietnameseCalendar.UI
             contentGrid.ColumnDefinitions.Add(new ColumnDefinition());
             contentGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
-            string[] columnHeader = { "Dương lịch: ", "Âm lịch: ", "Năm ", "Tháng ", "Ngày ", "Tiết " };
+            
             string[] columnContent = {
-                string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:d} ({0:dddd})",date.SolarDate),
+                string.Format(new System.Globalization.CultureInfo(_cultureInfoTag), "{0:d} ({0:dddd})",date.SolarDate),
                 string.Format("Ngày {0} tháng {1} năm {2}", date.Day, date.MonthShortName, date.Year),
                 date.YearName, date.MonthLongName, date.DayName, date.SolarTerm };
-            for (int i = 0; i < columnHeader.Length; i++)
+            for (int i = 0; i < _columnHeader.Length; i++)
             {
                 contentGrid.RowDefinitions.Add(new RowDefinition());
                 TextBlock headerCell = new TextBlock
                 {
                     HorizontalAlignment = HorizontalAlignment.Right,
-                    Text = columnHeader[i],
+                    Text = _columnHeader[i],
                 };
                 TextBlock contentCell = new TextBlock
                 {
